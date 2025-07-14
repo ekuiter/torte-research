@@ -1,0 +1,366 @@
+Date,Commit ID,Classification,L,P,S,E,M,Description,Notes
+2005-05-05,3b9fa0931dd8,Other,,,,,Y,[PATCH] Kconfig i18n support,
+2005-07-28,fb7f6ff614f3,Refactoring,,Y,,,Y,[PATCH] kconfig: trivial cleanup,
+2005-11-08,3370f9f0d9c7,Bug Fix,Y,Y,,,,[PATCH] kconfig: simplify symbol type parsing,
+2005-11-08,3f04e7ddf47a,Bug Fix,,Y,Y,,,[PATCH] kconfig: Fix Kconfig performance bug,
+2005-11-08,3f23ca2b37d1,Bug Fix,,,Y,,,[PATCH] kconfig: fix restart for choice symbols,
+2005-11-08,4cf3cbe2a968,Semantic change,,,Y,,Y,[PATCH] kconfig: allow variable argumnts for range,"It could be classified as refactoring, but new functions sym_get_range_val and sym_validate_range enables a semantic change. If a symbols value falls outside its range Kconfig now adjust the value to valid range boundary. Its backwards compatible"
+2005-11-08,7a88488bbc23,Refactoring,Y,Y,,,,[PATCH] kconfig: use gperf for kconfig keywords,
+2005-11-08,a02f0570ae20,Refactoring,Y,Y,,,Y,[PATCH] kconfig: improve error handling in the parser,
+2006-01-16,2244cbd8a918,Other,,,Y,,,kbuild: create .kernelrelease at *config step,Build change
+2006-06-08,0c1822e6991a,Semantic change,,,Y,,,kconfig: allow multiple default values per symbol,
+2006-06-08,669bfad90652,Semantic change & Refactoring,,,Y,,,kconfig: allow loading multiple configurations,"existing Kconfig files should parse, the way their values are stored and potentially interact with other configuration layers  is altered"
+2006-06-08,ab45d190fd4a,Refactoring,,,,Y,,kconfig: create links in info window,
+2006-06-08,c0e150acde52,Refactoring,,,Y,Y,,kconfig: remove SYMBOL_{YES,
+2006-06-08,f001f7f89689,Error Handling,,,,,Y,kconfig: warn about leading whitespace for menu prompts,
+2006-06-08,f6a88aa86027,Syntactic change,,Y,,,Y,kconfig: add symbol option config syntax,"Existing Kconfig files using option are unaffected, as they already conform to this syntax.  v2.6.17-rc6-12-gf6a88aa86027"
+2006-06-08,face4374e288,Semantic change,,Y,Y,,Y,kconfig: add defconfig_list/module option,introduces new Kconfig behavior by allowing the symbol representing module support (option modules)
+2006-12-13,bfc10001b11e,Refactoring,,Y,Y,,,[PATCH] kconfig: make sym_change_count static,
+2007-04-30,1e093ecd4a85,Other,,,,,Y,kconfig: correct minor typo in Kconfig warning message.,only typo fix
+2007-05-05,11de39e2fbbc,Bug Fix,Y,,,,,kconfig: fix mconf segmentation fault,
+2007-05-06,5447d34b080a,Error Handling,,Y,Y,,,kconfig: error out if recursive dependencies are found,
+2007-07-21,03d29122738f,Refactoring & Semantic change,,Y,,,Y,kconfig: attach help text to menus,"Doesn’t change core syntax, but improves how help info is structured "
+2007-09-26,247537b9a270,Syntactic change,,Y,,,,"kconfig: syntax cleanup - drop support for ""depends/requires/def_boolean""","removes support for the redundant Kconfig keywords requires, depends (without on), and def_boolean/def_bool. It simplifies the language syntax. Breaks backward compatibility. v2.6.23-2289-g247537b9a270"
+2007-10-02,a5bf3d891a6a,Semantic change,,,,,Y,kconfig: tristate choices with mixed tristate and boolean values,Improves the semantics of choice blocks by supporting mixed bool and tristate entries.
+2007-10-19,e8b8c9777341,Bug Fix,,,,,Y,"Revert ""kconfig: tristate choices with mixed tristate and boolean values""",The previously added logic for mixed bool and tristate choices (a5bf3d891a6a) caused real regressions: it broke valid configuration
+2008-01-07,d6ee35764f27,Refactoring,,,Y,Y,,kconfig: rename E_OR & friends to avoid name clash,
+2008-01-11,01771b0fef0f,Refactoring,,,,,Y,kconfig: macro fix in menu.c,"it simplifies how prompts are handled internally, clear internal cleanup"
+2008-01-11,f7a4b4cdc268,Other,Y,,,,,kconfig: whitespace removing,
+2008-01-14,7a9629233597,Refactoring,,,Y,Y,Y,kconfig: explicitly introduce expression list,
+2008-01-14,80daa56008da,Syntactic change,,,Y,,,kconfig: use environment option,v2.6.24-2237-g80daa56008da
+2008-01-14,93449082e905,Refactoring,,,Y,,Y,kconfig: environment symbol support,In V2.6.24 ARCH and KERNELVERSION are hard coded in Kconfig files. It can bring compatibility problems
+2008-01-24,f5eaa323eb68,Semantic change,,,,Y,Y,kconfig: tristate choices with mixed tristate and boolean values,an issue where tristate choices containing both bool and tristate members did not behave intuitively. Affects the behavior of tristate choices containing boolean members.
+2008-02-02,603d49885e02,Semantic change & Bug Fix,,,,,Y,kconfig: ignore select of unknown symbol,"Now, select on an undefined symbol is silently ignored before it was giving errors. Its still a semantic change"
+2008-02-11,587c90616a5b,Semantic change,,,Y,,,kconfig: fix select in combination with default,the commit changes sym_calc_value() function because of an error which is reported. Its a semantic chage to value calculation
+2008-02-29,48981178869b,Semantic change,,,Y,,,kconfig: fix choice dependency check,This commit refactors and improves the recursive dependency checking logic (sym_check_deps). It is backward compatible
+2008-02-29,5a1aa8a1aff6,Semantic change,,Y,Y,,Y,kconfig: add named choice group,slightly changes the choice type logic. Compatible with existing Kconfig files not using the new named choice feature
+2008-07-17,be2be1d59035,Other,Y,,,,,kconfig: scripts/kconfig/zconf.l: add %option noinput,internal build change
+2008-12-27,7826005e5a53,Other,Y,,,,,kconfig: improve error messages for bad source statements,
+2009-07-12,4779105e03cd,Refactoring,,,,,Y,kconfig: make use of menu_get_ext_help in gconfig,
+2009-07-12,544e433a9e2a,Other,,,,Y,,kconfig: add symbol value to help find the real depend,
+2009-07-12,6bd5999d1a61,Refactoring,,,,,Y,kconfig: add menu_get_ext_help function to display more information,
+2009-09-18,4356f4890792,Refactoring,,,Y,Y,Y,kbuild: add static to prototypes,
+2009-10-15,1456edbb1476,Other,,Y,,,,kconfig: Make zconf.y work with current bison,"Build Fix, Toolchain Compatibility, v2.6.32"
+2009-10-15,65166571800a,Refactoring,Y,Y,,,,kconfig: Mark various internal functions static,
+2009-11-25,692d97c380c6,Other,,Y,,,Y,kconfig: new configuration interface (nconfig),"New feature addition, new front-end"
+2009-12-20,da60fbbcb637,Other,,,,Y,,menuconfig: wrap long help lines,
+2010-01-13,e66f25d7d1be,Refactoring,,Y,Y,,,Improve kconfig symbol hashing,
+2010-03-19,da6df879b9f8,Bug Fix,,,Y,,,kconfig: recalc symbol value before showing search results,
+2010-04-14,22c7eca61e51,Other,,,,,Y,menuconfig: add support to show hidden options which have prompts,Feature addition menu UI
+2010-04-14,4280eae09901,Bug Fix,,,,,Y,kconfig: some small fixes,
+2010-04-14,c6ccc30fd787,Bug Fix,,Y,,,,kconfig: fix zconfdump(),
+2010-05-07,3fb9acb3297f,Bug Fix,,,,,Y,kconfig: fix to tag NEW symbols correctly,
+2010-05-07,70ed074718a6,Other,,,,Y,Y,kconfig: print the range of integer/hex symbol in help text,
+2010-05-07,b040b44c35c2,Other,,,,,Y,kconfig: print symbol type in help text,
+2010-06-08,246cf9c26bf1,Semantic change & Error Handling,,,Y,,Y,kbuild: Warn on selecting symbols with unmet direct dependencies,v2.6.33-rc6-172212-g246cf9c26bf1
+2010-06-30,0a28c47b8db8,Semantic change & Bug Fix,,,Y,,,kconfig: Don't write invisible choice values,v2.6.33-rc6-172213-g0a28c47b8db8
+2010-07-31,59e89e3ddf85,Refactoring,,,Y,,Y,kconfig: save location of config symbols,
+2010-07-31,7cf3d73b4360,Semantic change,,,Y,,,kconfig: add savedefconfig,v2.6.33-rc6-172224-g7cf3d73b4360
+2010-07-31,c252147de68c,Refactoring,,,Y,,,kconfig: refactor code in symbol.c,
+2010-07-31,d595cea62403,Error Handling,,,Y,,,kconfig: print more info when we see a recursive dependency,
+2010-08-04,bf5e327a300a,Refactoring,,,,Y,,kconfig: Fix warning: ignoring return value of 'fwrite',
+2010-08-14,3643f849d7da,Bug Fix,,,Y,,,kconfig: fix segfault when detecting recursive dependency,
+2010-08-14,652cf9821d2a,Other,,,,,Y,kconfig: rephrase help texts/comments not to include the package name,Documentation
+2010-08-14,ffb5957bc48f,Other,,,,,Y,kconfig: allow build-time definition of the internal config prefix,Build system enchantment
+2010-08-16,8ea13e2c87c8,Syntactic change,,Y,,,,kconfig: implement the `mainmenu' directive,syntactic enchantment v2.6.35-49-g8ea13e2c87c8
+2010-08-18,76a540958af5,Refactoring,,,Y,,,kconfig: add a symbol string expansion helper,
+2010-09-04,2e7a091833f0,Refactoring,Y,,,,,kconfig: constify file name,
+2010-09-04,ba6ff60d5eb4,Other,,,,,Y,kconfig: don't emit warning upon rootmenu's prompt redefinition,
+2010-09-04,e82dae9083c8,Other,Y,,,,,kconfig: use the file's name of sourced file,
+2010-09-09,f6ce00b8cca0,Semantic change,,Y,,,,kconfig: expand by default the rootmenu's prompt,v2.6.35-172251-gf6ce00b8cca0
+2010-09-19,8494453ad505,Refactoring,,,,Y,,kconfig: use calloc() for expr allocation,
+2010-09-26,1137c56b7420,Refactoring,,,Y,Y,,kconfig: simplify select-with-unmet-direct-dependency warning,
+2010-09-26,ff5ff6060bf8,Bug Fix & Refactoring,,,,,Y,kconfig: delay symbol direct dependency initialization,
+2010-09-30,19c29f326075,Bug Fix,,,Y,,,kconfig: Fix realloc usage(),
+2010-10-08,71ebc01d3ad4,Bug Fix,,,Y,,,kconfig: Temporarily disable dependency warnings,
+2010-10-12,b1f7d6e1909c,Error Handling,,,Y,,,"Revert ""kconfig: Temporarily disable dependency warnings""",
+2010-11-01,020e773f6b2e,Bug Fix,,,Y,,,kconfig: sym_expand_string_value: allow for string termination when reallocing,
+2010-11-06,86e187ff9bce,Syntactic change & Semantic change,,Y,,,Y,kconfig: add an option to determine a menu's visibility,v2.6.37-rc2-1-g86e187ff9bce
+2010-12-05,579fb8e741fe,Other,,,Y,,,kconfig: fix typos,
+2010-12-05,ab60bd0b92ec,Semantic change & Bug Fix,,,,,Y,kconfig: add more S_INT and S_HEX consistency checks,Adds stricter checks for int and hex symbols improves semantic correctness
+2010-12-09,7ad1227818f0,Semantic change & Bug Fix,,,,,Y,"kconfig: fix undesirable side effect of adding ""visible"" menu attribute",
+2010-12-20,17742dc74371,Refactoring,,,,Y,,kconfig: Make expr_copy() take a const argument,
+2011-02-24,2b2112f617e8,Refactoring,Y,,,,,kconfig: get rid of unused flags,
+2011-02-24,f094f8a1b273,Refactoring,Y,,,,,kconfig: allow multiple inclusion of the same file,
+2011-05-04,61f956f57603,Refactoring,Y,Y,,,,kconfig: constify `kconf_id_lookup',
+2011-05-15,e54e692ba613,Refactoring,,,Y,,,kconfig: introduce specialized printer,
+2011-05-23,378dbb2cf5cb,Other,,Y,,,,kconfig: migrate parser to implicit rules,Build Change
+2011-05-23,b96a0d0c78c8,Refactoring,,Y,,,,kconfig: kill no longer needed reference to YYDEBUG,
+2011-06-01,10a4b2772e76,Refactoring,,,,,Y,kconfig: add missing <stdarg.h> inclusion,
+2011-06-01,5a6f8d2bd9e3,Refactoring,Y,Y,Y,Y,Y,kconfig: nuke LKC_DIRECT_LINK cruft,
+2011-06-01,dd003306a4fa,Refactoring,,,,,Y,kconfig: add missing <ctype.h> inclusion,
+2011-06-07,674eed8a6ac9,Other,Y,,,,,kconfig/zconf.l: do not ask to generate backup,
+2011-06-08,ec6452a5ec68,Semantic change & Bug Fix,,,,,Y,kconfig: do not overwrite symbol direct dependency in assignment,
+2011-08-02,3f198dfee49d,Bug Fix & Other,,,,,Y,kbuild: Fix help text not displayed in choice option.,UI behaviour
+2011-08-03,57e6292da67c,Other,,,,,Y,kconfig: factor code in menu_get_ext_help(),Code cleanup
+2012-01-23,5d09598d488f,Semantic change,,,Y,,,kconfig: fix new choices being skipped upon config update,
+2012-08-23,5e609addb1bd,Other,,,,,Y,menuconfig: Add jump keys to search results,Feature addition menu UI
+2012-08-23,95ac9b3b585d,Other,,,,,Y,menuconfig: Assign jump keys per-page instead of globally,Feature addition menu UI
+2012-10-21,bad9955db1b7,Refactoring,,,,,Y,menuconfig: Replace CIRCLEQ by list_head-style lists.,
+2012-11-06,177acf78468b,Refactoring,Y,,Y,Y,Y,kconfig: Fix malloc handling in conf tools,
+2013-04-30,bcdedcc1afd6,Other,,,,,Y,menuconfig: print more info for symbol without prompts,Feature addition
+2013-05-06,193b40aeb537,Other,,,Y,,,kconfig: sort found symbols by relevance,
+2013-05-07,383da76f5261,Bug Fix,,,,,Y,menuconfig: fix NULL pointer dereference when searching a symbol,Feature addition Ux improvement
+2013-05-19,1278ebdbc316,Other,,,,,Y,mconf/nconf: mark empty menus/menuconfigs different from non-empty ones,
+2013-05-21,e983b7b17ad1,Bug Fix,,,,,Y,kconfig/menu.c: fix multiple references to expressions in menu_add_prop(),
+2013-06-06,fbe98bb9ed3d,Semantic change,,,Y,,,kconfig: Fix defconfig when one choice menu selects options that another choice menu depends on,
+2013-06-28,b57caaaed2bd,Semantic change & Bug Fix,,,Y,,,"kconfig: allow ""hex"" and ""range"" to support longs",
+2013-07-13,26e933e3c356,Other & Refactoring,,,Y,,,kconfig: avoid multiple calls to strlen,performance optimization
+2013-07-16,1407f97aeda5,Bug Fix,,,Y,,,kconfig: don't allocate n+1 elements in temporary array,
+2013-07-16,508382a0428f,Refactoring,,,Y,,,kconfig: simplify symbol-search code,
+2013-07-16,803b3519880f,Other,,,Y,,,kconfig: minor style fixes in symbol-search code,
+2013-07-18,129784abc982,Semantic change,,,Y,,,"kconfig: switch to ""long long"" for sanity",
+2013-09-03,6902dccfda00,Semantic change & Refactoring,,Y,,,Y,kconfig: do not special-case 'MODULES' symbol,
+2013-09-03,e062781397e5,Bug Fix,,,,,Y,kconfig: do not allow more than one symbol to have 'option modules',
+2013-10-03,3381960031a1,Refactoring,Y,,,,,kconfig: remove unused definition from scanner,
+2013-10-03,503c823048e8,Semantic change & Error Handling,,,,,Y,kconfig: fix bug in search results string: use strlen(gstr->s),
+2013-10-03,57540f1dea65,Error Handling,,,,,Y,kconfig: adjust warning message for conflicting types,
+2013-10-03,8d9dfe827675,Other,,,Y,,Y,kconfig: fix trivial typos and update mconf documentation,typo fix
+2014-04-07,5d2acfc7b974,Semantic change & Syntactic change,,,,,Y,kconfig: make allnoconfig disable options behind EMBEDDED and EXPERT,v3.14-10469-g5d2acfc7b974
+2014-06-10,bb66fc67192b,Refactoring,Y,Y,,,Y,kbuild: trivial - use tabs for code indent where possible,
+2014-11-04,2d5603060967,Bug Fix,,,,,Y,"kconfig: Fix warning ""‘jump’ may be used uninitialized""",
+2015-01-20,2e0d737fc76f,Error Handling,Y,,,,,kconfig: don't silently ignore unhandled characters,
+2015-02-24,4631574,Other,,,,Y,,kconfig: Remove dead code,Code cleanup
+2015-02-24,ad8d40cda3ad,Other,,,Y,Y,Y,kconfig: Remove unnecessary prototypes from headers,Code cleanup
+2015-05-22,e911503085ae,Refactoring,,,,Y,,Kconfig: Remove bad inference rules expr_eliminate_dups2(),
+2015-06-15,31847b67bec0,Syntactic change & Semantic change,Y,Y,Y,Y,,kconfig: allow use of relations other than (in)equality,v3.14-10469-g5d2acfc7b974
+2015-07-07,35ffd08d9bc9,Refactoring,,,Y,,,"kconfig: Delete unnecessary checks before the function call ""sym_calc_value""",
+2015-07-12,c2264564df3d,Error Handling,Y,,,,,kconfig: warn of unhandled characters in Kconfig commands,
+2015-10-07,1c199f2878f6,Other,,,Y,,,kbuild: document recursive dependency limitation / resolution,
+2015-10-19,f6aad2615c8c,Bug Fix,,,,Y,,kconfig: Fix copy&paste error,
+2016-01-01,aab24a897cfb,Refactoring,,,,,Y,kconfig: return 'false' instead of 'no' in bool function,
+2016-04-29,fa64e5f6a35e,Semantic change & Bug Fix,,,Y,,,kconfig/symbol.c: handle choice_values that depend on 'm' symbols,
+2016-11-11,237e3ad0f195,Syntactic change & Semantic change,,Y,Y,,Y,"Kconfig: Introduce the ""imply"" keyword",v4.9-rc2-3-g237e3ad0f195
+2017-08-19,bb3290d91695,Other & Refactoring,,Y,,,,Remove gperf usage from toolchain,Build Change
+2017-10-04,2c37e08464a8,Error Handling,,,,,Y,kconfig: Warn if choice default is not in choice,
+2017-10-05,9a826842ff2f,Refactoring,,,,,Y,kconfig: Rename menu_check_dep() to rewrite_m(),
+2017-10-05,c873443430eb,Refactoring,,Y,,,,kconfig: Sync zconf.y with zconf.tab.c_shipped,
+2017-10-05,f77850d3fe0c,Bug Fix,,,,,Y,kconfig: Clean up modules handling and fix crash,
+2017-10-05,fa8cedaef814,Other,,,,,Y,kconfig: Clarify expression rewriting,Documentation
+2017-10-08,05cccce58045,Other,,,,,Y,kconfig: Document automatic submenu creation code,code comments
+2017-10-08,0724a7c32a54,Bug Fix,,Y,,,,kconfig: Don't leak main menus during parsing,
+2017-10-08,0735f7e5def2,Other,,,,Y,,kconfig: Document important expression functions,
+2017-10-08,24161a6711c9,Bug Fix,,Y,Y,,,kconfig: Don't leak 'source' filenames during parsing,
+2017-10-08,26e47a3c11a2,Bug Fix,,Y,,,,kconfig: Don't leak symbol names during parsing,
+2017-10-08,5b1374b3b3c2,Bug Fix,,,,Y,,kconfig: Fix expr_free() E_NOT leak,
+2017-10-08,7cf33f88e294,Bug Fix,,,,,Y,kconfig: Fix choice symbol expression leak,
+2017-10-08,ae7440ef0c80,Bug Fix,,,,,Y,kconfig: Fix automatic menu creation mem leak,
+2017-10-08,bc28fe1d5ede,Bug Fix,,Y,,,,kconfig: Don't leak 'option' arguments during parsing,
+2017-10-09,df60f4b92d3d,Refactoring,,Y,,,Y,kconfig: Remove menu_end_entry(),
+2017-11-08,88127dae6ed9,Bug Fix,,,Y,,,kconfig/symbol.c: use correct pointer type argument for sizeof,
+2017-11-16,9059a3493efe,Semantic change & Bug Fix,,,,Y,,kconfig: fix relational operators for bool and tristate symbols,
+2017-12-16,b92d804a5179,Syntactic change,,Y,Y,,Y,kconfig: drop 'boolean' keyword,v4.15-rc2-23-gb92d804a5179
+2017-12-16,e3b03bf29d6b,Bug Fix,,,Y,,,kconfig: display recursive dependency resolution hint just once,
+2018-01-12,6479f327dea6,Error Handling,,Y,,,,kconfig: Warn if there is more than one help text,
+2018-01-12,765f4cdef6f8,Refactoring,Y,Y,,,,kconfig: use default 'yy' prefix for lexer and parser,
+2018-01-14,3e41ba05b6d6,Other,,,,,Y,kconfig: Document SYMBOL_OPTIONAL logic,Documentation
+2018-01-14,9d1a9e8bc18b,Other,,,,,Y,kconfig: Document 'if' flattening logic,Documentation
+2018-01-14,d3465af60f44,Other,,,,,Y,kconfig: Clarify choice dependency propagation,Documentation
+2018-01-16,b53688014e33,Other,,,,,Y,kconfig: Clarify menu and 'if' dependency propagation,Documentation
+2018-01-25,1ccb27143360,Other,,,,Y,Y,"kconfig: make ""Selected by:"" and ""Implied by:"" readable",Output formatting
+2018-01-31,1b9eda2e4892,Error Handling,,Y,,,,kconfig: Warn if help text is blank,
+2018-02-06,9e3e10c72536,Error Handling,Y,,Y,Y,,kconfig: send error messages to stderr,
+2018-02-06,cb67ab2cd2b8,Semantic change & Bug Fix,,,Y,,,kconfig: do not write choice values when their dependency becomes n,
+2018-02-09,523ca58b7db2,Refactoring,,,Y,,,kconfig: remove const qualifier from sym_expand_string_value(),
+2018-02-09,d717f24d8c68,Refactoring,Y,,Y,,,kconfig: add xrealloc() helper,
+2018-02-17,cd81fc82b93f,Refactoring,,Y,Y,,,kconfig: add xstrdup() helper,
+2018-02-17,f4bc1eefc160,Semantic change,,,,,Y,kconfig: set SYMBOL_AUTO to the symbol marked with defconfig_list,"changes written configurations to .config file, changes .config file v4.16-rc3-4-gf4bc1eefc160"
+2018-02-20,9a47ceec543b,Refactoring,,,,Y,Y,kconfig: clean-up reverse dependency help implementation,
+2018-02-20,bf0bbdcf1003,Bug Fix,,Y,,,,kconfig: Don't leak choice names during parsing,
+2018-02-23,f467c5640c29,Semantic change,,,Y,,,kconfig: only write '# CONFIG_FOO is not set' for visible symbols,improves output clearity  v4.16-rc5-6-gf467c5640c29
+2018-02-24,d9119b5925a0,Other,,,,Y,Y,kconfig: Print reverse dependencies in groups,
+2018-03-02,5ae6fcc4bb82,Error Handling & Bug Fix,Y,,,,,kconfig: fix line number in recursive inclusion error message,
+2018-03-13,f622f8279581,Semantic change,,,Y,,,kconfig: warn unmet direct dependency of tristate symbols selected by y,
+2018-03-13,f8f69dc0b4e0,Error Handling,,,Y,Y,,kconfig: make unmet dependency warnings readable,
+2018-03-23,18492685e479,Refactoring,Y,,,,,kconfig: use yylineno option instead of manual lineno increments,
+2018-03-23,32a94b8b0c3e,Error Handling,Y,,,,,kconfig: remove duplicated file name and lineno of recursive inclusion,
+2018-03-23,379a8eb8eb1a,Error Handling,Y,,,,,kconfig: detect recursive inclusion earlier,
+2018-05-22,694c49a7c01c,Other,,Y,,,Y,kconfig: drop localization support,cleanup
+2018-05-28,104daea149c4,Syntactic change & Semantic change,Y,Y,Y,,Y,kconfig: reference environment variables directly and remove 'option env=',v4.17-rc7-8-g104daea149c4
+2018-05-28,1175c02506ff,Syntactic change & Semantic change,Y,Y,,,,kconfig: support simply expanded variable,v4.17-rc7-18-g1175c02506ff
+2018-05-28,137c0118a900,Refactoring,,Y,,,,kconfig: make default prompt of mainmenu less specific,
+2018-05-28,5b31a9746756,Refactoring,,,Y,,,kconfig: remove sym_expand_string_value(),
+2018-05-28,82bc8bd82e5c,Semantic change,Y,,,,,kconfig: expand lefthand side of assignment statement,
+2018-05-28,96d8e48da55a,Refactoring,,Y,,,,kconfig: remove string expansion for mainmenu after yyparse(),
+2018-05-28,9ced3bddec08,Syntactic change & Semantic change,Y,Y,,,,kconfig: support user-defined function and recursively expanded variable,v4.17-rc7-17-g9ced3bddec08
+2018-05-28,9de071536c87,Refactoring,Y,,,,,kconfig: begin PARAM state only when seeing a command keyword,
+2018-05-28,ed2a22f277c6,Syntactic change & Semantic change,Y,,,,,kconfig: support append assignment operator,v4.17-rc7-19-ged2a22f277c6
+2018-06-21,b2d00d7c61c8,Bug Fix,,Y,,,,kconfig: fix line numbers for if-entries in menu tree,
+2018-06-22,ecd53ac2f2c6,Other,,Y,,,,kconfig: handle P_SYMBOL in print_symbol(),Debugging Improvement
+2018-07-03,693359f7ac90,Refactoring,,Y,Y,,Y,kconfig: rename SYMBOL_AUTO to SYMBOL_NO_WRITE,
+2018-08-09,56869d45e364,Bug Fix,,Y,,,,kconfig: fix the rule of mainmenu_stmt symbol,
+2018-08-14,1880861226c1,Refactoring,,,Y,,,kconfig: remove P_ENV property type,
+2018-08-14,c151272d1687,Refactoring,,,Y,,,kconfig: remove unused sym_get_env_prop() function,
+2018-08-15,5e8c5299d315,Error Handling,,,Y,,,kconfig: report recursive dependency involving 'imply',
+2018-08-15,f1575595d156,Error Handling,,,Y,,,kconfig: error out when seeing recursive dependency,
+2018-08-15,f498926c47aa,Other,,,Y,,,kconfig: improve the recursive dependency report,Output formatting
+2018-11-30,0cbe3ac439bf,Refactoring,,,,Y,,kconfig: remove k_invalid from expr_parse_string() return type,
+2018-11-30,2aabbed6774f,Refactoring,,,Y,,,kconfig: remove S_OTHER symbol type and correct dependency tracking,
+2018-12-11,0bcc547ec4b0,Refactoring,Y,,,,,kconfig: clean up EOF handling in the lexer,
+2018-12-11,171a515d0803,Refactoring,Y,Y,,,,kconfig: use T_WORD instead of T_VARIABLE for variables,
+2018-12-11,1f31be9ec0a9,Syntactic change,,Y,,,,"kconfig: loosen the order of ""visible"" and ""depends on"" in menu entry",v4.20-rc2-19-g1f31be9ec0a9
+2018-12-11,21c5ecf60472,Refactoring,Y,,,,,kconfig: refactor pattern matching in STRING state,
+2018-12-11,2f60e46e605a,Error Handling & Refactoring,,Y,,,,kconfig: remove grammatically ambiguous option_error,
+2018-12-11,3c8f317d4cf1,Refactoring,,Y,,,,kconfig: use distinct tokens for type and default properties,
+2018-12-11,413cd19d81fd,Syntactic change,,Y,,,,kconfig: require T_EOL to reduce visible statement,v4.20-rc2-9-g413cd19d81fd
+2018-12-11,4891796c6f83,Refactoring,,Y,,,,kconfig: remove redundant if_block rule,
+2018-12-11,4b31a32caf0a,Refactoring,Y,,,,,kconfig: update current_pos in the second lexer,
+2018-12-11,4b5ec81bfeda,Refactoring,,Y,,,,kconfig: rename depends_list to comment_option_list,
+2018-12-11,6900ae9eeee3,Syntactic change & Error Handling,,Y,,,,"kconfig: remove grammatically ambiguous ""unexpected option"" diagnostic",option_name nonterminal deleted v4.20-rc2-15-g6900ae9eeee3
+2018-12-11,723679339d08,Error Handling,Y,,,,,kconfig: warn no new line at end of file,
+2018-12-11,77c1c0fa8b14,Error Handling,Y,,,,,kconfig: fix file name and line number of warn_ignored_character(),
+2018-12-11,824fa3b3b5e3,Refactoring,Y,,,,,kconfig: switch to ASSIGN_VAL state in the second lexer,
+2018-12-11,94d4e1b6021b,Refactoring,,Y,,,,kconfig: remove redundant menu_block rule,
+2018-12-11,979f2b2f7936,Refactoring,Y,Y,,,,kconfig: remove keyword lookup table entirely,
+2018-12-11,a01e5d242d93,Refactoring,,Y,,,,kconfig: remove redundant token defines,
+2018-12-11,b3d1d9d3c362,Refactoring,Y,Y,,,,kconfig: stop associating kconf_id with yylval,
+2018-12-11,be3c8075978a,Other,Y,,,,,kconfig: remove unneeded pattern matching to whitespaces,Code cleanup
+2018-12-11,c3d228713b10,Syntactic change,Y,Y,,,,kconfig: use specific tokens instead of T_ASSIGN for assignments,new tokens added v4.20-rc2-24-gc3d228713b10
+2018-12-11,caaebb3c6de3,Refactoring,,Y,,,,kconfig: refactor end token rules,
+2018-12-11,cc66bca775ee,Refactoring,Y,Y,,,,kconfig: fix ambiguous grammar in terms of new lines,
+2018-12-11,ce2164ab5831,Refactoring,Y,Y,,,Y,"kconfig: refactor scanning and parsing ""option"" properties",
+2018-12-11,f5451582c4e2,Syntactic change,Y,,,,,kconfig: stop supporting '.' and '/' in unquoted words,v4.20-rc2-28-gf5451582c4e2
+2018-12-11,fbac5977d81c,Bug Fix,Y,,,,,kconfig: fix memory leak when EOF is encountered in quotation,
+2018-12-18,0c874100108f,Other,Y,Y,Y,Y,Y,kconfig: convert to SPDX License Identifier,Licencing
+2018-12-21,558e78e3ce84,Refactoring,,Y,Y,Y,,kconfig: split some C files out of zconf.y,
+2018-12-21,a5003571e627,Other,,Y,,,,"kconfig: remove unused ""file"" field of yylval union",Code cleanup
+2018-12-21,cbafbf7f551c,Refactoring,Y,Y,,,,kconfig: split the lexer out of zconf.y,
+2019-01-24,769a1c022678,Other,Y,Y,,,,kconfig: rename zconf.y to parser.y,Renaming
+2019-01-24,981e545a698a,Other,Y,,,,,kconfig: rename zconf.l to lexer.l,Renaming
+2019-05-10,b9d1a8e9302e,Bug Fix,Y,,,,,kconfig: use snprintf for formatting pathnames,coreboot mentioned in commit message <3
+2019-06-12,cd238effefa2,Other,,,Y,,,docs: kbuild: convert docs to ReST and rename to *.rst,Documentation
+2019-07-04,baa23ec86092,Other,,,Y,,,kconfig: Fix spelling of sym_is_changable,fix typo on function name
+2019-08-26,521b29b6ff53,Refactoring,,Y,,,,kconfig: split util.c out of parser.y,
+2019-12-09,272a72103012,Bug Fix,,,,Y,,kconfig: don't crash on NULL expressions in expr_eq(),
+2019-12-17,024352ff8d69,Refactoring,,,,,Y,kconfig: move prompt handling to menu_add_prompt() from menu_add_prop(),
+2019-12-17,1be6e791383a,Syntactic change,,Y,,,,kconfig: remove 'prompt' symbol,v5.5-rc5-4-g1be6e791383a
+2019-12-17,2ffeef615b5e,Refactoring,,,,,Y,kconfig: remove 'prompt' argument from menu_add_prop(),additional changes to 1be6e791383a
+2019-12-17,3460d0bc256a,Semantic change,,,,Y,Y,kconfig: distinguish between dependencies and visibility in help text,
+2019-12-17,6397d96ba5a5,Refactoring,,Y,Y,,,kconfig: remove sym from struct property,
+2019-12-17,801b27db4638,Syntactic change,,Y,,,,kconfig: drop T_WORD from the RHS of 'prompt' symbol,v5.5-rc5-3-g801b27db4638
+2019-12-17,a9609686042b,Bug Fix,,,,,Y,kconfig: fix nesting of symbol help text,
+2019-12-17,adf7c5bd0674,Refactoring,,,Y,,Y,kconfig: squash prop_alloc() into menu_add_prop(),
+2019-12-17,de026ca9152c,Refactoring,,,,,Y,kconfig: use parent->dep as the parentdep of 'menu',
+2019-12-17,edda15f21974,Semantic change,,,,,Y,kconfig: list all definitions of a symbol in help text,
+2019-12-17,f64048a20b0c,Error Handling,,,,,Y,kconfig: remove the rootmenu check in menu_add_prop(),
+2020-03-02,3a9dd3ecb207,Semantic change & Bug Fix,,,Y,,,kconfig: make 'imply' obey the direct dependency,
+2020-03-02,def2fbffe62c,Semantic change,,,Y,,,kconfig: allow symbols implied by y to become m,
+2020-04-14,644a4b6cecc2,Refactoring,,,,,Y,kconfig: do not assign a variable in the return statement,
+2020-04-14,cfc6eea9f6af,Refactoring,,,Y,,,kconfig: do not use OR-assignment for zero-cleared structure,
+2020-04-24,09d5873e4d1f,Syntactic change & Semantic change,,Y,,,,kconfig: allow only 'config',v5.7-rc5-4-g09d5873e4d1f
+2020-06-17,f70f74d15ca8,Syntactic change,Y,,,,,kconfig: remove '---help---' support,v5.8-1-gf70f74d15ca8
+2020-07-29,d41809ff7af9,Refactoring,Y,,Y,,,kconfig: add 'static' to some file-local data,
+2020-11-23,78cb09078352,Refactoring,Y,,Y,,,kconfig: clean up header inclusion,
+2021-03-14,6dd85ff178cd,Syntactic change,Y,Y,,,Y,"kconfig: change ""modules"" from sub-option to first-level attribute",v5.12-rc3-13-g6dd85ff178cd
+2021-03-14,ab838577aaae,Syntactic change & Semantic change,Y,Y,,,Y,kconfig: remove allnoconfig_y option,v5.12-rc3-12-gab838577aaae
+2021-03-14,b75b0a819af9,Syntactic change & Semantic change,Y,Y,Y,,Y,kconfig: change defconfig_list option to environment variable,v5.12-rc3-9-gb75b0a819af9
+2021-04-10,5ee546594025,Refactoring,,Y,Y,,,kconfig: change sym_change_count to a boolean flag,
+2021-04-14,a77a05dc9cf2,Refactoring,,Y,,,Y,kconfig: split menu.c out of parser.y,
+2021-09-13,d05377e184fc,Semantic change & Bug Fix,,,,,Y,kconfig: Create links to main menu items in search,v5.15-rc2-9-gd05377e184fc
+2021-09-27,65017d8381e2,Refactoring,Y,,,,,kconfig: narrow the scope of variables in the lexer,
+2021-09-27,6988f70cf105,Refactoring,Y,,,,,kconfig: rename a variable in the lexer to a clearer name,
+2021-10-01,229d0cfae5b2,Refactoring,,,Y,,,kconfig: remove 'const' from the return type of sym_escape_string_value(),
+2021-10-01,80f7bc773763,Refactoring,,,Y,,,kconfig: move sym_escape_string_value() to confdata.c,
+2022-09-12,03764b30a4f0,Refactoring,,,,,Y,Kconfig: remove unused function 'menu_get_root_menu',
+2022-10-24,7a263a040256,Bug Fix,,,,,Y,kconfig: fix segmentation fault in menuconfig search,
+2022-11-13,1791360cb37f,Refactoring,,,,,Y,kconfig: remove unneeded variable in get_prompt_str(),Dead Code cleanup
+2023-07-16,356f0cb7efd9,Refactoring,,,,,Y,kconfig: menuconfig: remove jump_key::index,
+2023-07-16,e14f1242a8be,Refactoring,,,,,Y,kconfig: menuconfig: simplify global jump key assignment,Small Semantic change on UI
+2023-11-15,ae1eff0349f2,Bug Fix,,,Y,,,kconfig: fix memory leak from range properties,
+2023-11-22,15d3f7664d27,Error Handling,,,Y,,,kconfig: WERROR unmet symbol dependency,
+2023-11-26,4e244c10eab3,Refactoring,,,Y,,,kconfig: remove unneeded symbol_empty variable,
+2023-11-26,6262afa10ef7,Bug Fix,,,Y,,,kconfig: default to zero if int/hex symbol lacks default property,
+2023-12-03,092e39d1456b,Refactoring,,,,,Y,kconfig: squash menu_has_help() and menu_get_help(),
+2023-12-03,9ad86d747c46,Other,,,,Y,,kconfig: remove unreachable printf(),cleanup
+2024-01-07,12e3342fc7b0,Refactoring,Y,,,,,kconfig: remove unneeded buffer allocation in zconf_initscan(),
+2024-01-07,93c432e8c974,Bug Fix,Y,,,,,kconfig: fix line number in recursive inclusion detection,
+2024-01-26,bfef491df670,Bug Fix,,,Y,,,kconfig: initialize sym->curr.tri to 'no' for all symbol types again,
+2024-02-03,1a90b0cdc02a,Refactoring,,,Y,,Y,kconfig: associate struct property with file name directly,
+2024-02-03,1d7c4f10baac,Refactoring,Y,Y,,,Y,kconfig: remove zconf_curname() and zconf_lineno(),
+2024-02-03,313c6cd3c2d5,Bug Fix,,Y,,,,kconfig: fix off-by-one in zconf_error(),
+2024-02-03,40bab83a6595,Refactoring,,Y,Y,,Y,kconfig: associate struct menu with file name directly,
+2024-02-03,4dae9cf5cbb8,Refactoring,,,,,Y,kconfig: split list_head into a separate header,
+2024-02-03,4ff7ceae83be,Refactoring,Y,,,,,kconfig: replace remaining current_file->name with cur_filename,
+2024-02-03,526396b723a3,Refactoring,,Y,,,,kconfig: write Kconfig files to autoconf.cmd in order,
+2024-02-03,52907c07c49b,Refactoring,Y,,,,,kconfig: replace current_pos with separate cur_{filename,
+2024-02-03,56e634b06fd5,Refactoring,,Y,,,,kconfig: call env_write_dep() right after yyparse(),
+2024-02-03,5b058034e3aa,Refactoring,Y,,,,Y,kconfig: change file_lookup() to return the file name,
+2024-02-03,73a6afc5a541,Refactoring,,Y,,,,kconfig: remove unneeded sym_find() call in conf_parse(),
+2024-02-03,7c4aa901bd9d,Refactoring,,,Y,,,kconfig: move strhash() to util.c as a global function,
+2024-02-03,7d5f52a4334c,Semantic change & Error Handling,,,,,Y,kconfig: do not imply the type of choice value,"Removes automatic type guessing for choice values, showin missing type definitions as errors in configuration v6.8-rc5-39-g7d5f52a4334c"
+2024-02-03,8facc5f31954,Refactoring,Y,,,,Y,kconfig: move the file and lineno in struct file to struct buffer,
+2024-02-03,af8bbce92044,Bug Fix,Y,,,,,kconfig: fix infinite loop when expanding a macro at the end of file,
+2024-02-03,d3d16228a520,Refactoring,Y,Y,,,,kconfig: split preprocessor prototypes into preprocess.h,
+2024-02-03,d3e4a68fe20f,Refactoring,Y,Y,,,,kconfig: do not delay the cur_filename update,
+2024-02-03,fe273c6fc318,Refactoring,Y,,,,,kconfig: replace file->name with name in zconf_nextfile(),
+2024-02-11,91b69454f93d,Refactoring,,Y,Y,,,kconfig: use generic macros to implement symbol hashtable,
+2024-02-11,cc25cfc563ad,Error Handling,,Y,,,,kconfig: print recursive dependency errors in the parsed order,
+2024-03-03,bedf92362317,Refactoring,,,,,Y,kconfig: use linked list in get_symbol_str() to iterate over menus,
+2024-03-03,c83f020973bc,Syntactic change & Semantic change,,Y,,,,kconfig: remove named choice support,"Removes 'named choice' from the Kconfig grammar, simplifying syntax and removing unused semantic behavior. v6.8-rc5-55-gc83f020973bc"
+2024-03-03,e0492219a6d7,Refactoring,,,Y,,Y,kconfig: link menus to a symbol,
+2024-03-10,4957515b9c3a,Semantic change & Error Handling,,Y,,,Y,kconfig: check prompt for choice while parsing,"choice must have a prompt' check from finalization to parsing, providing earlier and clearer syntax error handling. v6.8-rc5-62-g4957515b9c3a"
+2024-03-23,7e3465f63a0a,Semantic change & Bug Fix,,Y,,,Y,kconfig: do not reparent the menu inside a choice block,"Fixes invalid reparenting of menu items inside a choice, members stays on the same level and selectable v6.9-rc1-3-g7e3465f63a0a"
+2024-04-21,03c4ecaa5c76,Refactoring,,Y,,,,kconfig: use menu_for_each_entry() to traverse menu tree,
+2024-04-21,7284b4fbc847,Other,,,,,Y,kconfig: add menu_next() function and menu_for_each(_sub)_entry macros,API improvement
+2024-04-23,1da251c60def,Other,,Y,Y,,,kconfig: remove SYMBOL_CHOICE flag,Removes the redundant SYMBOL_CHOICE flag code cleanup
+2024-04-23,6a1215888e23,Syntactic change & Semantic change,Y,Y,,,Y,kconfig: remove 'optional' property support,Removes the 'optional' property for choices from the Kconfig language v6.9-rc5-15-g6a1215888e23
+2024-04-27,a7c79cf3e4eb,Other,,Y,Y,,,kconfig: remove SYMBOL_NO_WRITE flag,Code cleanup
+2024-05-05,700e7a8d05ea,Error Handling,,Y,,,Y,kconfig: turn missing prompt for choice members into error,error in menu finalize is now parse time error
+2024-05-05,7bcf2e03b502,Refactoring,,,Y,,,kconfig: add sym_get_choice_menu() helper,
+2024-05-05,7d2806746d46,Refactoring,,,Y,,,kconfig: use linked list in sym_set_changed(),
+2024-05-05,8a22f867e330,Semantic change & Error Handling,,Y,,,Y,kconfig: turn defaults and additional prompt for choice members into error,usage of unsupported default/propmt is now error not warning v6.9-rc5-32-g8a22f867e330
+2024-05-05,dfff05cc1005,Refactoring,,,Y,,,kconfig: use menu_list_for_each_sym() in sym_check_choice_deps(),
+2024-05-14,6ffe4fdf8901,Refactoring,,,,,Y,kconfig: use sym_get_choice_menu() in sym_check_prop(),
+2024-05-19,31894d35b51b,Refactoring,,,,Y,,kconfig: remove redundant check in expr_join_or(),
+2024-05-19,aabdc960a283,Semantic change & Bug Fix,,,Y,,,kconfig: fix comparison to constant symbols,fixes faulty comparison logic v6.10-rc1-2-gaabdc960a283
+2024-06-02,fde192511bdb,Syntactic change & Semantic change,,Y,Y,,Y,kconfig: remove tristate choice support,"important, choices are not accepting tristate anymore v6.10-rc7-6-gfde192511bdb"
+2024-06-04,77a92660d8fe,Bug Fix,,,,Y,Y,kconfig: remove wrong expr_trans_bool(),
+2024-06-12,9b114520837a,Refactoring,,Y,,,,kconfig: remember the current choice while parsing the choice block,
+2024-06-12,bd988e7cb84a,Refactoring,,,Y,,,kconfig: introduce choice_set_value() helper,
+2024-06-12,cd90952101c8,Refactoring,,,,Y,,kconfig: remove unneeded code in expr_compare_type(),
+2024-06-12,dfe8e56fc604,Other,,,,Y,,kconfig: add fallthrough comments to expr_compare_type(),Commenting
+2024-06-18,609fc4099b34,Refactoring,,,Y,,,kconfig: use sym_get_choice_menu() in sym_check_choice_deps(),
+2024-06-18,6e6d0e917a97,Refactoring,,,Y,,,kconfig: use menu_list_for_each_sym() in sym_choice_default(),
+2024-06-18,7c9bb07a6e94,Refactoring,,,Y,Y,,kconfig: remove E_LIST expression type,
+2024-06-18,b139b43e9d47,Refactoring,,,Y,,,kconfig: use sym_get_choice_menu() in sym_check_deps(),
+2024-06-18,bd0db4b6ad03,Refactoring,,,Y,,,kconfig: remove sym_get_choice_value(),
+2024-06-18,ca4c74ba306e,Refactoring,,Y,Y,,Y,kconfig: remove P_CHOICE property,
+2024-06-18,d8f8bbcf4b94,Refactoring,,,Y,,,kconfig: use sym_get_choice_menu() in sym_check_print_recursive(),
+2024-06-18,e8fcd915e3c0,Refactoring,,,Y,,,kconfig: change sym_choice_default() to take the choice menu,
+2024-06-18,f79dc03fe68c,Refactoring,,Y,Y,,Y,kconfig: refactor choice value calculation,
+2024-06-27,1a7d0ea83e62,Error Handling,,,Y,,,kconfig: improve error message for dependency between choice members,
+2024-06-27,d533828ef3ca,Bug Fix,,,Y,,Y,kconfig: fix conditional prompt behavior for choice,
+2024-06-27,d5afb4824f14,Refactoring & Error Handling,,,Y,,,kconfig: refactor error messages in sym_check_print_recursive(),
+2024-06-27,d67624d814ae,Error Handling,,,Y,,,kconfig: improve error message for recursive dependency in choice,
+2024-07-08,3c2f84cedaeb,Refactoring,,,,Y,,kconfig: remove 'e1' and 'e2' macros from expression deduplication,
+2024-07-08,6425e3b247b1,Refactoring,,Y,Y,Y,Y,kconfig: add const qualifiers to several function arguments,
+2024-07-08,8bfd6f0923cd,Refactoring,,,,Y,,kconfig: call expr_eliminate_yn() at least once in expr_eliminate_dups(),
+2024-07-08,94a4b0a4cb43,Refactoring,,,Y,,Y,kconfig: remove SYMBOL_CHOICEVAL flag,
+2024-07-17,9d0d26604657,Bug Fix,,,Y,,,kconfig: recursive checks drop file/lineno,
+2024-07-20,fbaf242c956a,Refactoring,,,,,Y,kbuild: move some helper headers from scripts/kconfig/ to scripts/include/,
+2024-08-12,5e6cc7e3f296,Refactoring,,,,,Y,kconfig: stop adding P_SYMBOL property to symbols,
+2024-08-12,96490176f1e1,Refactoring,,Y,Y,,,kconfig: remove P_SYMBOL property,
+2024-08-12,a9d83d74783b,Refactoring,Y,Y,Y,Y,Y,kbuild: split x*alloc() functions in kconfig to scripts/include/xalloc.h,
+2024-08-12,dc73a57aeaaa,Refactoring,,Y,,,,kconfig: remove dummy assignments to cur_{filename,
+2024-09-08,440f67ccdcd3,Refactoring,,,,Y,,kconfig: refactor expr_eliminate_dups(),
+2024-09-08,4fa146eaecae,Other,,,,Y,,kconfig: add comments to expression transformations,
+2024-09-08,95573cac25c6,Other,,,Y,Y,,kconfig: cache expression values,performance optimization
+2024-09-08,a16219bdd347,Refactoring,,,Y,,,scripts: move hash function from scripts/kconfig/ to scripts/include/,
+2024-09-08,d607e0e7a8d2,Refactoring,,,,Y,,kconfig: change some expr_*() functions to bool,
+2024-09-08,f93d6bfbd2f7,Other,,,,Y,Y,kconfig: use hash table to reuse expressions,performance optimization
+2024-09-25,4d46b5b623e0,Bug Fix,,Y,,,,kconfig: fix infinite loop in sym_calc_choice(),
+2024-09-30,6971f7192c12,Refactoring,,Y,,,,kconfig: remove zconfprint(),
+2024-09-30,bea2c5ef789a,Syntactic change,,Y,,,,"kconfig: remove support for ""bool"" prompt for choice entries",
+2024-10-01,8d095547debd,Bug Fix,,,,Y,,kconfig: clear expr::val_is_valid when allocated,
+2024-10-24,bce590f10207,Refactoring,,,Y,,,kconfig: add sym_get_prompt_menu() helper function,
+2024-10-27,d01661e1f422,Bug Fix,,,,,Y,kconfig: show sub-menu entries even if the prompt is hidden,
+2025-01-20,a409fc1463d6,Bug Fix,,,Y,,,kconfig: fix memory leak in sym_warn_unmet_dep(),
+2025-02-08,ab5bc764bdc2,Refactoring,,,Y,,,kconfig: remove unnecessary cast in sym_get_string(),
+2025-05-28,0f57c75973be,Refactoring,,Y,,,Y,kconfig: introduce menu type enum,
+Pre-git,V2.5.45,Other,Y,Y,Y,Y,Y,First Konfig implementation,
+Pre-git,V2.5.47,Semantic change,,Y,,,,modification of how string literals are parsed.(processing unescaped newlines).,
+Pre-git,V2.5.52,Syntactic change & Semantic change,Y,Y,Y,,,There are new rules in lexer which altering how input tokenized. New grammar rules in parser. In symbol.c changes potentially influencing Kconfig Uis.,
+Pre-git,V2.5.65,Syntactic change & Semantic change,Y,Y,Y,,Y,"new keyword menuconfig and token T_MENUCONFIG, new grammar rules to parse menuconfig statements.",
+Pre-git,V2.5.71,Syntactic change & Semantic change,Y,Y,Y,Y,Y,"Major change. new keywords (def_tristate, def_bool/def_boolean, select/enable, range). Symbol value calculation is rewritten. Zconf.y addition of dependency cycle check",
+Pre-git,v2.6.10,Semantic change,Y,,Y,Y,,In symbol.c changes alters how a symbols visibility and final value are determined. In expr new optimization rule added.,
+Pre-git,v2.6.11,Semantic change,Y,,Y,Y,,"New functionality added in symbol.c, searching for Kconfig symbols. Probably usefull for Kconfig Uis",
