@@ -1,8 +1,8 @@
 # Experiences with KConfig
 
-These are voices of several expert developers on KConfig.
+These are voices of several system-software project maintainers on KConfig (searched with public web search and via inspecting the project website).
 
-## Linux Kernel Practitioners
+## Linux: Kernel Practitioners
 
 This is an excerpt from our [TOSEM paper](https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2025/2025-TOSEM-Kuiter.pdf) on the configurability of Linux.
 Most of these experiences also relate to KConfig to some degree.
@@ -20,7 +20,7 @@ Others add that "the config system is a nightmare." https://lwn.net/Articles/733
 Linux Weekly News summarizes the situation as follows: "The kernel’s configuration system can be challenging to deal with; Linus Torvalds recently called it ‘one of the worst parts of the whole project.’ "But it is also a part that nobody is really working on; it receives a bit of maintenance, but there does not appear to be any significant effort out there to address its shortcomings. Two-hundred companies support work on each kernel development cycle, but none of them see the configuration system as one of the problems that they need to solve. Until that changes, we are likely to continue to see users struggling with it." - Jonathan Corbet (2017), co-founder and executive editor of Linux Weekly News (https://lwn.net/Articles/733405/)
 ```
 
-## Rob Landley (toybox)
+## toybox: Rob Landley
 
 https://github.com/landley/toybox/tree/master/kconfig
 
@@ -82,3 +82,44 @@ I've collected some of the changes uClibc and busybox made, as well as some
 general cleanups I've done for the toybox version, and now I'm trying to feed
 them back upstream. This patch is primarily cosmetic, there are more to come.
 ```
+
+## Buildroot: Peter Korsgaard
+
+https://youtu.be/0G_yJ50RA3I?t=287
+
+```
+The nice thing about [KConfig and Make] is that both of those technologies are technologies that you'll encounter anyway when you do embedded Linux systems.
+So it's hard to get around not ever configuring the Linux kernel, so menuconfig is something you need to figure out to use anyway, and building any software without using make is also pretty difficult.
+And of course none of these technologies are specific to Buildroot, so you had them already.
+```
+## Freetz-NG: Alexander Kriegisch
+
+https://buildroot.uclibc.narkive.com/h0ophEJy/kconfig-how-to-implement-hierarchical-un-select-trees
+
+```
+I read the very concise, but nonetheless puzzling kconfig-language.txt
+to understand how to optimise the awfully mis-structured menuconfig of a
+project I am participating in. I experimented with an own set of minimal
+Config.in files, but still do not understand the ins and outs of this tool.
+
+Does anybody know of a tutorial (incl. samples!) for kconfig? What I
+want to achieve is something like this:
+
+[...]
+
+I think I got this one working now. What disturbed my efforts were
+double definitions of config variables in other Config.in includes at
+unexpected places. (Did I mention the whole thing was a mess?) Sorry for
+asking at all.
+
+```
+
+## BusyBox: Denys Vlasenko
+## axTLS: Cameron Rich
+## uClibc: Erik Andersen
+## uClibc-ng: Waldemar Brodkorb
+## EmbToolkit: Abdoulaye Walsimou Gaye
+## L4Re: Alexander Warg, Adam Lackorzynski, Michael Hohmuth (Kernkonzept GmbH)
+## Freetz-NG: Oliver Metz, fda77/fda89/cuma
+
+(no public statements on KConfig found)
