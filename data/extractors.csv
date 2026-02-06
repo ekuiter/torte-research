@@ -1,7 +1,7 @@
-Tool,Authors,License,Integrations
-"[KConfigReader](https://github.com/ckaestne/kconfigreader) ([Paper](https://arxiv.org/abs/1706.09357))",Christian Kästner,GPL (v2),torte
-[KClause](https://github.com/jeho-oh/Kclause_Smarch),"Paul Gazzillo, Jeho Oh",GPL (v3),torte
-[ConfigFix](https://github.com/isselab/configfix),"Patrick Franz, Jude Gyimah, Ole Schürks (and others)",LGPL (v3),torte (experimental)
-[KConfig2logic](https://github.com/rheradio/Kconfig2logic),"Rubén Heradio, David Fernández Amorós",?,
-Undertaker,,,defunct
-LVAT,,,defunct
+Tool,Authors,License,Integrations,References
+"[KConfigReader](https://github.com/ckaestne/kconfigreader)",Christian Kästner,GPL (v2),[torte](https://github.com/ekuiter/torte/tree/main/src/docker/kconfigreader),"[K:TR17](https://arxiv.org/abs/1706.09357), [EKS:GPCE15](https://doi.org/10.1145/2814204.2814222)"
+"[KClause](https://github.com/paulgazz/kmax/blob/master/kmax/kclause)","Paul Gazzillo, Jeho Oh",GPL (v3),[torte](https://github.com/ekuiter/torte/tree/main/src/docker/kclause),"[OYBG:ESECFSE21](https://doi.org/10.1145/3468264.3468578), [OGB+:TR19](https://apps.cs.utexas.edu/apps/sites/default/files/tech_reports/2018Kconfig_0.pdf)"
+"[ConfigFix](https://github.com/isselab/configfix)","Patrick Franz, Jude Gyimah, Ole Schürks (and others)",LGPL (v3),[torte](https://github.com/ekuiter/torte-ConfigFix),"[FBF+:ICSE-SEIP21](https://doi.org/10.1109/ICSE-SEIP52600.2021.00018), [GSS+:VaMoS25](https://doi.org/10.1145/3715340.3715445), [Alfish25](http://wwwiti.cs.uni-magdeburg.de/iti_db/publikationen/ps/auto/Alfish25.pdf)"
+"[KConfig2logic](https://github.com/rheradio/Kconfig2logic)","Rubén Heradio, David Fernández Amorós",todo,,"[FAH+:SPLC19](https://doi.org/10.1145/3336294.3336313)"
+"[Undertaker]() todo",todo,todo,todo,"[TLSS:EuroSys11](https://doi.org/10.1145/1966445.1966451), [EKS:GPCE15](https://doi.org/10.1145/2814204.2814222)"
+"[LVAT]() todo",todo,todo,todo,"[BSL+:TSE13](https://doi.org/10.1109/TSE.2013.34), [EKS:GPCE15](https://doi.org/10.1145/2814204.2814222)"
