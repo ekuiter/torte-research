@@ -642,7 +642,15 @@ function initializeTables(tables) {
 
         // Insert heading before the first paragraph
         const heading = document.createElement('h3');
-        heading.textContent = config.title;
+        const headingText = document.createElement('span');
+        headingText.textContent = config.title;
+        const permalink = document.createElement('a');
+        permalink.href = `#${config.id}`;
+        permalink.className = 'section-anchor';
+        permalink.setAttribute('aria-label', `Permalink to ${config.title}`);
+        permalink.textContent = '#';
+        heading.appendChild(headingText);
+        heading.appendChild(permalink);
         section.insertBefore(heading, section.firstChild);
 
         // Create and append table elements

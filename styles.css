@@ -98,6 +98,20 @@ a:hover {
   text-decoration: underline;
 }
 
+.section-anchor {
+  margin-left: 0.5rem;
+  font-size: 0.9em;
+  color: var(--text-muted);
+  text-decoration: none;
+  opacity: 0.6;
+}
+
+.section-anchor:hover {
+  color: var(--accent-color);
+  opacity: 1;
+  text-decoration: none;
+}
+
 /* Table Code */
 table.dataTable code {
   background-color: var(--bg-tertiary);

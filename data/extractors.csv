@@ -1,2 +1,7 @@
-Tool,Authors,License,Notes
-KConfigReader,,,
+Tool,Authors,License,Integrations
+"[KConfigReader](https://github.com/ckaestne/kconfigreader) ([Paper](https://arxiv.org/abs/1706.09357))",Christian Kästner,GPL (v2),torte
+[KClause](https://github.com/jeho-oh/Kclause_Smarch),"Paul Gazzillo, Jeho Oh",GPL (v3),torte
+[ConfigFix](https://github.com/isselab/configfix),"Patrick Franz, Jude Gyimah, Ole Schürks (and others)",LGPL (v3),torte (experimental)
+[KConfig2logic](https://github.com/rheradio/Kconfig2logic),"Rubén Heradio, David Fernández Amorós",?,
+Undertaker,,,defunct
+LVAT,,,defunct
