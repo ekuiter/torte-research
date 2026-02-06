@@ -229,6 +229,9 @@ class FilterTable {
 
         // Show table now that filters are ready
         $(this.config.tableSelector).closest('.dataTables_wrapper').addClass('table-ready');
+
+        // Hide loading indicator
+        $(this.config.tableSelector + 'Loading').addClass('hidden');
     }
 
     createMultiSelect(container, options, columnTitle) {

@@ -541,3 +541,15 @@ body > .multi-select-options.show {
   color: var(--accent-color);
   transform: scale(1.1);
 }
+
+/* Loading Indicator */
+.table-loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-muted);
+}
+
+.table-ready + .table-loading,
+.table-loading.hidden {
+  display: none;
+}

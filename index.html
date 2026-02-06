@@ -33,19 +33,21 @@
       </div>
     </div>
 
-    <p>This interactive website allows exploring research data associated with <a href="https://github.com/ekuiter/torte" target="_blank">torte</a>.</p>
+    <p>
+      This interactive website allows exploring various research datasets associated with <a href="https://github.com/ekuiter/torte" target="_blank">torte</a>.
+      We compiled these datasets using web search, domain knowledge, and backward snowballing in relevant publications.
+      We do not claim to be complete - feel free to submit a <a href="https://github.com/ekuiter/torte-research" target="_blank">pull request</a> with potential additions or corrections.
+    </p>
 
     <h3>CNF Transformation Tools</h3>
     <p>
-      This is a table of tools that implement a CNF transformation for (feature-model or general Boolean) formulas.
-      This table is intended to facilitate choosing the right tool for transforming into CNF.
+      Here, we survey tools that implement a CNF transformation for (feature-model or general Boolean) formulas.
+      The following table is intended to facilitate choosing the right tool for transforming into CNF.
       Most importantly, these tools subtly differ in the preserved semantics of the transformed formulas, and may be of varying time and space complexity.
       Also, the supported input/outputs formats and tool integrations sometimes differ considerably.
-    </p>
-    <p>
-      This table does not include preprocessing tools (which can be applied after CNF has been established; e.g., <a href="https://github.com/meelgroup/arjun" target="_blank">Arjun</a>, <a href="https://fmv.jku.at/scranfilize/" target="_blank">Scranfilize</a>, and others).
-      Also, this table does not claim to be complete - feel free to submit a <a href="https://github.com/ekuiter/torte-research" target="_blank">pull request</a> with new additions.
-      It was created based on web search, domain knowledge, and backward snowballing in relevant publications.
+      We include tools that have been applied in the literature or that could potentially be applied.
+      We exclude pure preprocessors (e.g., <a href="https://github.com/meelgroup/arjun" target="_blank">Arjun</a> or <a href="https://fmv.jku.at/scranfilize/" target="_blank">Scranfilize</a>), which can be applied after CNF has been established.
+      We also exclude pureknowledge compilers (e.g., <a href="https://github.com/SoftVarE-Group/d4v2" target="_blank">d4</a>)he  for the same reason.
     </p>
     <div class="active-filters">
       <strong>Active Filters:</strong>
@@ -53,6 +55,9 @@
         <span class="text-muted">No filters applied</span>
       </div>
       <button id="tools-clear-filters" class="clear-all-btn" style="display: none;">Clear All</button>
+    </div>
+    <div class="table-loading" id="toolsTableLoading">
+      <i class="fa-solid fa-spinner fa-spin"></i> Loading...
     </div>
     <table id="toolsTable" class="table table-striped table-bordered" style="width:100%">
       <thead></thead>
