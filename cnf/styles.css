@@ -168,14 +168,17 @@ div.dataTables_filter {
   text-align: right;
 }
 
-div.dataTables_info {
+div.dataTables_wrapper div.dataTables_info {
   float: left;
-  padding-top: 0.85em;
+  padding-top: 0.4em;
 }
 
 div.dataTables_paginate {
   float: right;
-  margin-top: 1.5rem;
+}
+
+.dataTables_wrapper .row:last-child {
+  margin-top: 0.5rem;
 }
 
 /* DataTable - Form Elements */
