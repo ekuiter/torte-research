@@ -6,8 +6,6 @@
  *
  * @author Lennart Pape
  * @author Elias Kuiter
- * @date 2026-02-06
- * @version 2.0.0
  * @requires jQuery, DataTables, PapaParse, Bootstrap
  */
 
@@ -228,6 +226,9 @@ class FilterTable {
 
             this.createMultiSelect(container, allValues, columnTitle);
         });
+
+        // Show table now that filters are ready
+        $(this.config.tableSelector).closest('.dataTables_wrapper').addClass('table-ready');
     }
 
     createMultiSelect(container, options, columnTitle) {

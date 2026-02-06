@@ -51,6 +51,15 @@ body {
   overflow: visible !important;
 }
 
+/* Hide table until filters are ready */
+.dataTables_wrapper {
+  visibility: hidden;
+}
+
+.dataTables_wrapper.table-ready {
+  visibility: visible;
+}
+
 #csvTable_wrapper {
   overflow: visible !important;
   width: 100%;
