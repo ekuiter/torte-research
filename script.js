@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
  * @param {number} [config.pageLength=5] - Default number of entries to show
  * @param {string[]} [config.skipColumns=[]] - Column names to skip for filtering
  * @param {string[]} [config.exactMatchColumns=[]] - Column names that should use exact match
- * @param {string[]} [config.commaSplitColumns=[]] - Column names where cell values should be split by comma
+ * @param {string[]} [config.commaSplitColumns] - Column names where cell values should be split by comma (defaults to all non-skipped columns)
  * @param {string[]} [config.numericSortColumns=[]] - Column names to sort numerically descending
  * @param {string} [config.splitDelimiter=','] - Delimiter for splitting multi-value cells
  * @param {boolean} [config.scrollToTopOnDraw=true] - Whether to scroll to top on table redraw
@@ -57,7 +57,7 @@ class FilterTable {
             pageLength: 5,
             skipColumns: [],
             exactMatchColumns: [],
-            commaSplitColumns: [],
+            commaSplitColumns: null,
             numericSortColumns: [],
             splitDelimiter: ',',
             scrollToTopOnDraw: false,
@@ -111,6 +111,12 @@ class FilterTable {
                 render: renderMarkdown
             };
         });
+
+        if (!Array.isArray(this.config.commaSplitColumns) || this.config.commaSplitColumns.length === 0) {
+            this.config.commaSplitColumns = columns
+                .map(column => column.title)
+                .filter(title => !this.config.skipColumns.includes(title));
+        }
 
         // Build table header
         const thead = document.querySelector(`${this.config.tableSelector} thead`);
