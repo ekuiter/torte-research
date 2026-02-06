@@ -70,16 +70,17 @@
     // - exactMatchColumns: columns where filter matches the entire cell value
     // - commaSplitColumns: columns where cell values are split by comma for individual matching
     // - numericSortColumns: columns sorted numerically (descending) in the filter dropdown
+    // Markdown links [text](url) are automatically rendered as clickable links in all columns
     const toolsTable = new FilterTable({
       csvFile: 'tools.csv',
       tableSelector: '#toolsTable',
       filtersContainerSelector: '#tools-filters-container',
       clearButtonSelector: '#tools-clear-filters',
       pageLength: 5,
-      skipColumns: ['Title', 'Key'],
-      exactMatchColumns: ['Year'],
+      skipColumns: [],
+      exactMatchColumns: ['License'],
       commaSplitColumns: [],
-      numericSortColumns: ['Year']
+      numericSortColumns: []
     });
 
     const dummyTable = new FilterTable({

@@ -69,10 +69,31 @@ table.dataTable {
 table.dataTable th,
 table.dataTable td {
   padding: 0.5rem 0.75rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .dataTables_scrollBody table {
   width: 100% !important;
+}
+
+/* Table Links */
+table.dataTable a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+
+table.dataTable a:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
+/* Table Code */
+table.dataTable code {
+  background-color: var(--bg-tertiary);
+  padding: 0.1rem 0.3rem;
+  border-radius: 0.25rem;
+  font-size: 0.8em;
 }
 
 /* DataTable - Header */

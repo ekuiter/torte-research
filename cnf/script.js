@@ -89,19 +89,28 @@ class FilterTable {
         $(`body > .multi-select-options[data-instance="${this.instanceId}"]`).remove();
 
         const data = results.data;
+        const renderMarkdown = (cellData) => {
+            if (!cellData) return '';
+            let result = cellData.toString();
+            // Render markdown links [text](url)
+            result = result.replace(
+                /\[([^\]]+)\]\(([^)]+)\)/g,
+                (_match, text, url) => {
+                    const safeUrl = url.replace(/"/g, '&quot;');
+                    const safeText = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeText}</a>`;
+                }
+            );
+            // Render backticks as code
+            result = result.replace(/`([^`]+)`/g, '<code>$1</code>');
+            return result;
+        };
+
         const columns = Object.keys(data[0]).map(key => {
-            if (this.config.exactMatchColumns.includes(key) || this.config.numericSortColumns.includes(key)) {
-                return {
-                    title: key,
-                    data: key,
-                    render: {
-                        _: data => data.toString(),
-                    }
-                };
-            }
             return {
                 title: key,
-                data: key
+                data: key,
+                render: renderMarkdown
             };
         });
 
