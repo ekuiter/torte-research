@@ -61,22 +61,12 @@ body {
 }
 
 /* DataTable - Table Structure */
-#csvTable.dataTable {
+table.dataTable {
   table-layout: fixed;
 }
 
-.dataTables_scrollHead table,
 .dataTables_scrollBody table {
   width: 100% !important;
-  table-layout: fixed;
-}
-
-.dataTables_scrollHead table {
-  margin-bottom: 0 !important;
-}
-
-.dataTables_scrollBody {
-  overflow-y: auto !important;
 }
 
 /* DataTable - Header */
@@ -133,16 +123,12 @@ table.dataTable thead tr:nth-child(2) th .multi-select-dropdown {
   overflow: hidden !important;
   width: 100% !important;
   transition: margin-left 0s !important;
-  box-sizing: border-box !important;
-}
-
-.dataTables_scrollHeadInner table {
-  width: 100% !important;
+  box-sizing: content-box !important;
 }
 
 .dataTables_scrollBody {
   overflow-x: auto !important;
-  box-sizing: border-box !important;
+  box-sizing: content-box !important;
   position: relative;
   z-index: 1 !important;
 }
