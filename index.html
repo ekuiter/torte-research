@@ -51,14 +51,14 @@
     </section> -->
 
     <!-- <section id="implementations">
-      <p>Here, we survey implementations of the Kconfig language used in various projects.</p>
+      <p>Here, we survey implementations of the KConfig language used in various projects.</p>
     </section> -->
 
     <section id="extractors">
       <p>
-        Here, we survey tools that extract feature-model formulas from Kconfig-based software systems (e.g., the Linux kernel).
+        Here, we survey tools that extract feature-model formulas from KConfig-based software systems (e.g., the Linux kernel).
         The following table is intended to facilitate choosing the right tool for extracting such formulas.
-        The tools differ considerably in their strategies to parse Kconfig and encode its semantics.
+        The tools differ considerably in their strategies to parse KConfig and encode its semantics.
       </p>
     </section>
 
@@ -87,6 +87,8 @@
           The transformed formula is always <a href="https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf" target="_blank">equi-assignable</a> to the original formula (NOT necessarily equi-countable).
           A Plaisted-Greenbaum transformation can be polarity-based.
           If not polarity-based, the formula must first be transformed into negation normal form, aka NNF.</li>
+        <li>There are various advanced CNF transformation algorithms (mentioned <a href="https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf" target="_blank">here</a>).
+          However, we are not aware of any practical implementation of such an advanced algorithm.</li>
       </ul>
     </section>
 
@@ -118,13 +120,13 @@
       },
       {
         id: 'implementations',
-        title: 'Kconfig Implementations',
+        title: 'KConfig Implementations',
         csvFile: 'data/implementations.csv',
         skipColumns: ['Implementation', 'Notes']
       },
       {
         id: 'extractors',
-        title: 'Kconfig Extraction Tools',
+        title: 'KConfig Extraction Tools',
         csvFile: 'data/extractors.csv',
         skipColumns: ['Tool', 'References']
       },
