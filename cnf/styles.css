@@ -63,6 +63,12 @@ body {
 /* DataTable - Table Structure */
 table.dataTable {
   table-layout: fixed;
+  font-size: 0.85rem;
+}
+
+table.dataTable th,
+table.dataTable td {
+  padding: 0.5rem 0.75rem;
 }
 
 .dataTables_scrollBody table {

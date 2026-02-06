@@ -66,6 +66,10 @@
   <script src="script.js"></script>
   <script>
     // Initialize tables with different configurations
+    // - skipColumns: columns with no filter dropdown
+    // - exactMatchColumns: columns where filter matches the entire cell value
+    // - commaSplitColumns: columns where cell values are split by comma for individual matching
+    // - numericSortColumns: columns sorted numerically (descending) in the filter dropdown
     const toolsTable = new FilterTable({
       csvFile: 'tools.csv',
       tableSelector: '#toolsTable',
@@ -74,6 +78,7 @@
       pageLength: 5,
       skipColumns: ['Title', 'Key'],
       exactMatchColumns: ['Year'],
+      commaSplitColumns: [],
       numericSortColumns: ['Year']
     });
 
@@ -85,6 +90,7 @@
       pageLength: 5,
       skipColumns: ['Title', 'Key'],
       exactMatchColumns: ['Year'],
+      commaSplitColumns: [],
       numericSortColumns: ['Year']
     });
   </script>
