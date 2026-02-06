@@ -2,4 +2,6 @@
 
 ### Research Data
 
-This repository contains various research data accompanying [torte](https://github.com/ekuiter/torte).
+This repository contains research data associated with [torte](https://github.com/ekuiter/torte).
+
+The data can be explored on an [interactive website](https://elias-kuiter.de/torte-research/).

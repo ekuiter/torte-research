@@ -86,13 +86,13 @@ table.dataTable td {
   width: 100% !important;
 }
 
-/* Table Links */
-table.dataTable a {
+/* Links */
+a {
   color: var(--accent-color);
   text-decoration: none;
 }
 
-table.dataTable a:hover {
+a:hover {
   color: var(--accent-hover);
   text-decoration: underline;
 }
@@ -529,4 +529,15 @@ body > .multi-select-options.show {
 
 [data-theme="dark"] .text-muted {
   color: var(--text-muted) !important;
+}
+
+/* GitHub Icon */
+.github-link {
+  color: var(--text-secondary);
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.github-link:hover {
+  color: var(--accent-color);
+  transform: scale(1.1);
 }
