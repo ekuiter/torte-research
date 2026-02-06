@@ -129,12 +129,13 @@ class FilterTable {
             scrollCollapse: true,
             columnDefs: [{ width: '125px', targets: '_all'}],
             pageLength: this.config.pageLength,
-            lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"]],
+            lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "all"]],
             initComplete: () => {
                 setTimeout(() => this.initFilters(columns), 100);
             },
             language: {
-                search: "Search:",
+                search: "",
+                searchPlaceholder: "Search ...",
                 lengthMenu: "Show _MENU_ entries",
                 info: "Showing _START_ to _END_ of _TOTAL_ entries",
                 paginate: { previous: "Previous", next: "Next" },
@@ -501,10 +502,31 @@ class FilterTable {
             }
         }
 
+        const repositionDropdowns = () => {
+            $(`body > .multi-select-options.show[data-instance="${this.instanceId}"]`).each(function() {
+                const dropdownId = $(this).attr('data-dropdown-id');
+                const dropdown = $(`.multi-select-dropdown[data-dropdown-id="${dropdownId}"]`);
+                if (dropdown.length) {
+                    const rect = dropdown[0].getBoundingClientRect();
+                    $(this).css({
+                        'top': (rect.bottom + 2) + 'px',
+                        'left': rect.left + 'px'
+                    });
+                }
+            });
+        };
+
         if (hasFilters) {
+            container.closest('.active-filters').slideDown({
+                duration: 200,
+                step: repositionDropdowns
+            });
             clearBtn.show();
         } else {
-            container.html('<span class="text-muted">No filters applied</span>');
+            container.closest('.active-filters').slideUp({
+                duration: 200,
+                step: repositionDropdowns
+            });
             clearBtn.hide();
         }
     }
@@ -602,3 +624,63 @@ $(window).on('resize', function () {
         }
     });
 });
+
+/**
+ * Initialize multiple tables from configuration
+ *
+ * @param {Object[]} tables - Array of table configurations
+ * @param {string} tables[].id - Section ID in HTML
+ * @param {string} tables[].title - Table heading text
+ * @param {string} tables[].csvFile - Path to CSV file
+ * @param {string[]} [tables[].skipColumns] - Columns to skip for filtering
+ * @param {string[]} [tables[].commaSplitColumns] - Columns with comma-separated values
+ */
+function initializeTables(tables) {
+    tables.forEach(config => {
+        const section = document.getElementById(config.id);
+        if (!section) return;
+
+        // Insert heading before the first paragraph
+        const heading = document.createElement('h3');
+        heading.textContent = config.title;
+        section.insertBefore(heading, section.firstChild);
+
+        // Create and append table elements
+        const filtersHtml = `
+            <div class="active-filters">
+                <strong>Active Filters:</strong>
+                <div id="${config.id}-filters-container" class="d-inline">
+                    <span class="text-muted">No filters applied</span>
+                </div>
+                <button id="${config.id}-clear-filters" class="clear-all-btn" style="display: none;">Clear All</button>
+            </div>
+            <div class="table-loading" id="${config.id}TableLoading">
+                <i class="fa-solid fa-spinner fa-spin"></i> Loading ...
+            </div>
+            <table id="${config.id}Table" class="table table-striped table-bordered" style="width:100%">
+                <thead></thead>
+            </table>
+        `;
+
+        // Find first h5 or end of section to insert before notes
+        const notes = section.querySelector('h5');
+        if (notes) {
+            notes.insertAdjacentHTML('beforebegin', filtersHtml);
+        } else {
+            section.insertAdjacentHTML('beforeend', filtersHtml);
+        }
+
+        // Initialize FilterTable
+        new FilterTable({
+            csvFile: config.csvFile,
+            tableSelector: `#${config.id}Table`,
+            filtersContainerSelector: `#${config.id}-filters-container`,
+            clearButtonSelector: `#${config.id}-clear-filters`,
+            pageLength: -1,
+            skipColumns: config.skipColumns || [],
+            exactMatchColumns: [],
+            commaSplitColumns: config.commaSplitColumns || [],
+            numericSortColumns: []
+        });
+    });
+}

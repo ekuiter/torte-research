@@ -39,46 +39,49 @@
       We do not claim to be complete - feel free to submit a <a href="https://github.com/ekuiter/torte-research" target="_blank">pull request</a> with potential additions or corrections.
     </p>
 
-    <h3>CNF Transformation Tools</h3>
-    <p>
-      Here, we survey tools that implement a CNF transformation for (feature-model or general Boolean) formulas.
-      The following table is intended to facilitate choosing the right tool for transforming into CNF.
-      Most importantly, these tools subtly differ in the preserved semantics of the transformed formulas, and may be of varying time and space complexity.
-      Also, the supported input/outputs formats and tool integrations sometimes differ considerably.
-      We include tools that have been applied in the literature or that could potentially be applied.
-      We exclude pure preprocessors (e.g., <a href="https://github.com/meelgroup/arjun" target="_blank">Arjun</a> or <a href="https://fmv.jku.at/scranfilize/" target="_blank">Scranfilize</a>), which can be applied after CNF has been established.
-      We also exclude knowledge compilers (e.g., <a href="https://github.com/SoftVarE-Group/d4v2" target="_blank">d4</a>) for the same reason.
-    </p>
-    <div class="active-filters">
-      <strong>Active Filters:</strong>
-      <div id="tools-filters-container" class="d-inline">
-        <span class="text-muted">No filters applied</span>
-      </div>
-      <button id="tools-clear-filters" class="clear-all-btn" style="display: none;">Clear All</button>
-    </div>
-    <div class="table-loading" id="toolsTableLoading">
-      <i class="fa-solid fa-spinner fa-spin"></i> Loading...
-    </div>
-    <table id="toolsTable" class="table table-striped table-bordered" style="width:100%">
-      <thead></thead>
-    </table>
+    <!-- Table sections - just add id and description, JS generates the rest -->
+    <!-- <section id="languages">
+      <p>Here, we survey configuration languages used throughout systems software to manage variability and build options.</p>
+    </section> -->
 
-    <h5>Notes</h5>
-    <ul>
-      <li>A <strong>total distributive transformation</strong> introduces no auxiliary variables.
-        The transformed formula is always <a href="https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf" target="_blank">equivalent</a> to the original formula.
-        This transformation may suffer from exponential blowup on large inputs (due to repeated application of the distributive law).</li>
-      <li>A <strong>total Tseitin transformation</strong> introduces auxiliary (aka fresh) variables for every nontrivial subformula (typically everything but leaves or negated leaves).
-        The transformed formula is always <a href="https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf" target="_blank">quasi-equivalent</a> to the original formula (NOT necessarily equivalent).
-        The length of the resulting formula is linear in the size of the input formula.</li>
-      <li>A <strong>partial Tseitin transformation</strong> introduces auxiliary variables for subformulas that satisfy a certain criterion.
-        Typically, this means predicting the potential blowup during distribution, and only introducing a fresh variable if a (possibly configurable) threshold is exceeded (listed in the table above).
-        The transformed formula is always <a href="https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf" target="_blank">quasi-equivalent</a> to the original formula (NOT necessarily equivalent).</li>
-      <li>A <strong>Plaisted-Greenbaum transformation</strong> is a variant of a Tseitin transformation that introduces fewer clauses, at the cost of losing equi-countability.
-        The transformed formula is always <a href="https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf" target="_blank">equi-assignable</a> to the original formula (NOT necessarily equi-countable).
-        A Plaisted-Greenbaum transformation can be polarity-based.
-        If not polarity-based, the formula must first be transformed into negation normal form, aka NNF.</li>
-    </ul>
+    <!-- <section id="implementations">
+      <p>Here, we survey implementations of the Kconfig language used in various projects.</p>
+    </section> -->
+
+    <!-- <section id="extractors">
+      <p>
+        Here, we survey tools that extract feature models or formulas from Kconfig-based projects (e.g., the Linux kernel).
+        The following table is intended to facilitate choosing the right tool for extracting variability information from Kconfig.
+      </p>
+    </section> -->
+
+    <section id="transformations">
+      <p>
+        Here, we survey tools that implement a CNF transformation for (feature-model or general Boolean) formulas.
+        The following table is intended to facilitate choosing the right tool for transforming into CNF.
+        Most importantly, these tools subtly differ in the preserved semantics of the transformed formulas, and may be of varying time and space complexity.
+        Also, the supported input/outputs formats and tool integrations sometimes differ considerably.
+        We include tools that have been applied in the literature or that could potentially be applied.
+        We exclude pure preprocessors (e.g., <a href="https://github.com/meelgroup/arjun" target="_blank">Arjun</a> or <a href="https://fmv.jku.at/scranfilize/" target="_blank">Scranfilize</a>), which can be applied after CNF has been established.
+        We also exclude knowledge compilers (e.g., <a href="https://github.com/SoftVarE-Group/d4v2" target="_blank">d4</a>) for the same reason.
+      </p>
+      <h5>Notes</h5>
+      <ul>
+        <li>A <strong>total distributive transformation</strong> introduces no auxiliary variables.
+          The transformed formula is always <a href="https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf" target="_blank">equivalent</a> to the original formula.
+          This transformation may suffer from exponential blowup on large inputs (due to repeated application of the distributive law).</li>
+        <li>A <strong>total Tseitin transformation</strong> introduces auxiliary (aka fresh) variables for every nontrivial subformula (typically everything but leaves or negated leaves).
+          The transformed formula is always <a href="https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf" target="_blank">quasi-equivalent</a> to the original formula (NOT necessarily equivalent).
+          The length of the resulting formula is linear in the size of the input formula.</li>
+        <li>A <strong>partial Tseitin transformation</strong> introduces auxiliary variables for subformulas that satisfy a certain criterion.
+          Typically, this means predicting the potential blowup during distribution, and only introducing a fresh variable if a (possibly configurable) threshold is exceeded (listed in the table above).
+          The transformed formula is always <a href="https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf" target="_blank">quasi-equivalent</a> to the original formula (NOT necessarily equivalent).</li>
+        <li>A <strong>Plaisted-Greenbaum transformation</strong> is a variant of a Tseitin transformation that introduces fewer clauses, at the cost of losing equi-countability.
+          The transformed formula is always <a href="https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf" target="_blank">equi-assignable</a> to the original formula (NOT necessarily equi-countable).
+          A Plaisted-Greenbaum transformation can be polarity-based.
+          If not polarity-based, the formula must first be transformed into negation normal form, aka NNF.</li>
+      </ul>
+    </section>
 
     <footer class="mt-5 text-muted">
       <p><strong>Credits</strong></p>
@@ -98,17 +101,35 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <script src="script.js"></script>
   <script>
-    const toolsTable = new FilterTable({
-      csvFile: 'data/tools.csv',
-      tableSelector: '#toolsTable',
-      filtersContainerSelector: '#tools-filters-container',
-      clearButtonSelector: '#tools-clear-filters',
-      pageLength: -1,
-      skipColumns: ["Tool", "Notes", "Implementation"],
-      exactMatchColumns: [],
-      commaSplitColumns: ["Authors", "CNF Transformations", "Integrations"],
-      numericSortColumns: []
-    });
+    // Table configurations - add new tables here
+    initializeTables([
+      {
+        id: 'languages',
+        title: 'Configuration Languages',
+        csvFile: 'data/languages.csv',
+        skipColumns: ['Language', 'Notes']
+      },
+      {
+        id: 'implementations',
+        title: 'Kconfig Implementations',
+        csvFile: 'data/implementations.csv',
+        skipColumns: ['Implementation', 'Notes']
+      },
+      {
+        id: 'extractors',
+        title: 'Kconfig Extraction Tools',
+        csvFile: 'data/extractors.csv',
+        skipColumns: ['Tool', 'Notes'],
+        commaSplitColumns: ['Authors']
+      },
+      {
+        id: 'transformations',
+        title: 'CNF Transformation Tools',
+        csvFile: 'data/transformations.csv',
+        skipColumns: ['Tool', 'Notes', 'Implementation'],
+        commaSplitColumns: ['Authors', 'CNF Transformations', 'Integrations']
+      }
+    ]);
   </script>
 </body>
 </html>
