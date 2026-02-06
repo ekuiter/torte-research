@@ -188,13 +188,25 @@ class FilterTable {
 
             if (!container.length) return;
 
+            // Helper to clean filter values: strip markdown and parenthetical content
+            const cleanFilterValue = (val) => {
+                let cleaned = val;
+                // Remove markdown links [text](url) -> text
+                cleaned = cleaned.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+                // Remove backticks
+                cleaned = cleaned.replace(/`([^`]+)`/g, '$1');
+                // Remove parenthetical content
+                cleaned = cleaned.replace(/\s*\([^)]*\)/g, '');
+                return cleaned.trim();
+            };
+
             // Extract unique values
             let allValues = [];
             const shouldSplit = this.config.commaSplitColumns.includes(columnTitle);
 
             column.data().each((d) => {
                 if (d !== null && d !== undefined) {
-                    const value = d.toString().trim();
+                    const value = cleanFilterValue(d.toString().trim());
                     if (shouldSplit) {
                         allValues = allValues.concat(value.split(new RegExp(`[${this.config.splitDelimiter}]\\s*`)));
                     } else {

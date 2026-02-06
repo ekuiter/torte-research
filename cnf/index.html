@@ -76,10 +76,10 @@
       tableSelector: '#toolsTable',
       filtersContainerSelector: '#tools-filters-container',
       clearButtonSelector: '#tools-clear-filters',
-      pageLength: 5,
-      skipColumns: [],
-      exactMatchColumns: ['License'],
-      commaSplitColumns: [],
+      pageLength: -1,
+      skipColumns: ["Tool", "Notes", "Implementation"],
+      exactMatchColumns: [],
+      commaSplitColumns: ["Authors", "CNF Transformations", "Integrations"],
       numericSortColumns: []
     });
 
@@ -88,7 +88,7 @@
       tableSelector: '#dummyTable',
       filtersContainerSelector: '#dummy-filters-container',
       clearButtonSelector: '#dummy-clear-filters',
-      pageLength: 5,
+      pageLength: -1,
       skipColumns: ['Title', 'Key'],
       exactMatchColumns: ['Year'],
       commaSplitColumns: [],
