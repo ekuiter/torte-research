@@ -1,16 +1,49 @@
 /**
  * Literature Survey Table - Stylesheet
  * Custom styles for DataTables with multi-select dropdown filters
- * 
+ *
  * @author Lennart Pape
  * @date 2026-01-04
  * @version 1.0.0
  */
 
+/* CSS Custom Properties for Theming */
+:root {
+  --bg-primary: #f8f9fa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e9ecef;
+  --text-primary: #212529;
+  --text-secondary: #495057;
+  --text-muted: #6c757d;
+  --border-color: #dee2e6;
+  --table-stripe: rgba(0, 0, 0, 0.05);
+  --hover-bg: #f8f9fa;
+  --shadow-color: rgba(0, 0, 0, 0.15);
+  --accent-color: #0d6efd;
+  --accent-hover: #0b5ed7;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #242424;
+  --bg-tertiary: #2d2d2d;
+  --text-primary: #e4e4e4;
+  --text-secondary: #b8b8b8;
+  --text-muted: #8a8a8a;
+  --border-color: #404040;
+  --table-stripe: rgba(255, 255, 255, 0.03);
+  --hover-bg: #333333;
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --accent-color: #6c9bd1;
+  --accent-hover: #5a8ac4;
+}
+
 /* Body */
-body { 
-  padding: 2rem; 
-  background: #f8f9fa; 
+body {
+  padding: 2rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* DataTable - Main Container */
@@ -32,8 +65,18 @@ body {
   table-layout: fixed;
 }
 
+.dataTables_scrollHead table,
 .dataTables_scrollBody table {
   width: 100% !important;
+  table-layout: fixed;
+}
+
+.dataTables_scrollHead table {
+  margin-bottom: 0 !important;
+}
+
+.dataTables_scrollBody {
+  overflow-y: auto !important;
 }
 
 /* DataTable - Header */
@@ -90,12 +133,16 @@ table.dataTable thead tr:nth-child(2) th .multi-select-dropdown {
   overflow: hidden !important;
   width: 100% !important;
   transition: margin-left 0s !important;
-  box-sizing: content-box !important;
+  box-sizing: border-box !important;
+}
+
+.dataTables_scrollHeadInner table {
+  width: 100% !important;
 }
 
 .dataTables_scrollBody {
-  overflow-x: auto !important; 
-  box-sizing: content-box !important;
+  overflow-x: auto !important;
+  box-sizing: border-box !important;
   position: relative;
   z-index: 1 !important;
 }
@@ -128,13 +175,20 @@ div.dataTables_info {
 
 div.dataTables_paginate {
   float: right;
-  margin-top: 0.25em;
+  margin-top: 1.5rem;
 }
 
 /* DataTable - Form Elements */
+.dataTables_filter input[type="search"] {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
 .dataTables_filter input[type="search"]:focus {
-  background-color: white;
-  border-color: #86b7fe;
+  background-color: var(--bg-secondary);
+  border-color: var(--accent-color);
   outline: none;
   box-shadow: none;
 }
@@ -146,17 +200,21 @@ div.dataTables_paginate {
 
 .dataTables_length select {
   cursor: pointer;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .dataTables_length select:focus {
-  background-color: white;
-  border-color: #86b7fe;
+  background-color: var(--bg-secondary);
+  border-color: var(--accent-color);
   outline: none;
   box-shadow: none;
 }
 
 .dataTables_length select:hover {
-  border-color: #86b7fe;
+  border-color: var(--accent-color);
   cursor: pointer;
 }
 
@@ -170,8 +228,8 @@ div.dataTables_paginate {
 }
 
 .multi-select-dropdown {
-  background: white;
-  border: 1px solid #dee2e6;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
   border-radius: 0.375rem;
   padding: 0 0.75rem;
   padding-right: 1.7rem;
@@ -196,11 +254,17 @@ div.dataTables_paginate {
   max-width: 100%;
   box-sizing: border-box;
   overflow: hidden;
+  color: var(--text-secondary);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+[data-theme="dark"] .multi-select-dropdown {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23b8b8b8' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E");
 }
 
 .multi-select-dropdown:hover {
-  border-color: #86b7fe;
-  background-color: #f8f9fa;
+  border-color: var(--accent-color);
+  background-color: var(--hover-bg);
 }
 
 .dropdown-text {
@@ -208,10 +272,10 @@ div.dataTables_paginate {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  flex: 1 1 auto; 
-  min-width: 0;   
+  flex: 1 1 auto;
+  min-width: 0;
   width: 0;
-  color: #495057;
+  color: var(--text-secondary);
   font-weight: normal;
 }
 
@@ -222,13 +286,13 @@ div.dataTables_paginate {
 /* Multi-Select Options Menu */
 body > .multi-select-options {
   position: fixed !important;
-  background: white !important;
-  border: 1px solid #dee2e6 !important;
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
   border-radius: 0.375rem !important;
   max-height: 200px !important;
   overflow-y: auto !important;
   z-index: 10000 !important;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 0.5rem 1rem var(--shadow-color) !important;
   display: none;
   min-width: 150px !important;
 }
@@ -243,40 +307,43 @@ body > .multi-select-options.show {
   font-size: 0.875rem;
   font-weight: normal;
   user-select: none;
+  color: var(--text-primary);
 }
 
 .multi-select-option:hover {
-  background-color: #f8f9fa !important;
+  background-color: var(--hover-bg) !important;
 }
 
 .multi-select-option.selected {
-  background-color: #0d6efd !important;
+  background-color: var(--accent-color) !important;
   color: white !important;
 }
 
 /* Active Filters Display */
 .active-filters {
-  background: #e9ecef;
+  background: var(--bg-tertiary);
   padding: 1rem;
   border-radius: 0.375rem;
   margin-bottom: 1rem;
   min-height: 60px;
+  transition: background-color 0.3s ease;
 }
 
 /* Filter Badges */
 .filter-badge {
   display: inline-block;
-  background: #0d6efd;
+  background: var(--accent-color);
   color: white;
   padding: 0.25rem 0.5rem;
   margin: 0.125rem;
   border-radius: 1rem;
   font-size: 0.75rem;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .filter-badge:hover {
-  background: #0b5ed7;
+  background: var(--accent-hover);
 }
 
 .filter-badge .remove {
@@ -309,7 +376,7 @@ body > .multi-select-options.show {
     justify-content: flex-start;
     width: 100%;
   }
-  
+
   div.dataTables_info,
   div.dataTables_paginate {
     float: none;
@@ -317,4 +384,124 @@ body > .multi-select-options.show {
     width: 100%;
     margin-bottom: 0.5rem;
   }
+}
+
+/* Dark Mode Toggle Button */
+.theme-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  transition: color 0.3s ease, transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.theme-toggle:hover {
+  color: var(--accent-color);
+  transform: scale(1.1);
+}
+
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
+  position: absolute;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.theme-toggle .icon-sun {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+.theme-toggle .icon-moon {
+  opacity: 0;
+  transform: rotate(-90deg);
+}
+
+[data-theme="dark"] .theme-toggle .icon-sun {
+  opacity: 0;
+  transform: rotate(90deg);
+}
+
+[data-theme="dark"] .theme-toggle .icon-moon {
+  opacity: 1;
+  transform: rotate(0deg);
+}
+
+/* Dark Mode - Bootstrap Table Overrides */
+[data-theme="dark"] .table {
+  --bs-table-bg: var(--bg-secondary);
+  --bs-table-color: var(--text-primary);
+  --bs-table-border-color: var(--border-color);
+  --bs-table-striped-bg: var(--table-stripe);
+  --bs-table-striped-color: var(--text-primary);
+  --bs-table-hover-bg: var(--hover-bg);
+  --bs-table-hover-color: var(--text-primary);
+}
+
+[data-theme="dark"] .table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: var(--table-stripe);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .table > thead {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .table > thead th {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .table > tbody td {
+  border-color: var(--border-color);
+}
+
+/* Dark Mode - DataTables Overrides */
+[data-theme="dark"] .dataTables_wrapper {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .dataTables_info,
+[data-theme="dark"] .dataTables_length label,
+[data-theme="dark"] .dataTables_filter label {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .page-link {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .page-link:hover {
+  background-color: var(--hover-bg);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .page-item.active .page-link {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+[data-theme="dark"] .page-item.disabled .page-link {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-muted);
+}
+
+/* Dark Mode - Container */
+[data-theme="dark"] .container h1 {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .text-muted {
+  color: var(--text-muted) !important;
 }

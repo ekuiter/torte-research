@@ -1,15 +1,42 @@
 /**
  * Multi-Select Dropdown Filtering for DataTables
- * 
+ *
  * This script enhances a DataTable with multi-select dropdown filters for each column.
  * Users can select multiple filter values, and the table updates dynamically to show
  * only the rows that match the selected criteria.
- * 
+ *
  * @author Lennart Pape
- * @date 2026-01-04
- * @version 1.0.0
+  @author Elias Kuiter
+  @date 2026-02-06
+  @version 1.1.0
  * @requires jQuery, DataTables, PapaParse, Bootstrap
  */
+
+// Dark Mode Toggle
+(function initTheme() {
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    } else if (prefersDark) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    }
+})();
+
+document.addEventListener('DOMContentLoaded', function() {
+    const themeToggle = document.getElementById('theme-toggle');
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+    }
+});
 
 // Global state
 let activeFilters = {};
@@ -356,7 +383,7 @@ $('#clear-all-filters').on('click', function() {
 });
 
 // Load CSV and initialize DataTable
-Papa.parse("data/literature.csv", {
+Papa.parse("tools.csv", {
     download: true,
     header: true,
     skipEmptyLines: true,
@@ -471,16 +498,13 @@ Papa.parse("data/literature.csv", {
             const scrollHeadInner = $('.dataTables_scrollHeadInner');
             const scrollBodyTable = $('.dataTables_scrollBody table');
             const scrollHeadTable = $('.dataTables_scrollHead table');
-            
             if (scrollBody.length && scrollHeadInner.length) {
                 const bodyWidth = scrollBodyTable.outerWidth();
                 scrollHeadTable.css('width', bodyWidth + 'px');
-                
                 scrollBody.off('scroll').on('scroll', function() {
                     const scrollLeft = $(this).scrollLeft();
                     scrollHeadTable.css('margin-left', -scrollLeft + 'px');
                 });
-                
                 scrollBody.trigger('scroll');
             }
         }, 200);
