@@ -46,6 +46,20 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.page-title {
+  border: none;
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.page-title:hover {
+  color: var(--accent-color);
+}
+
 /* DataTable - Main Container */
 .dataTables_wrapper {
   overflow: visible !important;
@@ -98,18 +112,96 @@ a:hover {
   text-decoration: underline;
 }
 
+section h1,
+section h2,
+section h3,
+section h4,
+section h5,
+section h6 {
+  position: relative;
+  cursor: pointer;
+}
+
 .section-anchor {
-  margin-left: 0.5rem;
+  position: absolute;
+  left: -1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 0.9em;
   color: var(--text-muted);
   text-decoration: none;
-  opacity: 0.6;
+  opacity: 0;
+  transition: opacity 0.15s ease, color 0.15s ease;
+}
+
+section h1:hover .section-anchor,
+section h2:hover .section-anchor,
+section h3:hover .section-anchor,
+section h4:hover .section-anchor,
+section h5:hover .section-anchor,
+section h6:hover .section-anchor {
+  opacity: 1;
 }
 
 .section-anchor:hover {
   color: var(--accent-color);
-  opacity: 1;
   text-decoration: none;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+  margin-top: 1.5rem;
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  padding-left: 1.25rem;
+}
+
+section h1 .section-toggle,
+section h2 .section-toggle,
+section h3 .section-toggle,
+section h4 .section-toggle,
+section h5 .section-toggle,
+section h6 .section-toggle {
+  margin-left: 0.5rem;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.9em;
+  cursor: pointer;
+  padding: 0;
+}
+
+.section-toggle .toggle-icon::before {
+  content: '▸';
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+section:not(.section-collapsed) .section-toggle .toggle-icon::before {
+  transform: rotate(90deg);
+}
+
+section.section-collapsed .section-content {
+  display: none;
+}
+
+.section-preview {
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  display: none;
+  cursor: pointer;
+}
+
+section.section-collapsed .section-preview {
+  display: block;
 }
 
 /* Table Code */
@@ -583,14 +675,14 @@ body > .multi-select-options.show {
 }
 
 /* Loading Indicator */
-.table-loading {
+.loading {
   text-align: center;
   padding: 2rem;
   color: var(--text-muted);
 }
 
-.table-ready + .table-loading,
-.table-loading.hidden {
+.table-ready + .loading,
+.loading.hidden {
   display: none;
 }
 

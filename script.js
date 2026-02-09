@@ -35,6 +35,290 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+function setTextNodeContent(node, text) {
+    while (node.firstChild) {
+        node.removeChild(node.firstChild);
+    }
+    node.appendChild(document.createTextNode(text));
+}
+
+function setupCollapsibleSection(section) {
+    if (!section || section.dataset.collapsibleInitialized === 'true') return;
+
+    const heading = section.querySelector('h1, h2, h3, h4, h5, h6');
+    if (!heading) return;
+
+    const parent = heading.parentElement || section;
+    const content = document.createElement('div');
+    content.className = 'section-content';
+
+    let sibling = heading.nextSibling;
+    while (sibling) {
+        const next = sibling.nextSibling;
+        content.appendChild(sibling);
+        sibling = next;
+    }
+
+    parent.appendChild(content);
+
+    const preview = document.createElement('p');
+    preview.className = 'section-preview';
+    preview.setAttribute('aria-hidden', 'true');
+    parent.insertBefore(preview, content);
+
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'section-toggle';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-label', `Toggle ${heading.textContent.trim()}`);
+    toggle.innerHTML = '<span class="toggle-icon"></span>';
+
+    heading.appendChild(toggle);
+
+    const updatePreview = () => {
+        const text = extractFirstSentence(content);
+        if (text) {
+            preview.textContent = text;
+            preview.style.display = 'block';
+        } else {
+            preview.textContent = '';
+            preview.style.display = 'none';
+        }
+    };
+
+    section.classList.add('section-collapsed');
+    updatePreview();
+
+    const toggleSection = () => {
+        const isCollapsed = section.classList.toggle('section-collapsed');
+        toggle.setAttribute('aria-expanded', isCollapsed ? 'false' : 'true');
+        if (isCollapsed) {
+            updatePreview();
+            preview.style.display = '';
+        } else {
+            preview.style.display = 'none';
+        }
+    };
+
+    preview.addEventListener('click', () => {
+        if (section.classList.contains('section-collapsed')) {
+            toggleSection();
+        }
+    });
+
+    toggle.addEventListener('click', (event) => {
+        event.stopPropagation();
+        toggleSection();
+    });
+
+    heading.addEventListener('click', (event) => {
+        if (event.target.closest('a.section-anchor') || event.target.closest('.section-toggle')) {
+            return;
+        }
+        toggleSection();
+    });
+
+    section.dataset.collapsibleInitialized = 'true';
+}
+
+function setupCollapsibleSections() {
+    document.querySelectorAll('section').forEach(section => {
+        setupCollapsibleSection(section);
+    });
+}
+
+function collapseAllSections() {
+    document.querySelectorAll('section').forEach(section => {
+        if (!section.classList.contains('section-collapsed')) {
+            section.classList.add('section-collapsed');
+            const toggle = section.querySelector('.section-toggle');
+            if (toggle) {
+                toggle.setAttribute('aria-expanded', 'false');
+            }
+            const preview = section.querySelector('.section-preview');
+            if (preview) {
+                preview.style.display = '';
+            }
+        }
+    });
+}
+
+function setupCollapseAllTrigger() {
+    const collapseAll = document.getElementById('collapse-all');
+    if (!collapseAll) return;
+    collapseAll.addEventListener('click', () => {
+        if (window.location.hash) {
+            const newUrl = window.location.pathname + window.location.search;
+            window.history.replaceState(null, '', newUrl);
+        }
+        collapseAllSections();
+    });
+}
+
+function expandSectionForAnchor() {
+    const hash = window.location.hash;
+    if (!hash) return;
+    const target = document.getElementById(hash.slice(1));
+    if (!target) return;
+
+    const section = target.closest('section');
+    if (!section || !section.classList.contains('section-collapsed')) return;
+
+    section.classList.remove('section-collapsed');
+    const toggle = section.querySelector('.section-toggle');
+    if (toggle) {
+        toggle.setAttribute('aria-expanded', 'true');
+    }
+    const preview = section.querySelector('.section-preview');
+    if (preview) {
+        preview.style.display = 'none';
+    }
+}
+
+function extractFirstSentence(container) {
+    if (!container) return '';
+    const candidates = container.querySelectorAll('p, li, blockquote');
+    let text = '';
+
+    for (const node of candidates) {
+        const candidate = node.textContent.trim();
+        if (candidate) {
+            text = candidate;
+            break;
+        }
+    }
+
+    if (!text) {
+        const fallback = container.textContent.trim();
+        text = fallback || '';
+    }
+
+    if (!text) return '';
+
+    const match = text.match(/(.+?[.!?])(\s|$)/);
+    if (match) {
+        return match[1].trim();
+    }
+
+    return text.split(/\s+/).slice(0, 20).join(' ');
+}
+
+function resolveRelativeUrl(baseUrl, relativeUrl) {
+    try {
+        return new URL(relativeUrl, baseUrl).toString();
+    } catch (error) {
+        return relativeUrl;
+    }
+}
+
+function loadMarkdownSections() {
+    const markdownSections = document.querySelectorAll('[data-markdown]');
+    if (!markdownSections.length) return;
+
+    if (!window.marked || typeof window.marked.parse !== 'function') {
+        markdownSections.forEach(section => {
+            setTextNodeContent(section, 'Markdown renderer not available.');
+        });
+        return;
+    }
+
+    const renderer = new window.marked.Renderer();
+    renderer.link = (href, title, text) => {
+        let linkHref = href;
+        let linkTitle = title;
+        let linkText = text;
+
+        if (href && typeof href === 'object') {
+            linkHref = href.href;
+            linkTitle = href.title;
+            linkText = href.text;
+        }
+
+        const safeHref = linkHref ? String(linkHref).replace(/"/g, '&quot;') : '';
+        const safeTitle = linkTitle ? String(linkTitle).replace(/"/g, '&quot;') : '';
+        const safeText = linkText ? String(linkText).replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
+        const titleAttr = safeTitle ? ` title="${safeTitle}"` : '';
+        return `<a href="${safeHref}" target="_blank" rel="noopener noreferrer"${titleAttr}>${safeText}</a>`;
+    };
+
+    markdownSections.forEach(section => {
+        const markdownPath = section.getAttribute('data-markdown');
+        if (!markdownPath) return;
+
+        fetch(markdownPath, { cache: 'no-cache' })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Failed to load ${markdownPath} (${response.status})`);
+                }
+                return response.text();
+            })
+            .then(markdown => {
+                const baseUrl = new URL(markdownPath, window.location.href).toString();
+                const rawHtml = window.marked.parse(markdown, {
+                    renderer,
+                    gfm: true,
+                    breaks: false,
+                    headerIds: false,
+                    mangle: false
+                });
+
+                const template = document.createElement('template');
+                template.innerHTML = rawHtml;
+                section.classList.add('markdown-content');
+
+                const headings = template.content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+                headings.forEach(heading => {
+                    const headingText = heading.textContent.trim();
+                    const idBase = headingText
+                        .toLowerCase()
+                        .replace(/[^a-z0-9\s-]/g, '')
+                        .replace(/\s+/g, '-');
+                    if (!idBase) return;
+                    let id = idBase;
+                    if (section.id) {
+                        id = `${section.id}-${idBase}`;
+                        if (idBase === section.id) {
+                            id = section.id;
+                        }
+                    }
+                    heading.id = id;
+
+                    const anchor = document.createElement('a');
+                    anchor.href = `#${id}`;
+                    anchor.className = 'section-anchor';
+                    anchor.setAttribute('aria-label', `Permalink to ${headingText}`);
+                    anchor.textContent = '#';
+                    heading.appendChild(anchor);
+                });
+
+                template.content.querySelectorAll('a[href]').forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (!href) return;
+                    if (href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('http')) return;
+                    link.setAttribute('href', resolveRelativeUrl(baseUrl, href));
+                });
+
+                section.replaceChildren(template.content);
+                setupCollapsibleSection(section);
+                expandSectionForAnchor();
+            })
+            .catch(error => {
+                console.error(error);
+                const isFile = window.location.protocol === 'file:';
+                const hint = isFile
+                    ? 'This page is opened via file://. Run a local web server so fetch can read markdown files.'
+                    : 'Check that the file exists and the path is correct.';
+                setTextNodeContent(section, `Unable to load ${markdownPath}. ${hint}`);
+            });
+    });
+}
+
+document.addEventListener('DOMContentLoaded', loadMarkdownSections);
+document.addEventListener('DOMContentLoaded', setupCollapsibleSections);
+document.addEventListener('DOMContentLoaded', setupCollapseAllTrigger);
+window.addEventListener('hashchange', expandSectionForAnchor);
+document.addEventListener('DOMContentLoaded', expandSectionForAnchor);
+
 /**
  * FilterTable - Reusable DataTable with multi-select filters
  *
@@ -668,7 +952,7 @@ function initializeTables(tables) {
                 </div>
                 <button id="${config.id}-clear-filters" class="clear-all-btn" style="display: none;">Clear All</button>
             </div>
-            <div class="table-loading" id="${config.id}TableLoading">
+            <div class="loading" id="${config.id}TableLoading">
                 <i class="fa-solid fa-spinner fa-spin"></i> Loading ...
             </div>
             <table id="${config.id}Table" class="table table-striped table-bordered" style="width:100%">
