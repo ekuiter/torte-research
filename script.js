@@ -238,7 +238,11 @@ function loadMarkdownSections() {
         const safeTitle = linkTitle ? String(linkTitle).replace(/"/g, '&quot;') : '';
         const safeText = linkText ? String(linkText).replace(/</g, '&lt;').replace(/>/g, '&gt;') : '';
         const titleAttr = safeTitle ? ` title="${safeTitle}"` : '';
-        return `<a href="${safeHref}" target="_blank" rel="noopener noreferrer"${titleAttr}>${safeText}</a>`;
+
+        const isLocal = safeHref.startsWith('#') || safeHref.startsWith('mailto:') || !/^[a-z][a-z0-9+.-]*:/i.test(safeHref);
+        const targetAttr = isLocal ? '' : ' target="_blank" rel="noopener noreferrer"';
+
+        return `<a href="${safeHref}"${targetAttr}${titleAttr}>${safeText}</a>`;
     };
 
     markdownSections.forEach(section => {
