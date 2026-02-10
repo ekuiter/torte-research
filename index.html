@@ -64,6 +64,7 @@
       <h5>Notes</h5>
       <ul>
         <li>We include the year it was first mentioned in the research literature (to the best of our knowledge). We do this to establish a rough timeline of all extractors.</li>
+        <li>Yet another extraction approach is described in <a href="https://ceur-ws.org/Vol-1453/20_WalchWalterKuechlin_FormalAnalysisOfTheLinuxKernel_Confws-15_p131.pdf">WWK:ConfWS15</a>. However, we were not able to locate the implementation mentioned in the paper.</li>
       </ul>
     </section>
 
@@ -137,13 +138,13 @@
         id: 'extractors',
         title: 'KConfig Extraction Tools',
         csvFile: 'data/extractors.csv',
-        skipColumns: ['Tool', 'References']
+        skipColumns: ['Year', 'Tool', 'References']
       },
       {
         id: 'transformations',
         title: 'CNF Transformation Tools',
         csvFile: 'data/transformations.csv',
-        skipColumns: ['Tool', 'Notes', 'References']
+        skipColumns: ['Year', 'Tool', 'Notes', 'References']
       }
     ]);
   </script>
