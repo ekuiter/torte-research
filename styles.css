@@ -520,6 +520,10 @@ body > .multi-select-options.show {
     padding: 0.5rem;
   }
 
+  .container {
+    padding-top: 1rem;
+  }
+
   div.dataTables_length,
   div.dataTables_filter {
     float: none;
