@@ -516,6 +516,10 @@ body > .multi-select-options.show {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  body {
+    padding: 0.5rem;
+  }
+
   div.dataTables_length,
   div.dataTables_filter {
     float: none;
@@ -530,6 +534,12 @@ body > .multi-select-options.show {
     text-align: left;
     width: 100%;
     margin-bottom: 0.5rem;
+  }
+}
+
+@media (max-width: 650px) {
+  .section-anchor {
+    display: none;
   }
 }
 
