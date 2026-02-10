@@ -347,6 +347,14 @@ document.addEventListener('DOMContentLoaded', setupCollapsibleSections);
 document.addEventListener('DOMContentLoaded', setupCollapseAllTrigger);
 window.addEventListener('hashchange', expandSectionForAnchor);
 document.addEventListener('DOMContentLoaded', expandSectionForAnchor);
+document.addEventListener('DOMContentLoaded', () => {
+    window.requestAnimationFrame(() => {
+        const container = document.querySelector('.container.js-loading');
+        if (container) {
+            container.classList.remove('js-loading');
+        }
+    });
+});
 
 /**
  * FilterTable - Reusable DataTable with multi-select filters
