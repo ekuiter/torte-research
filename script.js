@@ -97,6 +97,7 @@ function setupCollapsibleSection(section) {
             preview.style.display = '';
         } else {
             preview.style.display = 'none';
+            refreshDataTablesIn(section);
         }
     };
 
@@ -173,6 +174,7 @@ function expandSectionForAnchor() {
     if (preview) {
         preview.style.display = 'none';
     }
+    refreshDataTablesIn(section);
 }
 
 function extractFirstSentence(container) {
@@ -201,6 +203,29 @@ function extractFirstSentence(container) {
     }
 
     return text.split(/\s+/).slice(0, 20).join(' ');
+}
+
+function refreshDataTablesIn(section) {
+    if (!section || !window.jQuery || !$.fn || !$.fn.dataTable) return;
+    const tables = section.querySelectorAll('table.dataTable, table[id$="Table"]');
+    if (!tables.length) return;
+    window.requestAnimationFrame(() => {
+        tables.forEach((table) => {
+            if (!$.fn.dataTable.isDataTable(table)) return;
+            const dt = $(table).DataTable();
+            dt.columns.adjust().draw(false);
+
+            // Re-sync header scroll widths after reflow
+            const wrapper = $(table).closest('.dataTables_wrapper');
+            const scrollBodyTable = wrapper.find('.dataTables_scrollBody table');
+            const scrollHeadTable = wrapper.find('.dataTables_scrollHead table');
+            if (scrollBodyTable.length && scrollHeadTable.length) {
+                const bodyWidth = scrollBodyTable.outerWidth();
+                scrollHeadTable.css('width', bodyWidth + 'px');
+                wrapper.find('.dataTables_scrollBody').trigger('scroll');
+            }
+        });
+    });
 }
 
 function resolveRelativeUrl(baseUrl, relativeUrl) {
