@@ -1,0 +1,15 @@
+### Contributors
+
+Here, we list who contributed to this website and its contents (last update: 2026-02-10).
+
+- [Elias Kuiter](https://elias-kuiter.de) (University of Magdeburg):
+  - data collection and analysis
+  - revised data table implementation
+  - website design and implementation
+- Lennart Pape (TU Braunschweig): original [data table implementation](https://github.com/TUBS-ISF/tertiarystudypla)
+- Claude Code/OpenAI Codex: assistance in website design and implementation
+
+All raw data is available as CSV files in our [GitHub repository](https://github.com/ekuiter/torte-research).
+
+Data collection and analysis was done exclusively by a human (under the `data/` directory).
+AI was only involved in the website design and implementation (i.e., `index.html`, `script.js`, `style.css`).

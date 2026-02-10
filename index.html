@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>torte 🍰 Research</title>
 
   <!-- DataTables & Bootstrap CSS Styles-->
@@ -98,15 +99,11 @@
       </div>
     </section>
 
-    <footer class="mt-4 text-muted">
-      <p><strong>Credits</strong></p>
-      <ul>
-        <li><a href="https://elias-kuiter.de" target="_blank">Elias Kuiter</a>: data collection and analysis, revised data table implementation</li>
-        <li>Lennart Pape: original <a href="https://github.com/TUBS-ISF/tertiarystudypla" target="_blank">data table implementation</a></li>
-      </ul>
-      <p>All raw data is available as CSV files in our <a href="https://github.com/ekuiter/torte-research" target="_blank">GitHub repository</a>.<br>
-      Last Updated: 2026-02-06</p>
-    </footer>
+    <section data-markdown="data/credits.md">
+      <div class="loading">
+        <i class="fa-solid fa-spinner fa-spin"></i> Loading ...
+      </div>
+    </section>
   </div>
 
   <!-- JS Libraries and Script-->
