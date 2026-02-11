@@ -470,12 +470,13 @@ class FilterTable {
             }
         });
 
-        // Scroll to top on table redraw
+        // Scroll to top on table redraw + highlight matches
         if (this.config.scrollToTopOnDraw) {
             this.table.on('draw', () => {
                 $('html, body').animate({ scrollTop: 0 }, 10);
             });
         }
+        this.table.on('draw', () => this.highlightMatches());
 
         // Sync header scroll with body scroll
         setTimeout(() => this.syncHeaderScroll(), 200);
@@ -783,11 +784,18 @@ class FilterTable {
             if (filters.length === 0) {
                 column.search('', true, false);
             } else {
+                const tokenPatterns = filters.map(f => {
+                    const escaped = $.fn.dataTable.util.escapeRegex(f.toString());
+                    // Allow optional parenthetical content after the token
+                    return escaped + '(\\s*\\([^)]*\\))?';
+                });
                 if (this.config.exactMatchColumns.includes(columnTitle)) {
                     // Exact match
-                    const pattern = '^(' + filters
-                        .map(f => $.fn.dataTable.util.escapeRegex(f.toString()))
-                        .join('|') + ')$';
+                    const pattern = '^(' + tokenPatterns.join('|') + ')$';
+                    column.search(pattern, true, false);
+                } else if (this.config.commaSplitColumns.includes(columnTitle)) {
+                    // Exact match for comma-separated tokens
+                    const pattern = '(^|,\\s*)(' + tokenPatterns.join('|') + ')(\\s*,|$)';
                     column.search(pattern, true, false);
                 } else {
                     // Word boundaries only for alphanumeric values, otherwise match anywhere
@@ -805,6 +813,52 @@ class FilterTable {
             }
         });
         this.table.draw();
+    }
+
+    highlightMatches() {
+        const tableNode = this.table.table().node();
+        if (!tableNode) return;
+        const wrapper = $(tableNode).closest('.dataTables_wrapper');
+        if (!wrapper.length) return;
+
+        const searchValue = this.table.search().trim();
+        const filterValues = Object.values(this.activeFilters).flat().filter(Boolean);
+        const terms = [];
+
+        if (searchValue) {
+            terms.push(...searchValue.split(/\s+/).filter(Boolean));
+        }
+        terms.push(...filterValues);
+
+        const uniqueTerms = [...new Set(terms.map(term => term.toString()).filter(Boolean))];
+        const tbody = $(tableNode).find('tbody');
+
+        if (uniqueTerms.length === 0) {
+            tbody.find('td').each(function() {
+                const original = this.getAttribute('data-original-html');
+                if (original !== null) {
+                    this.innerHTML = original;
+                    this.removeAttribute('data-original-html');
+                }
+            });
+            return;
+        }
+
+        uniqueTerms.sort((a, b) => b.length - a.length);
+        const escapedTerms = uniqueTerms.map(term => $.fn.dataTable.util.escapeRegex(term));
+        const regex = new RegExp('(' + escapedTerms.join('|') + ')', 'gi');
+
+        tbody.find('td').each(function() {
+            if (!this.hasAttribute('data-original-html')) {
+                this.setAttribute('data-original-html', this.innerHTML);
+            }
+            const original = this.getAttribute('data-original-html') || '';
+            const highlighted = original
+                .split(/(<[^>]+>)/g)
+                .map(part => part.startsWith('<') ? part : part.replace(regex, '<mark>$1</mark>'))
+                .join('');
+            this.innerHTML = highlighted;
+        });
     }
 
     updateActiveFiltersDisplay() {

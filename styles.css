@@ -216,6 +216,13 @@ table.dataTable code {
   font-size: 0.8em;
 }
 
+table.dataTable mark {
+  background-color: var(--accent-color);
+  color: #ffffff;
+  padding: 0 0.1rem;
+  border-radius: 0.2rem;
+}
+
 /* DataTable - Header */
 table.dataTable thead {
   pointer-events: auto !important;
