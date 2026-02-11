@@ -1,6 +1,6 @@
 ### Contributors
 
-Here, we list who contributed to this website and its contents (last update: 2026-02-10).
+Here, we list who contributed to this website and its contents (last update: 2026-02-11).
 
 - [Elias Kuiter](https://elias-kuiter.de) (University of Magdeburg):
   - data collection and analysis
@@ -10,6 +10,7 @@ Here, we list who contributed to this website and its contents (last update: 202
 - Claude Code/OpenAI Codex: assistance in website design and implementation
 
 All raw data is available as CSV files in our [GitHub repository](https://github.com/ekuiter/torte-research).
+For archival purposes, we also provide snapshots of all third-party [KConfig extractors](https://github.com/ekuiter/torte-research/tree/main/data/extractors) and [CNF transformations](https://github.com/ekuiter/torte-research/tree/main/data/extractors) listed above.
 
-Data collection and analysis was done exclusively by a human (under the `data/` directory).
+Data collection and analysis was done exclusively by a human (under the [data](https://github.com/ekuiter/torte-research/tree/main/data) directory).
 AI was only involved in the website design and implementation (i.e., `index.html`, `script.js`, `style.css`).
