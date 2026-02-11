@@ -118,7 +118,7 @@ The above-mentioned code was never merged.
 > build our own copy".
 <p class="quote-source"><a href="https://lkml.iu.edu/hypermail/linux/kernel/0707.1/2803.html" target="_blank" rel="noopener noreferrer">Source</a></p>
 
-This is exactly what happened with various attempts at standalone KConfig implementations. <!-- todo link to the section -->
+This is exactly what happened with various attempts at standalone KConfig implementations.
 
 ##### Peter Korsgaard (Buildroot)
 

@@ -3,7 +3,6 @@
 Here, we summarize this project and notable developments within its scope, including the history of KConfig.
 
 **2002**
-<!-- add information about the history of CML1, the proposals of CML2 etc. -->
 - **October**: [Linux v2.5.45](https://lwn.net/Articles/14197/) introduces [KConfig](https://github.com/torvalds/linux/tree/master/scripts/kconfig) (developed by Roman Zippel), the successor of CML1 for specifying Linux's features and their dependencies.
 
 **2010**
