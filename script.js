@@ -45,7 +45,7 @@ function setTextNodeContent(node, text) {
 function setupCollapsibleSection(section) {
     if (!section || section.dataset.collapsibleInitialized === 'true') return;
 
-    const heading = section.querySelector('h1, h2, h3, h4, h5, h6');
+    const heading = section.querySelector('h3');
     if (!heading) return;
 
     const parent = heading.parentElement || section;
@@ -295,7 +295,7 @@ function loadMarkdownSections() {
                 template.innerHTML = rawHtml;
                 section.classList.add('markdown-content');
 
-                const headings = template.content.querySelectorAll('h1, h2, h3, h4, h5, h6');
+                const headings = template.content.querySelectorAll('h3');
                 headings.forEach(heading => {
                     const headingText = heading.textContent.trim();
                     const idBase = headingText
@@ -1051,8 +1051,8 @@ function initializeTables(tables) {
             </table>
         `;
 
-        // Find first h5 or end of section to insert before notes
-        const notes = section.querySelector('h5');
+        // Find notes container to insert before (so notes appear after table)
+        const notes = section.querySelector('.section-notes');
         if (notes) {
             notes.insertAdjacentHTML('beforebegin', filtersHtml);
         } else {

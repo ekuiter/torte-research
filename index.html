@@ -61,11 +61,11 @@
         The following table is intended to facilitate choosing the right tool for extracting such formulas.
         The tools differ considerably in their strategies to parse KConfig and encode its semantics.
       </p>
-      <h5>Notes</h5>
-      <ul>
-        <li>We include the year it was first mentioned in the research literature (to the best of our knowledge). We do this to establish a rough timeline of all extractors.</li>
-        <li>Yet another extraction approach is described in <a href="https://ceur-ws.org/Vol-1453/20_WalchWalterKuechlin_FormalAnalysisOfTheLinuxKernel_Confws-15_p131.pdf">WWK:ConfWS15</a>. However, we were not able to locate the implementation mentioned in the paper.</li>
-      </ul>
+      <div class="section-notes" data-markdown="data/extractors-notes.md">
+        <div class="loading">
+          <i class="fa-solid fa-spinner fa-spin"></i> Loading ...
+        </div>
+      </div>
     </section>
 
     <section id="transformations">
@@ -78,25 +78,11 @@
         We exclude pure preprocessors (e.g., <a href="https://github.com/meelgroup/arjun" target="_blank">Arjun</a> or <a href="https://fmv.jku.at/scranfilize/" target="_blank">Scranfilize</a>), which can be applied after CNF has been established.
         We also exclude knowledge compilers (e.g., <a href="https://github.com/SoftVarE-Group/d4v2" target="_blank">d4</a>) for the same reason.
       </p>
-      <h5>Notes</h5>
-      <ul>
-        <li>We include the year of the first and last commit to the transformation's implementation (as determined with Git or other additional information). We do this to clarify the history of CNF transformations, and when they have last received maintenance. This data is not perfectly accurate, because not all repositories provide the full history.</li>
-        <li>A <strong>distributive transformation</strong> introduces no auxiliary variables.
-          The transformed formula is always <a href="https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf" target="_blank">equivalent</a> to the original formula.
-          This transformation may suffer from exponential blowup on large inputs (due to repeated application of the distributive law).</li>
-        <li>A <strong>total Tseitin transformation</strong> introduces auxiliary (aka fresh) variables for every nontrivial subformula (typically everything but leaves or negated leaves).
-          The transformed formula is always <a href="https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf" target="_blank">quasi-equivalent</a> to the original formula (NOT necessarily equivalent).
-          The length of the resulting formula is linear in the size of the input formula.</li>
-        <li>A <strong>partial Tseitin transformation</strong> introduces auxiliary variables for subformulas that satisfy a certain criterion.
-          Typically, this means predicting the potential blowup during distribution, and only introducing a fresh variable if a (possibly configurable) threshold is exceeded (listed in the table above).
-          The transformed formula is always <a href="https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf" target="_blank">quasi-equivalent</a> to the original formula (NOT necessarily equivalent).</li>
-        <li>A <strong>Plaisted-Greenbaum transformation</strong> is a variant of a Tseitin transformation that introduces fewer clauses, at the cost of losing equi-countability.
-          The transformed formula is always <a href="https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf" target="_blank">equi-assignable</a> to the original formula (NOT necessarily equi-countable).
-          A Plaisted-Greenbaum transformation can be polarity-based.
-          If not polarity-based, the formula must first be transformed into negation normal form, aka NNF.</li>
-        <li>There are various advanced CNF transformation algorithms (mentioned <a href="https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf" target="_blank">here</a>).
-          However, we are not aware of any practical implementation of such an advanced algorithm.</li>
-      </ul>
+      <div class="section-notes" data-markdown="data/transformations-notes.md">
+        <div class="loading">
+          <i class="fa-solid fa-spinner fa-spin"></i> Loading ...
+        </div>
+      </div>
     </section>
 
     <section data-markdown="data/history.md">
