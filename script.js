@@ -297,16 +297,26 @@ function loadMarkdownSections() {
 
                 const headings = template.content.querySelectorAll('h3');
                 headings.forEach(heading => {
-                    const headingText = heading.textContent.trim();
+                    let headingText = heading.textContent.trim();
+                    let explicitId = null;
+                    const idMatch = headingText.match(/\s*\{#([a-zA-Z0-9_-]+)\}\s*$/);
+                    if (idMatch) {
+                        explicitId = idMatch[1];
+                        headingText = headingText.replace(/\s*\{#([a-zA-Z0-9_-]+)\}\s*$/, '').trim();
+                        heading.textContent = headingText;
+                    }
+
                     const idBase = headingText
                         .toLowerCase()
                         .replace(/[^a-z0-9\s-]/g, '')
                         .replace(/\s+/g, '-');
-                    if (!idBase) return;
-                    let id = idBase;
-                    if (section.id) {
-                        id = `${section.id}-${idBase}`;
-                        if (idBase === section.id) {
+                    const resolvedId = explicitId || idBase;
+                    if (!resolvedId) return;
+
+                    let id = resolvedId;
+                    if (section.id && !explicitId) {
+                        id = `${section.id}-${resolvedId}`;
+                        if (resolvedId === section.id) {
                             id = section.id;
                         }
                     }

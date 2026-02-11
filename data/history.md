@@ -1,4 +1,4 @@
-### History
+### History of KConfig {#history}
 
 Here, we summarize this project and notable developments within its scope, including the history of KConfig.
 
@@ -16,17 +16,18 @@ Here, we summarize this project and notable developments within its scope, inclu
   However, the proposal is not taken to the next stage until the [proposal](https://ieeexplore.ieee.org/document/9401969) of [ConfigFix](#extractors) in 2021, which is largely inspired by [this discussion thread](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI).
   
   The [undertaker](#extractors) extractor [is considered](https://groups.google.com/g/linux.kernel/c/8Ykzn-L_eYI/m/S9cBjBntCQAJ), but "it was determined that this code could not be merged upstream for a variety of reasons, but mostly due to the fact that it was R&D work and it was under GPLv3".
-  LWN editor Jonathan Corbet [discusses](https://lwn.net/Articles/617383/) additional reasons for this decision.
+  LWN editor Jonathan Corbet [discusses](https://lwn.net/Articles/617383/) additional reasons for this decision, citing Junghwan Kang that "[undertaker-tailor] doesn't work and needs an overhaul".
   Luis R. Rodriguez argues that undertaker's [PicoSAT](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/6H7q9xksCwAJ) (which supports MUS, among others, and which [inspired](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/5YdKwddqBgAJ) the now-standard IPASIR solver interface) is a good candidate solver for such an integration, should it be attempted.
   Luis also [notes that](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/1s_uuptRDAAJ) "Vegard's work dates back to 2011 and [over time SAT solvers have gotten much better](https://elias-kuiter.de/publications/#KBT+:ICSE26)".
   
-  Vegard Nossum also [follows up](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/E1hHH5pWDAAJ) on their SAT integration, stating that there are "a lot of problems with finding the right encoding/formalisation of the kconfig language. It's simply not very well documented (the code is the only standard) and there are a lot of weird corner cases with hidden prompts, choice values, prompt dependencies, symbol dependencies, default values, conditional default values, you name it".
+  Vegard Nossum also [follows up](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/E1hHH5pWDAAJ) on their SAT integration, stating that there are "a lot of problems with finding the right encoding/formalisation of the kconfig language. It's simply not very well documented (the code is the only standard) and there are a lot of weird corner cases with hidden prompts, choice values, prompt dependencies, symbol dependencies, default values, conditional default values, you name it" (see [Experiences](#experiences)).
   One issue [discussed](https://lkml.org/lkml/2010/5/17/172) [repeatedly](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/Ld2wKTtSDAAJ) is explainability of solver results, which would require clause-constraint traceability and [MUS](https://en.wikipedia.org/wiki/Unsatisfiable_core) support in the solver.
   Other discussed challenges include the handling of [non-Boolean features](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/E1hHH5pWDAAJ) (notably, [tristate](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/n71Nh1WmBQAJ) features) and [constraints](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/yPZsCWWnBQAJ), [solver interfaces](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/5YdKwddqBgAJ), [SAT](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/5YdKwddqBgAJ) vs. [SMT](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/zrRbr1JjBgAJ) solvers, and [inaccuracies](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/1u5OcGMdCwAJ) in [existing translations](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/vn3j0xWCAAAJ).
   Valentin Rothberg [states that](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/KMa6_EGoBQAJ), beyond technical challenges, integration of a SAT solver remains difficult because the community needs "something that is easy to use, is easy to maintain, doesn't consume much time, (and most importantly) doesn't disturb the dinosaurs' working environment".
 
 **2017**
 - **June**: Linus Torvalds [expresses his skepticism](https://yhbt.net/lore/ksummit-discuss/CA+55aFyvssxg63UoQ-rOaf1TMacJ6T5jyLkWECosQJ_N=9gaaQ@mail.gmail.com/#t) towards a [SAT integration](https://kernelnewbies.org/KernelProjects/kconfig-sat) into KConfig: "The SAT solver will only hurt, because it will bring in all those irrelevant people who are interested in SAT solving, not in making things easy for users."
+- **September**: [Ulf Magnusson](https://github.com/ulfalizer) releases version 1.0.0 of [KConfigLib](https://github.com/ulfalizer/Kconfiglib), a standalone reimplementation of a KConfig parser in Python, which will be adopted by several projects over the following years.
 
 **2018**
 - **May**: We release [kmax-vm](https://github.com/ekuiter/kmax-vm), an [early predecessor](https://github.com/ekuiter/torte?tab=readme-ov-file#history) of torte that automates feature-model extraction with [KClause](#extractors) in a virtual machine.
