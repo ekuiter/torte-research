@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta name="robots" content="index,nofollow">
+
+<title>KernelProjects/kconfig-sat - Linux Kernel Newbies</title>
+<script type="text/javascript" src="/moin_static1911/common/js/common.js"></script>
+
+<script type="text/javascript">
+<!--
+var search_hint = "Search";
+//-->
+</script>
+
+
+<link rel="stylesheet" type="text/css" media="all" href="/moin_static1911/memodump/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" media="all" href="/moin_static1911/memodump/css/bootstrap-theme.min.css">
+<link rel="stylesheet" type="text/css" media="all" href="/moin_static1911/memodump/css/memodump.css">
+<link rel="stylesheet" type="text/css" media="all" href="/moin_static1911/memodump/css/moinizer.css">
+
+<!-- css only for MS IE6/IE7 browsers -->
+<!--[if lt IE 8]>
+   <link rel="stylesheet" type="text/css" media="all" href="/moin_static1911/memodump/css/msie.css">
+<![endif]-->
+
+
+<link rel="alternate" title="Linux Kernel Newbies: KernelProjects/kconfig-sat" href="/KernelProjects/kconfig-sat?diffs=1&amp;show_att=1&amp;action=rss_rc&amp;unique=0&amp;page=KernelProjects%2Fkconfig-sat&amp;ddiffs=1" type="application/rss+xml">
+
+
+<link rel="Start" href="/Linux_Kernel_Newbies">
+<link rel="Alternate" title="Wiki Markup" href="/KernelProjects/kconfig-sat?action=raw">
+<link rel="Alternate" media="print" title="Print View" href="/KernelProjects/kconfig-sat?action=print">
+<link rel="Up" href="/KernelProjects">
+<link rel="Search" href="/FindPage">
+<link rel="Index" href="/TitleIndex">
+<link rel="Glossary" href="/WordIndex">
+<link rel="Help" href="/HelpOnFormatting">
+</head>
+
+<body  lang="en" dir="ltr">
+
+  <div id="outbox" class="sidebar-toggle">
+    <!-- Bootstrap navbar -->
+    <div class="navbar navbar-inverse navbar-fixed-top navbar-mobile-toggle" role="navigation">
+      <div class="container">
+
+        <!-- Navbar header -->
+        <div class="navbar-header">
+          <!-- Sidebar toggler -->
+          <button type="button" class="btn navbar-btn sidebar-toggler" data-toggle="toggle" data-target=".sidebar-toggle">
+            <span class="sr-only">Toggle sidebar</span>
+            <span class="menu-btn-sidebar-toggler sidebar-toggle"></span>
+          </button>
+          <!-- Button to show navbar controls when collapsed -->
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <!-- Sitename -->
+
+          <div class="navbar-brand-wrapper">
+            <a class="navbar-brand" href="/Linux_Kernel_Newbies"><img src="/kn-icon.png" alt="KernelNewbies"></a>
+          </div>
+          
+        </div> <!-- /.navbar-header -->
+
+        <!-- Body of navbar -->
+        <div class="collapse navbar-collapse">
+
+          <!-- Navbar elements -->
+          <ul class="nav navbar-nav navbar-right">
+
+            <!-- Comment toggle button -->
+
+            <li class="toggleCommentsButton navbar-comment-toggle" style="display:none;">
+              <a href="#" class="menu-nav-comment nbcomment navbar-comment-toggle" rel="nofollow" onClick="toggleComments();return false;" data-toggle="toggle" data-target=".navbar-comment-toggle">
+                <span class="hidden-sm">Comments</span>
+              </a>
+            </li>
+
+            <!-- Edit button -->
+
+            <li class="disabled">
+              <a class="menu-nav-edit"><span class="hidden-sm">Immutable Page</span></a>
+            </li>
+
+            <!-- Search form -->
+
+          <li>
+            <div class="navbar-form">
+              <form class="form-search" role="search" id="searchform" method="get" action="/KernelProjects/kconfig-sat">
+                <input type="hidden" name="action" value="fullsearch">
+                <input type="hidden" name="context" value="180">
+                <div class="form-group">
+                  <label class="sr-only" for="searchinput">Search:</label>
+                  <input id="searchinput" type="text" class="form-control form-search" placeholder="Search" name="value" value="">
+                </div>
+              </form>
+            </div>
+          </li>
+
+            <!-- Menu -->
+
+            <li class="dropdown">
+              <!-- Menu button -->
+              <a href="#" class="menu-nav-menu dropdown-toggle" data-toggle="dropdown">
+                Menu<span class="padding"></span><span class="caret"></span>
+              </a>
+              <!-- Dropdown contents -->
+              <ul class="dropdown-menu">
+                <li class="dropdown-header">Navigation</li>
+                <li><a href="/RecentChanges" class="menu-dd-RecentChanges" rel="nofollow">RecentChanges</a></li>
+                <li><a href="/FindPage" class="menu-dd-FindPage" rel="nofollow">FindPage</a></li>
+                <li><a href="/KernelProjects/kconfig-sat?action=LocalSiteMap" class="menu-dd-LocalSiteMap" rel="nofollow">Local Site Map</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Help</li>
+                <li><a href="/HelpContents" class="menu-dd-HelpContents" rel="nofollow">HelpContents</a></li>
+                <li><a href="/HelpOnMoinWikiSyntax" class="menu-dd-HelpOnMoinWikiSyntax" rel="nofollow">HelpOnMoinWikiSyntax</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Display</li>
+                <li><a href="/KernelProjects/kconfig-sat?action=AttachFile" class="menu-dd-AttachFile" rel="nofollow">Attachments</a></li>
+                <li><a href="/KernelProjects/kconfig-sat?action=info" class="menu-dd-info" rel="nofollow">Info</a></li>
+                <li><a href="/KernelProjects/kconfig-sat?action=raw" class="menu-dd-raw" rel="nofollow">Raw Text</a></li>
+                <li><a href="/KernelProjects/kconfig-sat?action=print" class="menu-dd-print" rel="nofollow">Print View</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Edit</li>
+                <li><a href="/KernelProjects/kconfig-sat?action=Load" class="menu-dd-Load" rel="nofollow">Load</a></li>
+                <li><a href="/KernelProjects/kconfig-sat?action=Save" class="menu-dd-Save" rel="nofollow">Save</a></li>
+              </ul>
+            </li> <!-- /dropdown -->
+
+            <!-- Login user -->
+
+            <li>
+              <a class="menu-nav-login" href="/KernelProjects/kconfig-sat?action=login" rel="nofollow">Login</a>
+            </li>
+
+
+          </ul> <!-- /.navbar-right -->
+
+        </div> <!-- /.collapse -->
+      </div> <!-- /.container -->
+    </div> <!-- /.navbar -->
+    <!-- End of navbar -->
+
+    <div class="container no-padding" id="pagebox">
+
+
+      <!-- Sidebar -->
+      <div class="sidebar-toggle" id="sidebar-curtain">
+        <div class="sidebar-toggle" id="sidebar-mover">
+          <div class="sidebar-toggle" id="sidebar" role="navigation">
+<!-- SideBar contents -->
+<div class="sidebar clearfix"><div dir="ltr" id="SideBar.sidebar-content" lang="en"><span class="anchor" id="SideBar.top"></span>
+<span class="anchor" id="SideBar.line-1"></span><p class="line874">Kernel Hacking <span class="anchor" id="SideBar.line-2"></span><ul><li><p class="line891"><a class="https" href="https://kernelnewbies.org/">Frontpage</a> <span class="anchor" id="SideBar.line-3"></span></li><li><p class="line891"><a href="/KernelHacking">Kernel Hacking</a> <span class="anchor" id="SideBar.line-4"></span></li><li><p class="line891"><a href="/Documents">Kernel Documentation</a> <span class="anchor" id="SideBar.line-5"></span></li><li><p class="line891"><a href="/KernelGlossary">Kernel Glossary</a> <span class="anchor" id="SideBar.line-6"></span></li><li><p class="line891"><a href="/FAQ">FAQ</a> <span class="anchor" id="SideBar.line-7"></span></li><li><p class="line891"><a href="/FoundBug">Found a bug?</a> <span class="anchor" id="SideBar.line-8"></span></li><li><p class="line891"><a href="/LinuxChanges">Kernel Changelog</a> <span class="anchor" id="SideBar.line-9"></span></li><li><p class="line891"><a href="/UpstreamMerge">Upstream Merge Guide</a> <span class="anchor" id="SideBar.line-10"></span><span class="anchor" id="SideBar.line-11"></span></li></ul><p class="line874">Projects <span class="anchor" id="SideBar.line-12"></span><ul><li><p class="line891"><a href="/KernelJanitors">KernelJanitors</a> <span class="anchor" id="SideBar.line-13"></span></li><li><p class="line891"><a href="/KernelMentors">KernelMentors</a> <span class="anchor" id="SideBar.line-14"></span></li><li><p class="line891"><a href="/KernelProjects">KernelProjects</a> <span class="anchor" id="SideBar.line-15"></span><span class="anchor" id="SideBar.line-16"></span></li></ul><p class="line874">Community <span class="anchor" id="SideBar.line-17"></span><ul><li><p class="line891"><a href="/Community">Why a community?</a> <span class="anchor" id="SideBar.line-18"></span></li><li><p class="line891"><a href="/RegionalNewbies">Regional Kernelnewbies</a> <span class="anchor" id="SideBar.line-19"></span></li><li><p class="line891"><a href="/PersonalPages">Personal Pages</a> <span class="anchor" id="SideBar.line-20"></span></li><li><p class="line891"><a href="/UpcomingEvents">Upcoming Events</a> <span class="anchor" id="SideBar.line-21"></span><span class="anchor" id="SideBar.line-22"></span></li></ul><p class="line874">References <span class="anchor" id="SideBar.line-23"></span><ul><li><p class="line891"><a href="/ML">Mailing Lists</a> <span class="anchor" id="SideBar.line-24"></span></li><li><p class="line891"><a href="/RelatedSites">Related Sites</a> <span class="anchor" id="SideBar.line-25"></span></li><li><p class="line891"><a href="/ProgrammingLinks">Programming Links</a> <span class="anchor" id="SideBar.line-26"></span><span class="anchor" id="SideBar.line-27"></span></li></ul><p class="line874">Wiki <span class="anchor" id="SideBar.line-28"></span><ul><li><p class="line891"><a href="/RecentChanges">Recent Changes</a> <span class="anchor" id="SideBar.line-29"></span></li><li><p class="line891"><a href="/EditorsGroup">Site Editors</a> <span class="anchor" id="SideBar.line-30"></span></li><li><p class="line891"><a href="/SideBar">Side Bar</a> <span class="anchor" id="SideBar.line-31"></span></li><li><p class="line891"><a href="/WebTips">Tips for Editors</a> <span class="anchor" id="SideBar.line-32"></span></li><li><p class="line891"><a class="https" href="https://wikiwall.org/">Hosted by WikiWall</a> <span class="anchor" id="SideBar.line-33"></span></li></ul><span class="anchor" id="SideBar.bottom"></span></div></div>
+<!-- End of SideBar contents -->
+
+            <div>
+              <h4>Navigation</h4>
+              <ul id='navibar'>
+                <li class="wikilink"><a href="/RecentChanges">RecentChanges</a></li>                <li class="wikilink"><a href="/FindPage">FindPage</a></li>                <li class="wikilink"><a href="/HelpContents">HelpContents</a></li>
+              </ul>
+            </div>
+
+
+          </div> <!-- /#sidebar -->
+        </div> <!-- /#sidebar-mover -->
+      </div><div id="contentbox"> <!-- End of Sidebar and Beginning of content -->
+
+
+
+
+        <div id="location">
+<span id="interwiki"><a href="/Linux_Kernel_Newbies" rel="nofollow">KernelNewbies</a><span class="sep">:</span></span>
+
+<ul id="pagelocation">
+<li><a href="/KernelProjects">KernelProjects</a></li><li><a href="/KernelProjects/kconfig-sat">kconfig-sat</a></li>
+</ul>
+
+          <span class="lastupdate">Last updated at 2017-12-30 01:30:35</span>
+        </div>
+
+
+<!-- Page contents -->
+<div dir="ltr" id="content" lang="en"><span class="anchor" id="top"></span>
+<span class="anchor" id="line-1"></span><p class="line867">
+<h1 id="Linux_kconfig_SAT_integration">Linux kconfig SAT integration</h1>
+<span class="anchor" id="line-2"></span><span class="anchor" id="line-3"></span><p class="line874">The Linux kernel uses kconfig to help enable configuring the kernel <span class="anchor" id="line-4"></span>and try to ensure expressed dependencies are met. Kconfig has its <span class="anchor" id="line-5"></span>limitations though and integrating a SAT solver is expected to help <span class="anchor" id="line-6"></span>not only address some of Kconfig's limitations but also give us quite <span class="anchor" id="line-7"></span>a bit advanced bells and whistles within Kconfig. This project aims <span class="anchor" id="line-8"></span>at doing integration of a SAT solver into Linux by addressing the <span class="anchor" id="line-9"></span>most simple use case of a SAT solver, while leaving the rest of the <span class="anchor" id="line-10"></span>optional bells and whistles up for future development. For more futuristic <span class="anchor" id="line-11"></span>possible uses of SAT solvers on linux refer to the <span class="anchor" id="line-12"></span><a class="http" href="http://kernelnewbies.org/KernelProjects/linux-sat">linux-sat</a> page. <span class="anchor" id="line-13"></span><span class="anchor" id="line-14"></span><p class="line874">At this point in time this project is simply listed as work needed, <span class="anchor" id="line-15"></span>it is not associated with GSoC, Outreachy, or anything else. We are <span class="anchor" id="line-16"></span>simply grouping people interested together in document why we want <span class="anchor" id="line-17"></span>this, and helping mentor it getting upstream. <span class="anchor" id="line-18"></span><span class="anchor" id="line-19"></span><p class="line874">How you get this upstream is up to you, the developer. <span class="anchor" id="line-20"></span><span class="anchor" id="line-21"></span><p class="line867"><div class="table-of-contents"><p class="table-of-contents-heading">Contents<ol><li>
+<a href="#Linux_kconfig_SAT_integration">Linux kconfig SAT integration</a></li><li>
+<a href="#Problem_description">Problem description</a><ol><li>
+<a href="#Defining_kconfig">Defining kconfig</a></li><li>
+<a href="#Defining_a_SAT_solver">Defining a SAT solver</a></li><li>
+<a href="#Previous_SAT_solver_kconfig_integration_work">Previous SAT solver kconfig integration work</a></li><li>
+<a href="#Non-upstream_SAT_solver_use_in_Linux_with_Kconfig">Non-upstream SAT solver use in Linux with Kconfig</a></li><li>
+<a href="#SAT_solver_uses_in_the_Linux_ecosystem">SAT solver uses in the Linux ecosystem</a></li><li>
+<a href="#SAT_software_candidates_for_Linux_kconfig_integration">SAT software candidates for Linux kconfig integration</a></li><li>
+<a href="#SAT_solver_integration_on_kconfig_upstream">SAT solver integration on kconfig upstream</a><ol><li>
+<a href="#kconfig_heavy_handed_select">kconfig heavy handed select</a></li></ol></li></ol></li><li>
+<a href="#Mentors_and_areas_of_expertise">Mentors and areas of expertise</a></li><li>
+<a href="#Interested_developers">Interested developers</a></li><li>
+<a href="#Mailing_list">Mailing list</a></li><li>
+<a href="#Code">Code</a></li></ol></div> <span class="anchor" id="line-22"></span><span class="anchor" id="line-23"></span><p class="line867">
+<h1 id="Problem_description">Problem description</h1>
+<span class="anchor" id="line-24"></span><span class="anchor" id="line-25"></span><p class="line874">Below we'll split definitions of kconfig, SAT solvers, provide references for <span class="anchor" id="line-26"></span>prior known uses of SAT solvers with Kconfig, prior stated interest in this <span class="anchor" id="line-27"></span>work, then also some references to other uses of SAT Solvers used in the <span class="anchor" id="line-28"></span>Linux ecosystem and finally then go into detail on evaluating proposed work <span class="anchor" id="line-29"></span>of integrating a SAT solver into the Linux kernel. <span class="anchor" id="line-30"></span><span class="anchor" id="line-31"></span><p class="line874">More more futuristic uses of SAT solver on Linux refer <span class="anchor" id="line-32"></span>to <a class="http" href="http://kernelnewbies.org/KernelProjects/linux-sat">linux-sate page</a> which documents <span class="anchor" id="line-33"></span>known possible uses of SAT solvers within the Linux kernel. <span class="anchor" id="line-34"></span><span class="anchor" id="line-35"></span><p class="line867">
+<h2 id="Defining_kconfig">Defining kconfig</h2>
+<span class="anchor" id="line-36"></span><span class="anchor" id="line-37"></span><p class="line874">Kconfig is the variability modeling languages used in Linux, used to <span class="anchor" id="line-38"></span>express kernel build dependency relationships. This is done through a <span class="anchor" id="line-39"></span>series of symbols and expressed relationships between symbols. A user <span class="anchor" id="line-40"></span>configures a kernel build through a menu interface, the job of kconfig <span class="anchor" id="line-41"></span>is to entrust the defined relationships expressed by developers and <span class="anchor" id="line-42"></span>then ensure that the only sensible symbols are displayed which will <span class="anchor" id="line-43"></span>not create any build or run time conflicts. <span class="anchor" id="line-44"></span><span class="anchor" id="line-45"></span><p class="line867">
+<h2 id="Defining_a_SAT_solver">Defining a SAT solver</h2>
+<span class="anchor" id="line-46"></span><span class="anchor" id="line-47"></span><p class="line862">A <a class="http" href="http://www.cs.cornell.edu/~sabhar/chapters/SATSolvers-KR-Handbook.pdf">SAT solver</a> specializes <span class="anchor" id="line-48"></span>in evaluating if there exists an interpretation that satisfies a given <span class="anchor" id="line-49"></span>boolean formula. In the simplest case this in turn will tell you if a series <span class="anchor" id="line-50"></span>of variables and their relationships are satisfiable or not. This won't <span class="anchor" id="line-51"></span>explain why things are unsatisfiable though, or what is the minimal set <span class="anchor" id="line-52"></span>of satisfiable set of variables that are allowed. There are advanced aspects <span class="anchor" id="line-53"></span>of SAT solving though that deal with later elements of the satisfiable question, <span class="anchor" id="line-54"></span>for instance a A SAT solver with Minimally Unsatisfiable Subformulas (MUSes) <span class="anchor" id="line-55"></span>support should be able to show the minimum set of variables which can be <span class="anchor" id="line-56"></span>enabled that are satisfiable. <span class="anchor" id="line-57"></span><span class="anchor" id="line-58"></span><p class="line867">
+<h2 id="Previous_SAT_solver_kconfig_integration_work">Previous SAT solver kconfig integration work</h2>
+<span class="anchor" id="line-59"></span><span class="anchor" id="line-60"></span><p class="line874">In May 2010, Vegard Nossum announced a GSoC project to use a SAT solver to generate full kernel configs based on a set of constraints given by the user. As of May 2016, the project is usable in practice but not yet merged. The patchset embeds PicoSAT and includes three new targets: <span class="anchor" id="line-61"></span><span class="anchor" id="line-62"></span><ul><li>'make satconfig' (automatically generating a near-minimal .config satisfying .satconfig), <span class="anchor" id="line-63"></span></li><li>'make satrandconfig' (also satisfying .satconfig, but with other options enabled at random), and <span class="anchor" id="line-64"></span></li><li>'make satmenuconfig' (allows editing .satconfig interactively, immediately showing the solution found by the SAT solver). <span class="anchor" id="line-65"></span><span class="anchor" id="line-66"></span></li></ul><p class="line874">The biggest missing feature is proper handling of string/int/hex options in the solver -- these values are currently derived from defaults or explicit settings. <span class="anchor" id="line-67"></span><span class="anchor" id="line-68"></span><p class="line862">To pull the code, do: git fetch <a class="mailto" href="mailto:git@github.com">git@github.com</a>:vegard/linux-2.6.git v4.3+kconfig-sat (or see <a class="https" href="https://github.com/vegard/linux-2.6/tree/v4.3+kconfig-sat">https://github.com/vegard/linux-2.6/tree/v4.3+kconfig-sat</a>) <span class="anchor" id="line-69"></span><span class="anchor" id="line-70"></span><p class="line874">The project is aiming for upstream inclusion once the last bugs have been sorted out. <span class="anchor" id="line-71"></span><span class="anchor" id="line-72"></span><p class="line867">
+<h2 id="Non-upstream_SAT_solver_use_in_Linux_with_Kconfig">Non-upstream SAT solver use in Linux with Kconfig</h2>
+<span class="anchor" id="line-73"></span><span class="anchor" id="line-74"></span><p class="line874">Two research projects are known to have toyed with using SAT solvers <span class="anchor" id="line-75"></span>for Linux and Kconfig: <span class="anchor" id="line-76"></span><span class="anchor" id="line-77"></span><ul><li><p class="line891"><a class="http" href="http://gsd.uwaterloo.ca/sites/default/files/vm-2013-berger.pdf">Inferring semantics for kconfig</a>: translated Kconfig logic into boolean formulas and ran a SAT solver on it <span class="anchor" id="line-78"></span></li><li><p class="line891"><a class="https" href="https://undertaker.cs.fau.de">Undertaker</a>: extracted variability models from Kconfig, and put them together with a propositional formula extracted from CPP #ifdefs and build-rules into a SAT solver in order to find dead code, dead files, and dead symbols. <span class="anchor" id="line-79"></span><span class="anchor" id="line-80"></span></li></ul><p class="line867">
+<h2 id="SAT_solver_uses_in_the_Linux_ecosystem">SAT solver uses in the Linux ecosystem</h2>
+<span class="anchor" id="line-81"></span><span class="anchor" id="line-82"></span><p class="line874">SAT solvers have also been used in other areas of the Linux distribution ecosystem. <span class="anchor" id="line-83"></span>One of the known areas was for package dependency resolution. The <span class="anchor" id="line-84"></span><a class="http" href="http://mancoosi.org/">3 year Mancoosi research project</a> challenged          <span class="anchor" id="line-85"></span>researchers and developers with solutions for software package resolution        <span class="anchor" id="line-86"></span>dependencies requiring free software licenses for proposed solutions, some of    <span class="anchor" id="line-87"></span>the solutions proposed used SAT solvers, one of which was <a class="nonexistent" href="/CryManSolver">CryManSolver</a> which     <span class="anchor" id="line-88"></span>used <a class="http" href="http://www.msoos.org/cryptominisat4/">CryptoMiniSat</a> (<a class="https" href="https://github.com/msoos/cryptominisat/">github</a>) <span class="anchor" id="line-89"></span>as backend (a SAT solver in itself). <span class="anchor" id="line-90"></span><span class="anchor" id="line-91"></span><p class="line867">
+<h2 id="SAT_software_candidates_for_Linux_kconfig_integration">SAT software candidates for Linux kconfig integration</h2>
+<span class="anchor" id="line-92"></span><span class="anchor" id="line-93"></span><p class="line874">The obvious candidates currently evaluated have been: <span class="anchor" id="line-94"></span><span class="anchor" id="line-95"></span><ul><li><p class="line891"><a class="http" href="http://www.msoos.org/cryptominisat4/">CryptoMiniSat</a> - Great documentation, GPL-compatible code, maintainer is active, willing to help. Down side: C++, Python interfaces <span class="anchor" id="line-96"></span></li><li><p class="line891"><a class="http" href="http://fmv.jku.at/picosat/">PicoSAT</a> - already used in a few Kconfig integration projects, and is written in C, maintainer is active and is willing to help <span class="anchor" id="line-97"></span><span class="anchor" id="line-98"></span></li></ul><p class="line874">Integrating a SAT into Linux only makes sense if we <span class="anchor" id="line-99"></span>know we can count on support from SAT solving experts to help with <span class="anchor" id="line-100"></span>long term maintenance and issues, we have confirmation of interest to help <span class="anchor" id="line-101"></span>Linux's integration and future issues by both SAT solver experts, the authors <span class="anchor" id="line-102"></span>of both PicoSAT and <a class="nonexistent" href="/CryptoMiniSat">CryptoMiniSat</a> - Armin Biere and Máté Soós. <span class="anchor" id="line-103"></span><span class="anchor" id="line-104"></span><p class="line867">
+<h2 id="SAT_solver_integration_on_kconfig_upstream">SAT solver integration on kconfig upstream</h2>
+<span class="anchor" id="line-105"></span><span class="anchor" id="line-106"></span><p class="line874">This section documents why and how its envisioned we can integrate a <span class="anchor" id="line-107"></span>SAT solver into Linux for use by Kconfig. <span class="anchor" id="line-108"></span><span class="anchor" id="line-109"></span><p class="line874">A simple desirable feature to strive for to start off with Kconfig is       <span class="anchor" id="line-110"></span>to have the option to avoid displaying symbols from the configurator, or make    <span class="anchor" id="line-111"></span>a symbol unselectable (and optionally explain then why its not selectable if     <span class="anchor" id="line-112"></span>selected) if its known that selecting a symbol would break an existing           <span class="anchor" id="line-113"></span>configuration. Kconfig will currently avoid displaying a symbol only if its      <span class="anchor" id="line-114"></span>dependencies explicitly annotated with a with 'depends on' cannot be met,        <span class="anchor" id="line-115"></span>however conflicts and implicit dependencies with 'select' are ignored.  This     <span class="anchor" id="line-116"></span>is actually a <strong>feature</strong> of how kconfig 'select' works to help with loading a       <span class="anchor" id="line-117"></span>preset known set of required symbols for an architecture. Select can however     <span class="anchor" id="line-118"></span>be used widely on drivers and its use then can cause unexpected issues when      <span class="anchor" id="line-119"></span>configuring the kernel. Even if 'select' is used within architecture Kconfig     <span class="anchor" id="line-120"></span>files, if a symbol is being selected by architecture but it leads to possibly    <span class="anchor" id="line-121"></span>broken configuration state we want to know about this and fix these issues. <span class="anchor" id="line-122"></span><span class="anchor" id="line-123"></span><p class="line874">This is one task, let's break this task down further: <span class="anchor" id="line-124"></span><span class="anchor" id="line-125"></span><ul><li>1) Calling PicoSAT directly from Kconfig, which would imply that existing Kconfig code needs to be extended such that Kconfig data can be transformed into a model for PicoSAT. <span class="anchor" id="line-126"></span></li><li>2) Checks if a given symbol has issues <span class="anchor" id="line-127"></span><span class="anchor" id="line-128"></span></li></ul><p class="line874">1) seems to be the crux of the work required, we have tools that do 2) but we don't want independent tools, but rather an integrated solution. One can stage work by first implementing 1) and then using an existing tool to test 2). <span class="anchor" id="line-129"></span><span class="anchor" id="line-130"></span><p class="line874">Optional advanced features one can strive for:                                   <span class="anchor" id="line-131"></span><span class="anchor" id="line-132"></span><ul><li>a) Use the SAT solver to find symbols which are known to be dead code, that is code which we know cannot possibly be enabled through Kconfig <span class="anchor" id="line-133"></span></li><li>b) Explain why a selectable symbols is in conflict. This can be accomplished by taking advantage of PicoSAT's Minimally Unsatisfiable Subformulas (MUS) support <span class="anchor" id="line-134"></span></li><li>c) Avoid symbol circular dependency by displaying the dependency relationship issues at build time and providing a more useful description of the existing conflict (making use of PicoSAT's MUS) <span class="anchor" id="line-135"></span><span class="anchor" id="line-136"></span></li></ul><p class="line867">
+<h3 id="kconfig_heavy_handed_select">kconfig heavy handed select</h3>
+<span class="anchor" id="line-137"></span><span class="anchor" id="line-138"></span><p class="line874">Kconfig currently enables a select to be enabled without first evaluating <span class="anchor" id="line-139"></span>if the symbols that the selectable has would conflict or create an issue <span class="anchor" id="line-140"></span>with any of the known currently set set of symbols. This is actually   <span class="anchor" id="line-141"></span>a <strong>feature</strong> of kconfig, given select was designed to be heavy handed <span class="anchor" id="line-142"></span>for architecture to preload a set of symbols it needs. Kconfig then currently <span class="anchor" id="line-143"></span>does not check the list of symbols listed on a symbol's "select" list, this <span class="anchor" id="line-144"></span>is done on purpose to help load a set of known required symbols. Because of <span class="anchor" id="line-145"></span>this use of select should be used with caution. <span class="anchor" id="line-146"></span><span class="anchor" id="line-147"></span><p class="line874">The option B and C are clearly contradicting with respect to A.                <span class="anchor" id="line-148"></span>However, when A is set, C can be set as well because Kconfig does not          <span class="anchor" id="line-149"></span>visit the dependencies of the select target (in this case B).  And since       <span class="anchor" id="line-150"></span>Kconfig does not visit the dependencies, it breaks the dependencies of B       <span class="anchor" id="line-151"></span>(!A). <span class="anchor" id="line-152"></span><span class="anchor" id="line-153"></span><p class="line874">This is best shown with the following sample Kconfig file. Copy  <span class="anchor" id="line-154"></span><span class="anchor" id="line-155"></span><p class="line874">Test with:                                                                     <span class="anchor" id="line-156"></span><span class="anchor" id="line-157"></span><ul><li style="list-style-type:none">make KBUILD_KCONFIG=Kconfig.select-break menuconfig                                                                               <span class="anchor" id="line-158"></span><span class="anchor" id="line-159"></span></li></ul><p class="line874">Copy and paste the following code into a file called Kconfig.select-break, <span class="anchor" id="line-160"></span>note though you will need to fix tons spacing issues to use, alternatively <span class="anchor" id="line-161"></span>you can just <a class="http" href="http://drvbp1.linux-foundation.org/~mcgrof/kconfig/Kconfig.select-break">download this file</a> which has the spacing issues addressed. <span class="anchor" id="line-162"></span><hr class="hr1" /><p class="line874"> <span class="anchor" id="line-163"></span><ul><li style="list-style-type:none">mainmenu "Simple example to demo kconfig select broken dependency issue" <span class="anchor" id="line-164"></span><span class="anchor" id="line-165"></span>config A                                                                         <span class="anchor" id="line-166"></span><ul><li style="list-style-type:none">bool "CONFIG A" <span class="anchor" id="line-167"></span><span class="anchor" id="line-168"></span></li></ul>config B                                                                         <span class="anchor" id="line-169"></span><ul><li style="list-style-type:none">bool "CONFIG B" <span class="anchor" id="line-170"></span>depends on !A <span class="anchor" id="line-171"></span><span class="anchor" id="line-172"></span></li></ul>config C <span class="anchor" id="line-173"></span><ul><li style="list-style-type:none">bool "CONFIG C" <span class="anchor" id="line-174"></span>depends on A <span class="anchor" id="line-175"></span>select B <span class="anchor" id="line-176"></span></li></ul></li></ul><p class="line867"><hr class="hr1" /><p class="line874"> <span class="anchor" id="line-177"></span><span class="anchor" id="line-178"></span><p class="line867">
+<h1 id="Mentors_and_areas_of_expertise">Mentors and areas of expertise</h1>
+<span class="anchor" id="line-179"></span><span class="anchor" id="line-180"></span><ul><li><p class="line862">Valentin Rothberg &lt;<a class="mailto" href="mailto:valentinrothberg@gmail.com">valentinrothberg@gmail.com</a>&gt; - one of the authors behind Undertaker, willing to help with using PicoSAT, interfacing PicoSAT with with Kconfig <span class="anchor" id="line-181"></span></li><li><p class="line862">Andrzej Wąsowski &lt;<a class="mailto" href="mailto:wasowski@itu.dk">wasowski@itu.dk</a>&gt; - Experience in modeling configuration problems in SAT both in Kconfig and other universes <span class="anchor" id="line-182"></span></li><li><p class="line862">Armin Biere &lt;<a class="mailto" href="mailto:biere@jku.at">biere@jku.at</a>&gt; - author of PicoSAT - SAT expert <span class="anchor" id="line-183"></span></li><li><p class="line862">Máté Soós &lt;<a class="mailto" href="mailto:soos.mate@gmail.com">soos.mate@gmail.com</a>&gt; - author of <a class="nonexistent" href="/CryptoMiniSat">CryptoMiniSat</a> - SAT expert <span class="anchor" id="line-184"></span></li><li><p class="line862">Luis R. Rodriguez &lt;<a class="mailto" href="mailto:mcgrof@suse.com">mcgrof@suse.com</a>&gt; - Kernel developer - willing to help with general advice <span class="anchor" id="line-185"></span></li><li><p class="line862">Thorsten Berger &lt;<a class="mailto" href="mailto:bergert@chalmers.se">bergert@chalmers.se</a>&gt; - Willing to mentor, if a student is found interested in this as part of a thesis topic at University of Gothenburg <span class="anchor" id="line-186"></span><span class="anchor" id="line-187"></span></li></ul><p class="line867">
+<h1 id="Interested_developers">Interested developers</h1>
+<span class="anchor" id="line-188"></span><span class="anchor" id="line-189"></span><p class="line874">Folks considering hacking on this and getting this upstream: <span class="anchor" id="line-190"></span><span class="anchor" id="line-191"></span><ul><li><p class="line862">Chi Pham &lt;<a class="mailto" href="mailto:chidaph@gmail.com">chidaph@gmail.com</a>&gt; <span class="anchor" id="line-192"></span><span class="anchor" id="line-193"></span></li></ul><p class="line867">
+<h1 id="Mailing_list">Mailing list</h1>
+<span class="anchor" id="line-194"></span><span class="anchor" id="line-195"></span><p class="line862">We'll eventually use the <a class="mailto" href="mailto:linux-kbuild@vger.kernel.org">linux-kbuild@vger.kernel.org</a> mailing list for upstream <span class="anchor" id="line-196"></span>development discussions, but for now we'll want you to use this specialized list: <span class="anchor" id="line-197"></span><span class="anchor" id="line-198"></span><p class="line867"><a class="mailto" href="mailto:kconfig-sat@googlegroups.com">kconfig-sat@googlegroups.com</a> <span class="anchor" id="line-199"></span><span class="anchor" id="line-200"></span><p class="line867"><a class="https" href="https://groups.google.com/d/forum/kconfig-sat">https://groups.google.com/d/forum/kconfig-sat</a> <span class="anchor" id="line-201"></span><span class="anchor" id="line-202"></span><p class="line874">Anyone can subscribe. Count on the above folks as being subscribed. <span class="anchor" id="line-203"></span><span class="anchor" id="line-204"></span><p class="line867">
+<h1 id="Code">Code</h1>
+<span class="anchor" id="line-205"></span><span class="anchor" id="line-206"></span><p class="line874">TBD! <span class="anchor" id="line-207"></span><span class="anchor" id="bottom"></span></div>
+<!-- End of page contents -->
+        <div class="clearfix"></div>
+
+      </div> <!-- /#contentbox -->
+      <!-- End of content body -->
+    </div> <!-- /.container, #pagebox -->
+  </div> <!-- /#outbox -->
+
+  <!-- pageinfo -->
+  <div id="pageinfo-container">
+    <div class="container">
+      <p id="pageinfo" class="info" lang="en" dir="ltr">KernelNewbies: KernelProjects/kconfig-sat  (last edited 2017-12-30 01:30:35 by <span title="??? @ localhost[127.0.0.1]">localhost</span>)</p>
+
+    </div>
+  </div>
+  <!-- End of pageinfo -->
+
+
+
+  <!-- Footer -->
+  <div id="footer">
+    <div class="container text-right text-muted">
+      <ul id="credits">
+<li><a href="http://moinmo.in/" title="This site uses the MoinMoin Wiki software.">MoinMoin Powered</a></li><li><a href="http://moinmo.in/Python" title="MoinMoin is written in Python.">Python Powered</a></li><li><a href="http://moinmo.in/GPL" title="MoinMoin is GPL licensed.">GPL licensed</a></li><li><a href="http://validator.w3.org/check?uri=referer" title="Click here to validate this page.">Valid HTML 4.01</a></li>
+</ul>
+
+      
+
+    </div> <!-- /.container -->
+  </div> <!-- /#footer -->
+  <!-- End of footer -->
+
+  <!-- Bootstrap core JavaScript -->
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="/moin_static1911/memodump/js/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="/moin_static1911/memodump/js/bootstrap.min.js"></script>
+  <!-- toggle.js by dossist -->
+  <script src="/moin_static1911/memodump/js/toggle.js"></script>
+  <!-- Custom script -->
+
+  <script>
+    +function ($) {
+      // Toggle minified navbar under mobile landscape view
+      $('.navbar-collapse').on('show.bs.collapse', function () {
+        $('.navbar-mobile-toggle').togglejs('show');
+      });
+      $('.navbar-collapse').on('hidden.bs.collapse', function () {
+        $('.navbar-mobile-toggle').togglejs('hide');
+      });
+      
+      //Scroll position fix for hash anchors
+      var mdAnchorFix = {
+        escapeRe: /[ !"#$%&'()*+,.\/:;<=>?@\[\\\]^`{|}~]/g,
+        escape: function (str) {
+          return str.replace(mdAnchorFix.escapeRe, '\\$&');
+        },
+        rgbRe: /^rgba\(([ \t]*\d{1,3},){3}([ \t]*\d{1,3})\)$/i,
+        isTransparent: function (rgbstr) {
+          if (rgbstr === 'transparent') {
+            return true;
+          }
+          rgbMatch = rgbstr.match(mdAnchorFix.rgbRe);
+          if (rgbMatch) {
+            return (Number(rgbMatch[2]) ? false : true);
+          }
+          return false;
+        },
+        navbarHeight: function () {
+          var height = 0;
+          var $navbar = $('.navbar');
+          if ( !mdAnchorFix.isTransparent($navbar.css('background-color'))
+               && ($navbar.css('display') !== 'none')
+               && ($navbar.css('visibility') !== 'hidden') ) {
+            height = $navbar.height();
+          }
+          return height;
+        },
+        jump: function () {
+          origin = $('#' + mdAnchorFix.escape(location.hash.substr(1))).offset().top;
+          offset = mdAnchorFix.navbarHeight() + 15;
+          setTimeout(function () { window.scrollTo(0, origin - offset); }, 1);
+        },
+        clickWrapper: function () {
+          if ( ($(this).attr('href') === location.hash)
+               || !('onhashchange' in window.document.body) ) {
+            setTimeout(function () { $(window).trigger("hashchange"); }, 1);
+          }
+        },
+      };
+      $('#pagebox a[href^="#"]:not([href="#"])').on("click", mdAnchorFix.clickWrapper);
+      $(window).on("hashchange", mdAnchorFix.jump);
+      if (location.hash) setTimeout(function () { mdAnchorFix.jump(); }, 100);
+    }(jQuery);
+  </script>
+
+  <!-- End of JavaScript -->
+</body>
+</html>
+

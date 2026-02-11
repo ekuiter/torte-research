@@ -1,0 +1,290 @@
+        <!DOCTYPE html>
+        <html lang="en">
+        <head><title>What makes a hobbyist? [LWN.net]</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="robots" CONTENT="noai, noimageai">
+        <link rel="icon" href="https://static.lwn.net/images/favicon.png"
+              type="image/png">
+        <link rel="alternate" type="application/rss+xml" title="LWN: All posted comments" href="https://lwn.net/headlines/Comments">
+        <link rel="stylesheet" href="/CSS/lwn">
+<link rel="stylesheet" href="/CSS/nosub">
+
+        
+<script async src="//servedby.aqua-adserver.com/asyncjs.php"></script>
+
+        </head>
+        <body>
+        <a name="t"></a>
+<div id="menu"><a href="/"><img src="https://static.lwn.net/images/logo/barepenguin-70.png" class="logo"
+                 border="0" alt="LWN.net Logo">
+           <span class="logo">LWN<br>.net</span>
+           <span class="logobl">News from the source</span></a>
+           <a href="/"><img src="https://static.lwn.net/images/lcorner-ss.png" class="sslogo"
+                 border="0" alt="LWN"></a><div class="navmenu-container">
+           <ul class="navmenu">
+        <li><a class="navmenu" href="#t"><b>Content</b></a><ul><li><a href="/current/">Weekly Edition</a></li><li><a href="/Archives/">Archives</a></li><li><a href="/Search/">Search</a></li><li><a href="/Kernel/">Kernel</a></li><li><a href="/Security/">Security</a></li><li><a href="/Calendar/">Events calendar</a></li><li><a href="/Comments/unread">Unread comments</a></li><li><hr></li><li><a href="/op/FAQ.lwn">LWN FAQ</a></li><li><a href="/op/AuthorGuide.lwn">Write for us</a></li></ul></li>
+</ul></div>
+</div> <!-- menu -->
+<div class="not-handset"
+            	     style="margin-left: 10.5em; display: block;">
+                   <div class="not-print"> <ins data-revive-zoneid="12072" 
+data-revive-id="fa8c6c9da7f33852f7097c4a94da1070"></ins> </div>
+                </div>
+            <div class="topnav-container">
+<div class="not-handset"><form action="https://lwn.net/Login/" method="post" name="loginform"
+                 class="loginform">
+        <label><b>User:</b> <input type="text" name="uname" value="" size="8" id="uc" /></label> 
+		<label><b>Password:</b> <input type="password" name="pword" size="8" id="pc" /></label> <input type="hidden" name="target" value="/Articles/563578/" /> <input type="submit" name="submit" value="Log in" /></form> |
+           <form action="https://lwn.net/subscribe/" method="post" class="loginform">
+           <input type="submit" name="submit" value="Subscribe" />
+           </form> |
+           <form action="https://lwn.net/Login/newaccount" method="post" class="loginform">
+           <input type="submit" name="submit" value="Register" />
+           </form>
+        </div>
+               <div class="handset-only">
+               <a href="/Login/"><b>Log in</b></a> /
+               <a href="/subscribe/"><b>Subscribe</b></a> /
+               <a href="/Login/newaccount"><b>Register</b></a>
+               </div>
+               </div><div class="maincolumn flexcol">
+<div class="middlecolumn">
+<div class="PageHeadline">
+<h1>What makes a hobbyist?</h1>
+</div>
+<div class="ArticleText">
+<h2>What makes a hobbyist?</h2>
+
+        Posted Aug 15, 2013 21:15 UTC (Thu) by <b>plougher</b> (guest, #21620)<br>
+         
+        Parent article: <a href="/Articles/563538/">Kernel summit 2013: Call for Hobbyists</a>
+        <p>
+        <div class="FormattedComment">
+Surely the definition of hobbyist should be who sponsored or paid for their work in the mainline kernel?  If they paid for it themselves they're a hobbyist as far as the mainline kernel is concerned?  The current definition makes people non-hobbyists even if they work for a company working on an ancient embedded kernel (nowhere near upstream), and the company would never in a million years agree to allow that person to work on the mainline kernel.  The definition also traps people who now work on Linux, but did the bulk of their work in the kernel as a unpaid hobbyist.<br>
+<p>
+Squashfs, which I initially wrote in my spare-time while working for an embedded company (on Linux 2.4.2) is a case in point.  I would never have been allowed by management to work on it.  Later as Squashfs became more popular (but still out of mainline), I discovered most of my improvements to Squashfs only came when I could work on it full time "between jobs", as spare-time working simply didn't give enough time any more.<br>
+<p>
+I failed to mainline it first time in 2005, where the work had been done between jobs.  Facing increasing demands to mainline it, but being unable to while working full-time, I left my job in 2008, and worked on it full-time unemployed for a year, finally mainlining it in 2009.<br>
+<p>
+In hindsight it wasn't a good move, because I then found myself looking for a job (after a year of unemployment) in the worst economic downturn for decades.  Suffice to say it wasn't an easy time.<br>
+<p>
+I now work for Redhat as a kernel maintainer but only on the RHEL5 kernel (2.6.18).<br>
+<p>
+So, does that make me as Squashfs author, a hobbyist or not?  Under your definition it would not, despite most of the work having been while not being paid to work on Linux.<br>
+<p>
+You say "Since most top kernel developers are not hobbyists these days, this is your opportunity to make up for what we're missing.", but you then partially answer your own question next, with "As we recognize most hobbyists don't have the resources to attend conferences ..."<br>
+<p>
+Lack of time and resources and the consequent inability to "network" is what affects hobyists most in my opinion, made worse by attitudes from other kernel developers which have that in abundance.<br>
+<p>
+Again, a case in point.  When kernel.org got hacked all logins were revoked, and people wishing to reestablish access under the new system, had to get their PGP key signed by others in the Linux kernel community.  To put myself in the position where I could get my key signed by the necessary people, I personally paid to attend LinuxCon Europe in 2011 (Prague).  There I discovered no key signing event had been organised out side of the kernel summit itself, so I had to approach people individually, which was generally OK, but a number of people told me they didn't know who I was and then walked straight by without giving me the slightest chance to show documentation or say why I wanted them to sign my key, which was slightly humiliating.  It did nothing to dispel the notion of a closed community which know everyone worth knowing by sight.<br>
+<p>
+<p>
+</div>
+
+        <p>
+        <hr width="60%%" align="left">
+            <form action="/Login/" method="post">
+            <input type="hidden" name="target" value="/Articles/563578/" />
+            <input type="submit" name="login" value="Log in" /> to post comments
+            <p>
+        <p><a name="Comments"></a>
+<a name="CommAnchor563588"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">What makes a hobbyist?</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Aug 15, 2013 21:21 UTC (Thu)
+                               by <b>dlang</b> (guest, #313)
+                              [<a href="/Articles/563588/">Link</a>] (5 responses)
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+Since you are paid by RedHat to work on Linux, you are not a hobbyist at this point. When you were unemployed you were a hobbiest.<br>
+<p>
+the folks who are not hobbiests have already been invited (or not) to the kernel summit, this is a special case (the first time as far as i know) that the summit organizers are going to pay for people who work on the kernel and are not employeed to do so to attend.<br>
+<p>
+I see this as a good thing, and I really don't see where your confusion comes from.<br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/563588/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    <a name="CommAnchor563592"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">What makes a hobbyist?</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Aug 15, 2013 22:01 UTC (Thu)
+                               by <b>plougher</b> (guest, #21620)
+                              [<a href="/Articles/563592/">Link</a>] 
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+<font class="QuotedText">&gt; I see this as a good thing,</font><br>
+<p>
+Yup, and that would be a valid comment if I'd argued it wasn't a good thing.<br>
+<p>
+<font class="QuotedText">&gt;  and I really don't see where your confusion comes from.</font><br>
+<p>
+I think I made my point quite clearly, thanks.<br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/563592/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    </details>
+<a name="CommAnchor563595"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">What makes a hobbyist?</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Aug 15, 2013 23:39 UTC (Thu)
+                               by <b>plougher</b> (guest, #21620)
+                              [<a href="/Articles/563595/">Link</a>] (3 responses)
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+<font class="QuotedText">&gt; Since you are paid by RedHat to work on Linux, you are not a hobbyist at</font><br>
+<font class="QuotedText">&gt; this point. When you were unemployed you were a hobbiest.</font><br>
+<p>
+OK, I see your sticking point is the "now" aspect of this.  It was my point that using "now" as the definition of hobbyist is wrong.<br>
+<p>
+Apparently the whole point of inviting hobbyists is to gain knowledge of hobbyists' experiences with the kernel process - and by definition that means people who were hobbyists at the time of their significant interaction with the kernel community.   That has nothing to do with their employment status "now", and indeed it may have nothing to do with their employment status even then if their interaction with the kernel was on a spare-time unpaid basis.<br>
+<p>
+Conversely, Joe Blogs whose entire kernel contributions were paid for by a "Big Enterprise kernel vendor", if made redundant yesterday is by the "now" definition a hobbyist, and qualified to explain the difficulties of working with the kernel community as a hobbyist.  Can't you see the absurdity of that?<br>
+<p>
+It would be different if hobbyist was simply being used as a euphemism for unwaged, in which case the motivation is to offer assistance (charity) for current circumstances.  But does not appear to the motivation here.<br>
+<p>
+<p>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/563595/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    <a name="CommAnchor563601"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">What makes a hobbyist?</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Aug 15, 2013 23:48 UTC (Thu)
+                               by <b>dlang</b> (guest, #313)
+                              [<a href="/Articles/563601/">Link</a>] 
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+I don't see a problem with the "now" item.<br>
+<p>
+The issue here is that people who are not being paid "now" are going to be offered travel assistance. People who are being paid "now" are expected to have their employer pay for their travel<br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/563601/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    </details>
+<a name="CommAnchor563677"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">What makes a hobbyist?</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Aug 16, 2013 14:13 UTC (Fri)
+                               by <b>bfields</b> (subscriber, #19510)
+                              [<a href="/Articles/563677/">Link</a>] 
+      </p>
+      
+      </div>
+      </summary>
+      <p>It's a new initiative, so a) the details (like what exactly is the correct definition of "hobbyist") probably aren't completely worked out, and b) they may not have a lot of applicants thanks to the late notice.
+
+<p>It therefore might be worth submitting your proposal anyway, if you're interested in going this year.
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/563677/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    </details>
+<a name="CommAnchor564311"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">What makes a hobbyist?</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Aug 22, 2013 2:52 UTC (Thu)
+                               by <b>nevets</b> (subscriber, #11875)
+                              [<a href="/Articles/564311/">Link</a>] 
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+<font class="QuotedText">&gt; OK, I see your sticking point is the "now" aspect of this. It was my point that using "now" as the definition of hobbyist is wrong.</font><br>
+<p>
+Then what exactly do you want us to use? Most of us started out kernel development as hobbyist, including Linus himself.<br>
+<p>
+The reason for the "now" is to get the hobbyist of today's view of kernel development. Yes, today you are no longer considered a hobbyist, but perhaps if you post to the ksummit-2013-discuss, you may get some kind of consideration to attend. You definitely seem to have a perspective on this topic.<br>
+<p>
+Being a Red Hat employee will probably not get you one of the Hobbyist spots, but who knows, put up a good enough argument, you might get considered.<br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/564311/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    </details>
+</details>
+</details>
+
+</div> <!-- ArticleText -->
+</div> <!-- middlecolumn -->
+<div class="rightcol not-print">
+<ins data-revive-zoneid="12085" 
+data-revive-id="fa8c6c9da7f33852f7097c4a94da1070"></ins>
+</div>
+</div> <!-- maincolumn -->
+
+            <br clear="all">
+            <center>
+            <P>
+            <span class="ReallySmall">
+            Copyright &copy; 2026, Eklektix, Inc.<BR>
+            
+            Comments and public postings are copyrighted by their creators.<br>
+            Linux  is a registered trademark of Linus Torvalds<br>
+            </span>
+            </center>
+            
+            </body></html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<title>tools/Kconfiglib: add support for transitional attribute - yocto-kernel-tools - Linux 2.6 Embedded Kernel Tools</title>
+<meta name='generator' content='cgit 1.2.3-korg'/>
+<meta name='robots' content='nofollow'/>
+<link rel='stylesheet' type='text/css' href='/cgit-data/cgit.css'/>
+<script type='text/javascript' src='/cgit-data/cgit.js'></script>
+<link rel='shortcut icon' href='/favicon.ico'/>
+<link rel='alternate' title='Atom feed' href='http://git.yoctoproject.org/yocto-kernel-tools/atom/?h=master' type='application/atom+xml'/>
+<link rel='vcs-git' href='git://git.yoctoproject.org/yocto-kernel-tools' title='yocto-kernel-tools Git repository'/>
+<link rel='vcs-git' href='https://git.yoctoproject.org/yocto-kernel-tools' title='yocto-kernel-tools Git repository'/>
+<link rel='vcs-git' href='https://git.yoctoproject.org/git/yocto-kernel-tools' title='yocto-kernel-tools Git repository'/>
+</head>
+<body>
+<div id='cgit'><table id='header'>
+<tr>
+<td class='logo' rowspan='2'><a href='/'><img src='/cgit-data/cgit.png' alt='cgit logo'/></a></td>
+<td class='main'><a href='/'>index</a> : <a href='/yocto-kernel-tools/'>yocto-kernel-tools</a></td><td class='form'><form method='get'>
+<input type='hidden' name='id' value='f589e1df23251d8319063da0a61c1016b2a0bf85'/><select name='h' onchange='this.form.submit();'>
+<option value='danny'>danny</option>
+<option value='denzil'>denzil</option>
+<option value='dylan'>dylan</option>
+<option value='dylan-test'>dylan-test</option>
+<option value='master' selected='selected'>master</option>
+<option value='master-next'>master-next</option>
+<option value='master-test'>master-test</option>
+<option value='master-test2'>master-test2</option>
+<option value='morty'>morty</option>
+<option value='new-config'>new-config</option>
+<option value='pyro'>pyro</option>
+<option value='tools-ng'>tools-ng</option>
+</select> <input type='submit' value='switch'/></form></td></tr>
+<tr><td class='sub'>Linux 2.6 Embedded Kernel Tools</td><td class='sub right'>grokmirror user</td></tr></table>
+<table class='tabs'><tr><td>
+<a href='/yocto-kernel-tools/about/'>about</a><a href='/yocto-kernel-tools/'>summary</a><a href='/yocto-kernel-tools/refs/?id=f589e1df23251d8319063da0a61c1016b2a0bf85'>refs</a><a href='/yocto-kernel-tools/log/'>log</a><a href='/yocto-kernel-tools/tree/?id=f589e1df23251d8319063da0a61c1016b2a0bf85'>tree</a><a class='active' href='/yocto-kernel-tools/commit/?id=f589e1df23251d8319063da0a61c1016b2a0bf85'>commit</a><a href='/yocto-kernel-tools/diff/?id=f589e1df23251d8319063da0a61c1016b2a0bf85'>diff</a><a href='/yocto-kernel-tools/stats/'>stats</a></td><td class='form'><form class='right' method='get' action='/yocto-kernel-tools/log/'>
+<input type='hidden' name='id' value='f589e1df23251d8319063da0a61c1016b2a0bf85'/><select name='qt'>
+<option value='grep'>log msg</option>
+<option value='author'>author</option>
+<option value='committer'>committer</option>
+<option value='range'>range</option>
+</select>
+<input class='txt' type='search' size='10' name='q' value=''/>
+<input type='submit' value='search'/>
+</form>
+</td></tr></table>
+<div class='content'><div class='cgit-panel'><b>diff options</b><form method='get'><input type='hidden' name='id' value='f589e1df23251d8319063da0a61c1016b2a0bf85'/><table><tr><td colspan='2'/></tr><tr><td class='label'>context:</td><td class='ctrl'><select name='context' onchange='this.form.submit();'><option value='1'>1</option><option value='2'>2</option><option value='3' selected='selected'>3</option><option value='4'>4</option><option value='5'>5</option><option value='6'>6</option><option value='7'>7</option><option value='8'>8</option><option value='9'>9</option><option value='10'>10</option><option value='15'>15</option><option value='20'>20</option><option value='25'>25</option><option value='30'>30</option><option value='35'>35</option><option value='40'>40</option></select></td></tr><tr><td class='label'>space:</td><td class='ctrl'><select name='ignorews' onchange='this.form.submit();'><option value='0' selected='selected'>include</option><option value='1'>ignore</option></select></td></tr><tr><td class='label'>mode:</td><td class='ctrl'><select name='dt' onchange='this.form.submit();'><option value='0' selected='selected'>unified</option><option value='1'>ssdiff</option><option value='2'>stat only</option></select></td></tr><tr><td/><td class='ctrl'><noscript><input type='submit' value='reload'/></noscript></td></tr></table></form></div><table summary='commit info' class='commit-info'>
+<tr><th>author</th><td><span class='libravatar'><img class='inline' src='//seccdn.libravatar.org/avatar/b01c8b21adbdb5bb43f81c1646c51d22?s=13&amp;d=retro' /><img class='onhover' src='//seccdn.libravatar.org/avatar/b01c8b21adbdb5bb43f81c1646c51d22?s=128&amp;d=retro' /></span>Bruce Ashfield &lt;bruce.ashfield@gmail.com&gt;</td><td class='right'>2025-10-15 18:12:20 -0400</td></tr>
+<tr><th>committer</th><td><span class='libravatar'><img class='inline' src='//seccdn.libravatar.org/avatar/b01c8b21adbdb5bb43f81c1646c51d22?s=13&amp;d=retro' /><img class='onhover' src='//seccdn.libravatar.org/avatar/b01c8b21adbdb5bb43f81c1646c51d22?s=128&amp;d=retro' /></span>Bruce Ashfield &lt;bruce.ashfield@gmail.com&gt;</td><td class='right'>2025-10-15 18:12:20 -0400</td></tr>
+<tr><th>commit</th><td colspan='2' class='oid'><a href='/yocto-kernel-tools/commit/?id=f589e1df23251d8319063da0a61c1016b2a0bf85'>f589e1df23251d8319063da0a61c1016b2a0bf85</a> (<a href='/yocto-kernel-tools/patch/?id=f589e1df23251d8319063da0a61c1016b2a0bf85'>patch</a>)</td></tr>
+<tr><th>tree</th><td colspan='2' class='oid'><a href='/yocto-kernel-tools/tree/?id=f589e1df23251d8319063da0a61c1016b2a0bf85'>a8ff5b6bcc4d04fe24307c16ae4840070d98f6d3</a></td></tr>
+<tr><th>parent</th><td colspan='2' class='oid'><a href='/yocto-kernel-tools/commit/?id=fe67c98d2e9b74af44d0c4b660fa18e3a95e7edd'>fe67c98d2e9b74af44d0c4b660fa18e3a95e7edd</a> (<a href='/yocto-kernel-tools/diff/?id=f589e1df23251d8319063da0a61c1016b2a0bf85&amp;id2=fe67c98d2e9b74af44d0c4b660fa18e3a95e7edd'>diff</a>)</td></tr><tr><th>download</th><td colspan='2' class='oid'><a href='/yocto-kernel-tools/snapshot/yocto-kernel-tools-f589e1df23251d8319063da0a61c1016b2a0bf85.tar.gz'>yocto-kernel-tools-f589e1df23251d8319063da0a61c1016b2a0bf85.tar.gz</a><br/></td></tr></table>
+<div class='commit-subject'>tools/Kconfiglib: add support for transitional attribute</div><div class='commit-msg'>We need to update the parser to handle:
+
+commit f9afce4f32e9a120fc902fa6c9e0b90ad799a6ec
+Author: Kees Cook &lt;kees@kernel.org&gt;
+Date:   Tue Sep 23 14:34:18 2025 -0700
+
+    kconfig: Add transitional symbol attribute for migration support
+
+    During kernel option migrations (e.g. CONFIG_CFI_CLANG to CONFIG_CFI),
+    existing .config files need to maintain backward compatibility while
+    preventing deprecated options from appearing in newly generated
+    configurations. This is challenging with existing Kconfig mechanisms
+    because:
+
+    1. Simply removing old options breaks existing .config files.
+    2. Manually listing an option as "deprecated" leaves it needlessly
+       visible and still writes them to new .config files.
+    3. Using any method to remove visibility (.e.g no 'prompt', 'if n',
+       etc) prevents the option from being processed at all.
+
+    Add a "transitional" attribute that creates symbols which are:
+    - Processed during configuration (can influence other symbols' defaults)
+    - Hidden from user menus (no prompts appear)
+    - Omitted from newly written .config files (gets migrated)
+    - Restricted to only having help sections (no defaults, selects, etc)
+      making it truly just a "prior value pass-through" option.
+
+    The transitional syntax requires a type argument and prevents type
+    redefinition:
+
+        config NEW_OPTION
+            bool "New option"
+            default OLD_OPTION
+
+        config OLD_OPTION
+            bool
+            transitional
+            help
+              Transitional config for OLD_OPTION migration.
+
+    This allows seamless migration: olddefconfig processes existing
+    CONFIG_OLD_OPTION=y settings to enable CONFIG_NEW_OPTION=y, while
+    CONFIG_OLD_OPTION is omitted from newly generated .config files.
+
+    Added positive and negative testing via "testconfig" make target.
+
+    Co-developed-by: Vegard Nossum &lt;vegard.nossum@oracle.com&gt;
+    Signed-off-by: Vegard Nossum &lt;vegard.nossum@oracle.com&gt;
+    Reviewed-by: Nathan Chancellor &lt;nathan@kernel.org&gt;
+    Tested-by: Nathan Chancellor &lt;nathan@kernel.org&gt;
+    Link: https://lore.kernel.org/r/20250923213422.1105654-2-kees@kernel.org
+    Signed-off-by: Kees Cook &lt;kees@kernel.org&gt;
+
+Signed-off-by: Bruce Ashfield &lt;bruce.ashfield@gmail.com&gt;
+</div><div class='diffstat-header'><a href='/yocto-kernel-tools/diff/?id=f589e1df23251d8319063da0a61c1016b2a0bf85'>Diffstat</a></div><table summary='diffstat' class='diffstat'><tr><td class='mode'>-rw-r--r--</td><td class='upd'><a href='/yocto-kernel-tools/diff/Kconfiglib/kconfiglib.py?id=f589e1df23251d8319063da0a61c1016b2a0bf85'>Kconfiglib/kconfiglib.py</a></td><td class='right'>37</td><td class='graph'><table summary='file diffstat' width='37%'><tr><td class='add' style='width: 89.2%;'/><td class='rem' style='width: 10.8%;'/><td class='none' style='width: 0.0%;'/></tr></table></td></tr>
+</table><div class='diffstat-summary'>1 files changed, 33 insertions, 4 deletions</div><table summary='diff' class='diff'><tr><td><div class='head'>diff --git a/Kconfiglib/kconfiglib.py b/Kconfiglib/kconfiglib.py<br/>index 36500c2..e5b37fc 100644<br/>--- a/<a href='/yocto-kernel-tools/tree/Kconfiglib/kconfiglib.py?id=fe67c98d2e9b74af44d0c4b660fa18e3a95e7edd'>Kconfiglib/kconfiglib.py</a><br/>+++ b/<a href='/yocto-kernel-tools/tree/Kconfiglib/kconfiglib.py?id=f589e1df23251d8319063da0a61c1016b2a0bf85'>Kconfiglib/kconfiglib.py</a></div><div class='hunk'>@@ -845,6 +845,7 @@ class Kconfig(object):</div><div class='ctx'>         "warn_assign_undef",</div><div class='ctx'>         "warn_to_stderr",</div><div class='ctx'>         "warnings",</div><div class='add'>+        "_is_transitional_context",</div><div class='ctx'>         "y",</div><div class='ctx'> </div><div class='ctx'>         # Parsing-related</div><div class='hunk'>@@ -975,6 +976,7 @@ class Kconfig(object):</div><div class='ctx'>         self._warn_assign_no_prompt = True</div><div class='ctx'> </div><div class='ctx'>         self.warnings = []</div><div class='add'>+        self._is_transitional_context = False</div><div class='ctx'> </div><div class='ctx'>         self.config_prefix = os.getenv("CONFIG_", "CONFIG_")</div><div class='ctx'>         # Regular expressions for parsing .config files</div><div class='hunk'>@@ -2938,6 +2940,11 @@ class Kconfig(object):</div><div class='ctx'> </div><div class='ctx'>                 sym.nodes.append(node)</div><div class='ctx'> </div><div class='add'>+                # Check if we are in a transitional context</div><div class='add'>+                if self._is_transitional_context:</div><div class='add'>+                    sym.is_transitional = True</div><div class='add'>+                    self._is_transitional_context = False</div><div class='add'>+</div><div class='ctx'>                 self._parse_props(node)</div><div class='ctx'> </div><div class='ctx'>                 if node.is_menuconfig and not node.prompt:</div><div class='hunk'>@@ -3134,13 +3141,24 @@ class Kconfig(object):</div><div class='ctx'>         # node:</div><div class='ctx'>         #   The menu node we're parsing properties on</div><div class='ctx'> </div><div class='del'>-        # Dependencies from 'depends on'. Will get propagated to the properties</div><div class='add'>+        # Dependencies from 'depends on'. Will get propagated by the properties</div><div class='ctx'>         # below.</div><div class='del'>-        node.dep = self.y</div><div class='add'>+        node.dep = self.y # Initialize node.dep</div><div class='ctx'> </div><div class='ctx'>         while self._next_line():</div><div class='ctx'>             t0 = self._tokens[0]</div><div class='ctx'> </div><div class='add'>+            if node.item.__class__ is Symbol and node.item.is_transitional:</div><div class='add'>+                if t0 is _T_DEFAULT or \</div><div class='add'>+                   t0 is _T_SELECT or \</div><div class='add'>+                   t0 is _T_IMPLY or \</div><div class='add'>+                   t0 is _T_RANGE or \</div><div class='add'>+                   t0 is _T_PROMPT or \</div><div class='add'>+                   t0 in _TYPE_TOKENS: # Transitional symbols can have a type, but not re-define it</div><div class='add'>+                    if t0 is not _T_HELP: # Help is allowed</div><div class='add'>+                        self._parse_error("transitional symbols can only have 'help' sections")</div><div class='add'>+</div><div class='add'>+</div><div class='ctx'>             if t0 in _TYPE_TOKENS:</div><div class='ctx'>                 # Relies on '_T_BOOL is BOOL', etc., to save a conversion</div><div class='ctx'>                 self._set_type(node.item, t0)</div><div class='hunk'>@@ -3198,6 +3216,13 @@ class Kconfig(object):</div><div class='ctx'>                 node.visibility = self._make_and(node.visibility,</div><div class='ctx'>                                                  self._expect_expr_and_eol())</div><div class='ctx'> </div><div class='add'>+            elif t0 is _T_TRANSITIONAL:</div><div class='add'>+                if node.item.__class__ is not Symbol:</div><div class='add'>+                    self._parse_error("'transitional' is only valid for symbols")</div><div class='add'>+                node.item.is_transitional = True</div><div class='add'>+                if self._tokens[1] is not None:</div><div class='add'>+                    self._trailing_tokens_error()</div><div class='add'>+</div><div class='ctx'>             elif t0 is _T_OPTION:</div><div class='ctx'>                 if self._check_token(_T_ENV):</div><div class='ctx'>                     if not self._check_token(_T_EQUAL):</div><div class='hunk'>@@ -4272,6 +4297,7 @@ class Symbol(object):</div><div class='ctx'>         "implies",</div><div class='ctx'>         "is_allnoconfig_y",</div><div class='ctx'>         "is_constant",</div><div class='add'>+        "is_transitional",</div><div class='ctx'>         "kconfig",</div><div class='ctx'>         "name",</div><div class='ctx'>         "nodes",</div><div class='hunk'>@@ -4547,7 +4573,7 @@ class Symbol(object):</div><div class='ctx'>         # _write_to_conf is determined when the value is calculated. This is a</div><div class='ctx'>         # hidden function call due to property magic.</div><div class='ctx'>         val = self.str_value</div><div class='del'>-        if not self._write_to_conf:</div><div class='add'>+        if not self._write_to_conf or self.is_transitional: # Omit transitional symbols</div><div class='ctx'>             return ""</div><div class='ctx'> </div><div class='ctx'>         if self.orig_type in _BOOL_TRISTATE:</div><div class='hunk'>@@ -4821,6 +4847,7 @@ class Symbol(object):</div><div class='ctx'>         # Symbol gets a .config entry.</div><div class='ctx'> </div><div class='ctx'>         self.is_allnoconfig_y = \</div><div class='add'>+        self.is_transitional = \</div><div class='ctx'>         self._was_set = \</div><div class='ctx'>         self._write_to_conf = False</div><div class='ctx'> </div><div class='hunk'>@@ -6916,7 +6943,8 @@ except AttributeError:</div><div class='ctx'>     _T_TRISTATE,</div><div class='ctx'>     _T_UNEQUAL,</div><div class='ctx'>     _T_VISIBLE,</div><div class='del'>-) = range(1, 51)</div><div class='add'>+    _T_TRANSITIONAL,</div><div class='add'>+) = range(1, 52)</div><div class='ctx'> </div><div class='ctx'> # Keyword to token map, with the get() method assigned directly as a small</div><div class='ctx'> # optimization</div><div class='hunk'>@@ -6963,6 +6991,7 @@ _get_keyword = {</div><div class='ctx'>     "source":         _T_SOURCE,</div><div class='ctx'>     "string":         _T_STRING,</div><div class='ctx'>     "tristate":       _T_TRISTATE,</div><div class='add'>+    "transitional":   _T_TRANSITIONAL,</div><div class='ctx'>     "visible":        _T_VISIBLE,</div><div class='ctx'> }.get</div><div class='ctx'> </div></td></tr></table></div> <!-- class=content -->
+<div class='footer'>generated by <a href='https://git.zx2c4.com/cgit/about/'>cgit 1.2.3-korg</a> (<a href='https://git-scm.com/'>git 2.43.0</a>) at 2026-02-11 12:09:36 +0000</div>
+</div> <!-- id=cgit -->
+</body>
+</html>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>LKML: Linus Torvalds: Re: Linux kernel in-tree Rust support</title><link href="/css/message.css" rel="stylesheet" type="text/css" /><link href="/css/wrap.css" rel="alternate stylesheet" type="text/css" title="wrap" /><link href="/css/nowrap.css" rel="stylesheet" type="text/css" title="nowrap" /><link href="/favicon.ico" rel="shortcut icon" /><script src="/js/simple-calendar.js" type="text/javascript"></script><script src="/js/styleswitcher.js" type="text/javascript"></script><link rel="alternate" type="application/rss+xml" title="lkml.org : last 100 messages" href="/rss.php" /><link rel="alternate" type="application/rss+xml" title="lkml.org : last messages by Linus Torvalds" href="/groupie.php?aid=" /><!--Matomo--><script>
+  var _paq = window._paq = window._paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(["setDoNotTrack", true]);
+  _paq.push(["disableCookies"]);
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//m.lkml.org/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script><!--End Matomo Code--></head><body onload="es.jasper.simpleCalendar.init();" itemscope="itemscope" itemtype="http://schema.org/BlogPosting"><table border="0" cellpadding="0" cellspacing="0"><tr><td width="180" align="center"><a href="/"><img style="border:0;width:135px;height:32px" src="/images/toprowlk.gif" alt="lkml.org" /></a></td><td width="32"> </td><td class="nb"><div><a class="nb" href="/lkml">
+     [lkml]</a>
+      
+<a class="nb" href="/lkml/2020">
+     [2020]</a>
+      
+<a class="nb" href="/lkml/2020/7">
+     [Jul]</a>
+      
+<a class="nb" href="/lkml/2020/7/10">
+     [10]</a>
+      
+<a class="nb" href="/lkml/last100">
+     [last100]</a>
+      
+<a href="/rss.php"><img src="/images/rss-or.gif" border="0" alt="RSS Feed" /></a></div><div>Views:
+<a href="#" class="nowrap" onclick="setActiveStyleSheet('wrap');return false;">[wrap]</a><a href="#" class="wrap" onclick="setActiveStyleSheet('nowrap');return false;">[no wrap]</a>
+ 
+<a class="nb" href="/lkml/mheaders/2020/7/10/1261" onclick="this.href='/lkml/headers'+'/2020/7/10/1261';">[headers]</a> 
+<a href="/lkml/bounce/2020/7/10/1261">[forward]</a> 
+    </div></td><td width="32"> </td></tr><tr><td valign="top"><div class="es-jasper-simpleCalendar" baseurl="/lkml/"></div><div class="threadlist">Messages in this thread</div><ul class="threadlist"><li class="root"><a href="/lkml/2020/7/9/952">First message in thread</a></li><li><a href="/lkml/2020/7/10/510">Christian Brauner</a><ul><li><a href="/lkml/2020/7/10/845">Kees Cook</a><ul><li><a href="/lkml/2020/7/10/1233">Kees Cook</a></li></ul></li><li><a href="/lkml/2020/7/10/1214">Josh Triplett</a><ul><li class="origin"><a href="/lkml/2020/7/11/249">Linus Torvalds</a><ul><li><a href="/lkml/2020/7/11/249">Josh Triplett</a><ul><li><a href="/lkml/2020/7/28/1189">Pavel Machek</a></li></ul></li></ul></li></ul></li></ul></li></ul></td><td width="32" rowspan="2" class="c" valign="top"><img src="/images/icornerl.gif" width="32" height="32" alt="/" /></td><td class="c" rowspan="2" valign="top" style="padding-top: 1em"><table><tr><td><table><tr><td class="lp">From</td><td class="rp" itemprop="author">Linus Torvalds &lt;&gt;</td></tr><tr><td class="lp">Date</td><td class="rp" itemprop="datePublished">Fri, 10 Jul 2020 16:54:11 -0700</td></tr><tr><td class="lp">Subject</td><td class="rp" itemprop="name">Re: Linux kernel in-tree Rust support</td></tr></table></td><td></td></tr></table><pre itemprop="articleBody">On Fri, Jul 10, 2020 at 3:59 PM Josh Triplett &lt;josh&#64;joshtriplett.org&gt; wrote:<br />&gt;<br />&gt; As I recall, Greg's biggest condition for initial introduction of this<br />&gt; was to do the same kind of "turn this Kconfig option on and turn an<br />&gt; option under it off" trick that LTO uses, so that neither "make<br />&gt; allnoconfig" nor "make allyesconfig" would require Rust until we've had<br />&gt; plenty of time to experiment with it.<br /><br />No, please make it a "is rust available" automatic config option. The<br />exact same way we already do the compiler versions and check for<br />various availability of compiler flags at config time.<br /><br />See init/Kconfig for things like<br /><br />  config LD_IS_LLD<br />          def_bool $(success,$(LD) -v | head -n 1 | grep -q LLD)<br /><br />and the rust support should be similar. Something like<br /><br />  config RUST_IS_AVAILABLE<br />          def_bool $(success,$(RUST) ..sometest..)<br /><br />because I _don't_ want us to be in the situation where any new rust<br />support isn't even build-tested by default.<br /><br />Quite the reverse. I'd want the first rust driver (or whatever) to be<br />introduced in such a simple format that failures will be obvious and<br />simple.<br /><br />The _worst_ situation to be in is that s (small) group of people start<br />testing their very special situation, and do bad and crazy things<br />because "nobody else cares, it's hidden".<br /><br />No, thank you.<br /><br />             Linus<br /><br /></pre></td><td width="32" rowspan="2" class="c" valign="top"><img src="/images/icornerr.gif" width="32" height="32" alt="\" /></td></tr><tr><td align="right" valign="bottom">
+  
+ </td></tr><tr><td align="right" valign="bottom"> </td><td class="c" valign="bottom" style="padding-bottom: 0px"><img src="/images/bcornerl.gif" width="32" height="32" alt="\" /></td><td class="c"> </td><td class="c" valign="bottom" style="padding-bottom: 0px"><img src="/images/bcornerr.gif" width="32" height="32" alt="/" /></td></tr><tr><td align="right" valign="top" colspan="2">
+ 
+</td><td class="lm">Last update: 2020-07-11 01:55    [from the cache]<br />©2003-2020 <a href="http://blog.jasper.es/"><span itemprop="editor">Jasper Spaans</span></a>|hosted at <a href="https://www.digitalocean.com/?refcode=9a8e99d24cf9">Digital Ocean</a> and my Meterkast|<a href="http://blog.jasper.es/categories.html#lkml-ref">Read the blog</a></td><td> </td></tr></table><script language="javascript" src="/js/styleswitcher.js" type="text/javascript"></script></body></html>

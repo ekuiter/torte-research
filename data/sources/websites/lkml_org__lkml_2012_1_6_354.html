@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>LKML: Linus Torvalds: Re: [GIT] Networking</title><link href="/css/message.css" rel="stylesheet" type="text/css" /><link href="/css/wrap.css" rel="alternate stylesheet" type="text/css" title="wrap" /><link href="/css/nowrap.css" rel="stylesheet" type="text/css" title="nowrap" /><link href="/favicon.ico" rel="shortcut icon" /><script src="/js/simple-calendar.js" type="text/javascript"></script><script src="/js/styleswitcher.js" type="text/javascript"></script><link rel="alternate" type="application/rss+xml" title="lkml.org : last 100 messages" href="/rss.php" /><link rel="alternate" type="application/rss+xml" title="lkml.org : last messages by Linus Torvalds" href="/groupie.php?aid=1" /><!--Matomo--><script>
+  var _paq = window._paq = window._paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(["setDoNotTrack", true]);
+  _paq.push(["disableCookies"]);
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//m.lkml.org/";
+    _paq.push(['setTrackerUrl', u+'matomo.php']);
+    _paq.push(['setSiteId', '1']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script><!--End Matomo Code--></head><body onload="es.jasper.simpleCalendar.init();" itemscope="itemscope" itemtype="http://schema.org/BlogPosting"><table border="0" cellpadding="0" cellspacing="0"><tr><td width="180" align="center"><a href="/"><img style="border:0;width:135px;height:32px" src="/images/toprowlk.gif" alt="lkml.org" /></a></td><td width="32"> </td><td class="nb"><div><a class="nb" href="/lkml">
+     [lkml]</a>
+      
+<a class="nb" href="/lkml/2012">
+     [2012]</a>
+      
+<a class="nb" href="/lkml/2012/1">
+     [Jan]</a>
+      
+<a class="nb" href="/lkml/2012/1/6">
+     [6]</a>
+      
+<a class="nb" href="/lkml/last100">
+     [last100]</a>
+      
+<a href="/rss.php"><img src="/images/rss-or.gif" border="0" alt="RSS Feed" /></a></div><div>Views:
+<a href="#" class="nowrap" onclick="setActiveStyleSheet('wrap');return false;">[wrap]</a><a href="#" class="wrap" onclick="setActiveStyleSheet('nowrap');return false;">[no wrap]</a>
+ 
+<a class="nb" href="/lkml/mheaders/2012/1/6/354" onclick="this.href='/lkml/headers'+'/2012/1/6/354';">[headers]</a> 
+<a href="/lkml/bounce/2012/1/6/354">[forward]</a> 
+    </div></td><td width="32"> </td></tr><tr><td valign="top"><div class="es-jasper-simpleCalendar" baseurl="/lkml/"></div><div class="threadlist">Messages in this thread</div><ul class="threadlist"><li class="root"><a href="/lkml/2012/1/5/493">First message in thread</a></li><li><a href="/lkml/2012/1/6/349">Linus Torvalds</a><ul><li><a href="/lkml/2012/1/6/350">David Miller</a><ul><li class="origin"><a href="">Linus Torvalds</a></li></ul></li></ul></li></ul></td><td width="32" rowspan="2" class="c" valign="top"><img src="/images/icornerl.gif" width="32" height="32" alt="/" /></td><td class="c" rowspan="2" valign="top" style="padding-top: 1em"><table><tr><td><table><tr><td class="lp">From</td><td class="rp" itemprop="author">Linus Torvalds &lt;&gt;</td></tr><tr><td class="lp">Date</td><td class="rp" itemprop="datePublished">Fri, 6 Jan 2012 18:24:31 -0800</td></tr><tr><td class="lp">Subject</td><td class="rp" itemprop="name">Re: [GIT] Networking</td></tr></table></td><td></td></tr></table><pre itemprop="articleBody">On Fri, Jan 6, 2012 at 6:07 PM, David Miller &lt;davem&#64;davemloft.net&gt; wrote:<br />&gt;<br />&gt; Ok, we can take away those default Kconfig tags for the UDP and AF_UNIX<br />&gt; bits, no problem.<br /><br />I'd really like the basic rule to be that all new features start out<br />as 'default n'. Sure, some day they may be the common case, and then<br />we can add the 'default y' line, but we should wait for that to<br />happen, rather than try to push it. Because if the feature isn't so<br />compelling that distributions don't start enabling the *use* of it,<br />then we should acknowledge that too.<br /><br />The one exception is that when an *old* feature is hidden behind a<br />*new* config option - if it used to be compiled in by default (even if<br />that was for a bad reason), we should still default to compiling it<br />in. So when you did the network driver Kconfig layout change, making<br />those vendor choices default to 'y' (in order to see the old drivers<br />that still existed under those choices) was the right thing to do, for<br />example. Otherwise it's just too easy for people to be confused and<br />not realize that they need to do something special in order to get<br />their old supported behavior.<br /><br />And no, we have not always followed these rules. Too many new "cool<br />features" don't get a config option at all, and just bloat the kernel<br />whether they are used or not. And people don't even notice, because<br />then you don't even get the heads-up from trying to reconfigure the<br />kernel - the feature is just silently enabled without questions.<br />Sometimes that's the right thing to do ("avoid the pain of new config<br />options") but quite often it's just people being lazy. Oh well.<br /><br />                       Linus<br /><br /><br /></pre></td><td width="32" rowspan="2" class="c" valign="top"><img src="/images/icornerr.gif" width="32" height="32" alt="\" /></td></tr><tr><td align="right" valign="bottom">
+  
+ </td></tr><tr><td align="right" valign="bottom"> </td><td class="c" valign="bottom" style="padding-bottom: 0px"><img src="/images/bcornerl.gif" width="32" height="32" alt="\" /></td><td class="c"> </td><td class="c" valign="bottom" style="padding-bottom: 0px"><img src="/images/bcornerr.gif" width="32" height="32" alt="/" /></td></tr><tr><td align="right" valign="top" colspan="2">
+ 
+</td><td class="lm">Last update: 2012-01-07 03:27    [from the cache]<br />©2003-2020 <a href="http://blog.jasper.es/"><span itemprop="editor">Jasper Spaans</span></a>|hosted at <a href="https://www.digitalocean.com/?refcode=9a8e99d24cf9">Digital Ocean</a> and my Meterkast|<a href="http://blog.jasper.es/categories.html#lkml-ref">Read the blog</a></td><td> </td></tr></table><script language="javascript" src="/js/styleswitcher.js" type="text/javascript"></script></body></html>

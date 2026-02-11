@@ -1,0 +1,751 @@
+        <!DOCTYPE html>
+        <html lang="en">
+        <head><title>How many ways are there to configure the Linux kernel? [LWN.net]</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="How many ways are there to configure the Linux kernel?">
+<meta property="og:site_name" content="LWN.net">
+<meta property="og:type" content="article">
+<meta property="og:description" content=" There are a large number of ways to configure the 6.16 Linux kernel. It has 32,468 different c [...]">
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="robots" CONTENT="noai, noimageai">
+        <link rel="icon" href="https://static.lwn.net/images/favicon.png"
+              type="image/png">
+        <link rel="alternate" type="application/rss+xml" title="LWN.net headlines" href="https://lwn.net/headlines/rss">
+        <link rel="stylesheet" href="/CSS/lwn">
+<link rel="stylesheet" href="/CSS/nosub">
+
+        
+<script async src="//servedby.aqua-adserver.com/asyncjs.php"></script>
+
+        </head>
+        <body>
+        <a name="t"></a>
+<div id="menu"><a href="/"><img src="https://static.lwn.net/images/logo/barepenguin-70.png" class="logo"
+                 border="0" alt="LWN.net Logo">
+           <span class="logo">LWN<br>.net</span>
+           <span class="logobl">News from the source</span></a>
+           <a href="/"><img src="https://static.lwn.net/images/lcorner-ss.png" class="sslogo"
+                 border="0" alt="LWN"></a><div class="navmenu-container">
+           <ul class="navmenu">
+        <li><a class="navmenu" href="#t"><b>Content</b></a><ul><li><a href="/current/">Weekly Edition</a></li><li><a href="/Archives/">Archives</a></li><li><a href="/Search/">Search</a></li><li><a href="/Kernel/">Kernel</a></li><li><a href="/Security/">Security</a></li><li><a href="/Calendar/">Events calendar</a></li><li><a href="/Comments/unread">Unread comments</a></li><li><hr></li><li><a href="/op/FAQ.lwn">LWN FAQ</a></li><li><a href="/op/AuthorGuide.lwn">Write for us</a></li></ul></li>
+<li><a class="navmenu" href="#t"><b>Edition</b></a><ul><li><a href="/Articles/1036684/">Return to the Front page</a></li></ul></li>
+</ul></div>
+</div> <!-- menu -->
+<div class="not-handset"
+            	     style="margin-left: 10.5em; display: block;">
+                   <div class="not-print"> <ins data-revive-zoneid="12072" 
+data-revive-id="fa8c6c9da7f33852f7097c4a94da1070"></ins> </div>
+                </div>
+            <div class="topnav-container">
+<div class="not-handset"><form action="https://lwn.net/Login/" method="post" name="loginform"
+                 class="loginform">
+        <label><b>User:</b> <input type="text" name="uname" value="" size="8" id="uc" /></label> 
+		<label><b>Password:</b> <input type="password" name="pword" size="8" id="pc" /></label> <input type="hidden" name="target" value="/Articles/1034811/" /> <input type="submit" name="submit" value="Log in" /></form> |
+           <form action="https://lwn.net/subscribe/" method="post" class="loginform">
+           <input type="submit" name="submit" value="Subscribe" />
+           </form> |
+           <form action="https://lwn.net/Login/newaccount" method="post" class="loginform">
+           <input type="submit" name="submit" value="Register" />
+           </form>
+        </div>
+               <div class="handset-only">
+               <a href="/Login/"><b>Log in</b></a> /
+               <a href="/subscribe/"><b>Subscribe</b></a> /
+               <a href="/Login/newaccount"><b>Register</b></a>
+               </div>
+               </div><div class="maincolumn flexcol">
+<div class="middlecolumn">
+<div class="PageHeadline">
+<h1>How many ways are there to configure the Linux kernel?</h1>
+</div>
+<div class="ArticleText">
+<div class="FeatureByline">
+           By <b>Daroc Alden</b><br>September 10, 2025</br>
+           </div>
+<p>
+There are a large number of ways to configure the 6.16
+Linux kernel. It has 32,468 different configuration options on x86_64,
+and a comparable number for other platforms. Exploring the ways the kernel can
+be configured is sufficiently difficult that it requires specialized tools.
+These show the
+<a href="/Articles/1034812/">
+number of possible configurations</a> that options can be combined in has
+6,550 digits. How has that number changed over the history of the kernel, and
+what does it mean for testing?
+</p>
+
+<h4>Analyzing Kconfigs</h4>
+
+<p>
+With so many configuration options to consider, it can be
+difficult to even figure out which options are redundant, unused, or otherwise
+amenable to simplification. For our problem of counting the number of ways to
+configure the kernel, we need to consider the relationships between different
+configuration options as well. Happily, there is some software to manage the
+growing complexity.
+</p>
+
+<p>
+The kernel uses a custom configuration language,
+<a href="https://docs.kernel.org/kbuild/kconfig-language.html">
+Kconfig</a>, to describe how the
+build can be customized. While Kconfig has spread to a handful of
+<a href="https://coreboot.org/">
+related
+projects</a>, it remains a mostly home-grown, Linux-specific system. Paul Gazzillo, along with a
+handful of other contributors, wrote
+<a href="https://github.com/paulgazz/kmax?tab=readme-ov-file#the-kmax-tool-suite">kmax</a>, a GPL-2.0-licensed
+software suite for analyzing Kconfig declarations. That project includes tools to
+determine which configuration options need to be enabled in order to test a
+patch, to find configuration bugs, and to export Kconfig declarations in a
+language that can be understood by more tools. It has been integrated into the
+Intel 0-day test suite, finding
+<a href="https://github.com/paulgazz/kmax/blob/master/docs/bugs_found.md">a
+number of bugs</a> in the kernel's configuration in the process.
+</p>
+
+<p>
+One of the project's programs, <tt>klocalizer</tt>, can output the set of relationships
+between different options in
+<a href="https://smt-lib.org/">
+SMT-LIB&nbsp;2</a> or
+<a href="https://en.wikipedia.org/wiki/DIMACS">
+DIMACS</a> format — the standard
+input formats for modern
+<a href="https://en.wikipedia.org/wiki/SAT_solver">
+SAT solvers</a>. This makes it much simpler to write custom
+ad-hoc analysis of the kernel's configuration options. For example, one could
+use
+<a href="https://github.com/Z3Prover/z3?tab=readme-ov-file#z3">
+Z3</a>'s Python bindings to load the output from <tt>klocalizer</tt> and
+explore how options relate to one another. A SAT solver such as Z3
+produces (when possible) a single solution to a set of constraints — in this
+case, a single valid way to configure the kernel.
+</p>
+
+<p>
+Calculating the number of valid solutions is a related but much harder problem
+called
+<a href="https://en.wikipedia.org/wiki/Sharp-SAT">
+#SAT</a>. While there are a number of approximation techniques that can be
+used to solve #SAT probabilistically,
+in this case the constraints in the
+kernel's configuration are simple enough for a precise counter called
+<a href="https://github.com/meelgroup/ganak?tab=readme-ov-file#ganak-a-high-performance-versatile-model-counter"><tt>ganak</tt></a> to solve the problem
+exactly.
+</p>
+
+<h4>The numbers</h4>
+
+<p>
+So, with these tools in hand, one can analyze how many ways to configure the
+kernel there really are.
+The growth in the number of configuration parameters in the kernel has been
+roughly linear, leading to exponential growth in the number of ways the kernel
+can be configured. The following chart shows two trend lines: the logarithm of
+the actual number
+of ways to configure the kernel in blue, and the number of configuration options
+(scaled appropriately to sit on the same axis; see below) in red. The red line
+represents the theoretical maximum that the blue line could obtain. Plotting 6,000
+digit numbers directly proved to be too much for both LibreOffice Calc and Google
+Sheets, hence
+the logarithms.
+</p>
+
+<blockquote class="bq">
+<a href="/Articles/1035165/">
+<img src="https://static.lwn.net/images/2025/configurations-chart.png" class="photo"
+alt="[A chart of the number of possible configurations versus version]"
+title="A chart of the number of possible configurations versus version" />
+</a>
+</blockquote>
+
+<p>
+There are a few things that can be immediately seen from this chart. For
+example, there are more than twice as many configuration options available in
+version 6.16 compared to version 2.6.37 (the earliest version that <tt>kmax</tt>
+can understand). In some sense, this is not surprising —
+the Linux kernel keeps adding support for new features and new hardware; the
+number of configuration options is just growing along with the code. But
+there is a subtler trend that is arguably more important: configuration options
+are becoming more interdependent over time.
+</p>
+
+<!-- middle-ad -->
+
+<p>
+If every configuration option could be enabled independently of every other
+configuration option, there would be 2<sup>N</sup> ways to configure the kernel
+given <tt>N</tt> configuration options. The red line is the number of
+configuration options scaled by <sup>ln(2)</sup>&frasl;<sub>ln(10)</sub> — that
+is, it represents the logarithm of 2<sup>N</sup>. That way the two lines are
+directly comparable. The actual number of ways to
+configure the kernel sits below this theoretical maximum because configuration
+options can depend on or exclude each other. This chart shows the difference
+between the red and blue lines:
+</p>
+
+<blockquote class="bq">
+<a href="/Articles/1035165/">
+<img src="https://static.lwn.net/images/2025/configurations-chart-diff.png" class="photo"
+alt="[A chart showing the difference between actual and theoretical numbers of configurations]"
+title="A chart showing the difference between actual and theoretical numbers of configurations"
+/>
+</a>
+</blockquote>
+
+<p>
+Note that this result is still on a logarithmic scale, so this value is the
+logarithm of the number of ways to configure the kernel that are ruled out by
+dependencies between different options.
+As the difference grows, it shows that more configuration options are
+interacting with each other. This is not, in itself, a problem — but those
+interactions are likely associated with interdependent pieces of code. The
+number of places
+where kernel code depends on multiple related configuration
+options is growing.
+</p>
+
+<p>
+With the number of possible configurations, it is certain that not all of them
+have been tested individually. If the configuration options were independent, testing a
+kernel with everything enabled and one with everything disabled would
+theoretically suffice. Many options, especially ones that are specific to a particular
+hardware driver, are genuinely independent. But when options can influence each other
+and interact (even outside of Kconfig interactions),
+the number of scenarios that need to be tested grows quickly.
+</p>
+
+<p>
+Linux's testing is largely distributed — it is done by individual patch contributors
+and reviewers, several different automatic unit testing and fuzzing robots,
+distribution QA teams, companies, and normal Linux users. With the decentralized nature of
+open source, and the large number of possible configurations, it's hard to tell
+exactly how many configurations are being covered. The kernels used by popular
+distributions are well-tested, but enabling other configuration options is a
+fast route into uncharted territory. The Linux kernel isn't going to stop
+getting new features — so the only real solution to the problem is to try to
+simplify existing configuration options when possible. The recent work to
+<a href="/Articles/1023575/">
+remove
+special uniprocessor support from the scheduler</a> is an example of that.
+</p>
+
+<p>
+Ultimately, among the many challenges of kernel development, this is not the
+most urgent or important. It is worth keeping an eye on, though, for the sake
+of the sanity of anyone trying to configure a kernel, if nothing else.
+</p><br clear="all"><hr width="60%%" align="left">
+            <form action="/Login/" method="post">
+            <input type="hidden" name="target" value="/Articles/1034811/" />
+            <input type="submit" name="login" value="Log in" /> to post comments
+            <p>
+        <p><a name="Comments"></a>
+<a name="CommAnchor1037529"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">What percentage of valid configuration options successfully build?</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Sep 10, 2025 17:14 UTC (Wed)
+                               by <b>nickodell</b> (subscriber, #125165)
+                              [<a href="/Articles/1037529/">Link</a>] (7 responses)
+      </p>
+      
+      </div>
+      </summary>
+      <blockquote>It has 32,468 different configuration options on x86_64</blockquote>
+
+Darn it, so close to a pleasing round number. Could someone add 300 more configuration options real quick?
+
+<blockquote>With the number of possible configurations, it is certain that not all of them have been tested individually. If the configuration options were independent, testing a kernel with everything enabled and one with everything disabled would theoretically suffice.</blockquote>
+
+I wonder what percentage of these configurations successfully compile. Of course, it wouldn't be possible to try all configurations, but it seems like it would be possible to randomly sample 100 legal configurations from the set of possible configurations, and test if they successfully compile.
+
+My intuition for this is that maybe 20% of randomly sampled configurations would fail to compile, but I'm curious what others think.
+
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/1037529/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    <a name="CommAnchor1037533"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">What percentage of valid configuration options successfully build?</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Sep 10, 2025 17:19 UTC (Wed)
+                               by <b>daroc</b> (editor, #160859)
+                              [<a href="/Articles/1037533/">Link</a>] (5 responses)
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+There is actually a make target in the kernel for selecting a random configuration: "make randconfig". So you can try this experiment yourself. I have seen build failures while playing around with it, but I didn't think to collect rigorous statistics. Generally, I've found that "make randconfig" usually builds, though.<br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/1037533/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    <a name="CommAnchor1037559"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">What percentage of valid configuration options successfully build?</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Sep 10, 2025 19:46 UTC (Wed)
+                               by <b>vegard</b> (subscriber, #52330)
+                              [<a href="/Articles/1037559/">Link</a>] (3 responses)
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+It should be noted that the "randconfig" target does not select configs uniformly from the whole space of possible configs. If you have N options that do "select X" and each of those options have a 50% probability of being set, then X has a 1 - 1/(2^N) probability of being set, i.e. it is overwhelmingly probable that it will be set in any config produced by randconfig. In other words, randconfig is heavily biased. You need to run it VERY many times in order to hit certain combinations.<br>
+<p>
+There are also a bunch of configs that will rely on the host configuration, e.g. choosing lz4 compression for vmlinux when no lz4 utilities are installed on the host, and which will fail to build successfully for those reasons. Many more combinations of options will fail to boot for various reasons that are not necessarily bugs. There are things you can do to minimize this kind of thing, either you can apply some patches so that those combinations never appear or you can run scripts/config after randconfig to enable/disable specific options as needed.<br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/1037559/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    <a name="CommAnchor1037628"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">What percentage of valid configuration options successfully build?</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Sep 11, 2025 12:44 UTC (Thu)
+                               by <b>mathstuf</b> (subscriber, #69389)
+                              [<a href="/Articles/1037628/">Link</a>] (2 responses)
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+In that case, you need to also be able to say "option X will be off" and ignore/force anything that would turn it on when generating random configurations. Might need additional logic in Kconfig to support such operations though.<br>
+<p>
+But you need the existing mode too as an option that requires N things will then have 1/2^N chance of being allowed on. Though…perhaps one way would be to:<br>
+<p>
+- make a bag of all options<br>
+- weight each option based on the number of other options that either require it or it requires<br>
+- pull an option from the bag at random<br>
+- choose a value for it<br>
+- remove options from the bag that are forced to be a value based on the selected value<br>
+- repeat until bag is empty<br>
+<p>
+Maybe just having the bag have pairs of (option, value) each individually weighted would be better?<br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/1037628/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    <a name="CommAnchor1037629"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">What percentage of valid configuration options successfully build?</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Sep 11, 2025 12:59 UTC (Thu)
+                               by <b>daroc</b> (editor, #160859)
+                              [<a href="/Articles/1037629/">Link</a>] (1 responses)
+      </p>
+      
+      </div>
+      </summary>
+      <p>
+There's actually <a href="https://github.com/meelgroup/csb/">a tool</a> by the same people who made ganak that will randomly sample from a constrained space of options with negligible bias. So you might be able to use kmax to convert the Kconfigs to a SAT problem, use that tool (csb) to sample a random model, and then convert that back to a .config.
+</p>
+
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/1037629/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    <a name="CommAnchor1037845"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">What percentage of valid configuration options successfully build?</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Sep 11, 2025 22:43 UTC (Thu)
+                               by <b>quotemstr</b> (subscriber, #45331)
+                              [<a href="/Articles/1037845/">Link</a>] 
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+There's also the venerable PICT from Microsoft: <a href="https://github.com/microsoft/pict">https://github.com/microsoft/pict</a> <br>
+<p>
+It solves the problem of generating useful "pairwise testing" configurations by picking from large numbers of options with constraints. Surprisingly non-trivial yet very useful.<br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/1037845/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    </details>
+</details>
+</details>
+</details>
+<a name="CommAnchor1037806"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">What percentage of valid configuration options successfully build?</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Sep 11, 2025 17:59 UTC (Thu)
+                               by <b>make</b> (subscriber, #62794)
+                              [<a href="/Articles/1037806/">Link</a>] 
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+A few years ago, I had "make randconfig" running in a loop for a few days and I found few (weird) configurations that resulted in build failures. I submitted simple fixes for these (and iirc most of them were merged).<br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/1037806/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    </details>
+</details>
+<a name="CommAnchor1038703"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">What percentage of valid configuration options successfully build?</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Sep 18, 2025 17:56 UTC (Thu)
+                               by <b>yanjun.zhu</b> (guest, #173290)
+                              [<a href="/Articles/1038703/">Link</a>] 
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+I have the same reaction when I saw the number 32478. <br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/1038703/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    </details>
+</details>
+<a name="CommAnchor1037535"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">And then there's runtime options ...</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Sep 10, 2025 17:36 UTC (Wed)
+                               by <b>willy</b> (subscriber, #9762)
+                              [<a href="/Articles/1037535/">Link</a>] (2 responses)
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+Both kernel boot parameters and sysfs knobs you can twiddle.<br>
+<p>
+To say nothing of various syscalls you can make.<br>
+<p>
+The search space for "is the kernel correct" (for literally any definition of the word "correct") is mind-numbingly big.  And that shouldn't surprise us; BB-6 is unknown, but larger than 10↑↑15 (for those not familiar, that's 10^ (10^ (10 ^ ...)) to a height of 15).  The kernel is many orders of magnitude larger than BB-6.<br>
+<p>
+<a href="https://en.wikipedia.org/wiki/Busy_beaver">https://en.wikipedia.org/wiki/Busy_beaver</a><br>
+<p>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/1037535/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    <a name="CommAnchor1037557"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">And then there's runtime options ...</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Sep 10, 2025 19:11 UTC (Wed)
+                               by <b>tux3</b> (subscriber, #101245)
+                              [<a href="/Articles/1037557/">Link</a>] 
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+Whether the correctness of the kernel is independent of the ZFC axioms of set theory is left as an exercise to the reader (BB(n) acquires this property for *some* n&lt;=745)<br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/1037557/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    </details>
+<a name="CommAnchor1037596"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">Formal verification techniques</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Sep 11, 2025 8:06 UTC (Thu)
+                               by <b>DemiMarie</b> (subscriber, #164188)
+                              [<a href="/Articles/1037596/">Link</a>] 
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+Search-based approaches to formal verification fail to scale, and I believe it is for exactly this reason.  Interactive theorem proving *can* scale, but it is still quadratic in the size of a module.  Linux is a quite modular program, but I expect the proof effort would be in the hundreds of billions of dollars, if not trillions.<br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/1037596/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    </details>
+</details>
+<a name="CommAnchor1037574"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">Log Scale</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Sep 10, 2025 22:38 UTC (Wed)
+                               by <b>jrtc27</b> (subscriber, #107748)
+                              [<a href="/Articles/1037574/">Link</a>] 
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+<span class="QuotedText">&gt; Plotting 6,000 digit numbers directly proved to be too much for both LibreOffice Calc and Google Sheets, hence the logarithms.</span><br>
+<p>
+I am disappointed to learn that Daroc is a quitter when it comes to making their point properly: <a href="https://xkcd.com/1162/">https://xkcd.com/1162/</a> :)<br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/1037574/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    </details>
+<a name="CommAnchor1037585"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">fake options</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Sep 11, 2025 6:03 UTC (Thu)
+                               by <b>adobriyan</b> (subscriber, #30858)
+                              [<a href="/Articles/1037585/">Link</a>] 
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+Some of the options aren't user selectable, things like CONFIG_ARCH_HAS_GIGANTIC_PAGE which arguably should live in their own namespace.<br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/1037585/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    </details>
+<a name="CommAnchor1037588"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">Why so many 0s at the end?</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Sep 11, 2025 7:23 UTC (Thu)
+                               by <b>wsy</b> (subscriber, #121706)
+                              [<a href="/Articles/1037588/">Link</a>] (2 responses)
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+This seems so strange since 2^n don't tend to get us 0s<br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/1037588/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    <a name="CommAnchor1037590"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">Why so many 0s at the end?</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Sep 11, 2025 7:32 UTC (Thu)
+                               by <b>Sesse</b> (subscriber, #53779)
+                              [<a href="/Articles/1037590/">Link</a>] (1 responses)
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+Some options are of the type “pick either A or B or C or D or E”, giving you a factor 5.<br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/1037590/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    <a name="CommAnchor1037607"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">Why so many 0s at the end?</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Sep 11, 2025 9:59 UTC (Thu)
+                               by <b>pbonzini</b> (subscriber, #60935)
+                              [<a href="/Articles/1037607/">Link</a>] 
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+Also "depends on" clauses can result in the easiest cases in 2^N+1 configurations. This can end with 3, 5, 7 or 9 and introduce multiples of 5. With over 6000 options, it's not unlikely that this happens 10-20 times.<br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/1037607/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    </details>
+</details>
+</details>
+<a name="CommAnchor1038274"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">32-bit KCONFIG_SEED</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Sep 15, 2025 23:12 UTC (Mon)
+                               by <b>calvinowens</b> (subscriber, #100757)
+                              [<a href="/Articles/1038274/">Link</a>] 
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+Random thought: given the randconfig seed is 32-bit, aren't the overwhelming majority of the set of all possible random kernel configurations impossible to reproduce with `make randconfig` as it is written today? The code calls rand() iteratively, so the reproducible set changes every time any kconfig option in the kernel changes in any way, but on a particular git SHA it's a fixed set, isn't it?<br>
+<p>
+It's an interesting consequence of the seeded approach, but maybe it doesn't matter, I suppose 2^32 is enough that people testing randconfigs in the wild aren't generating the same randconfigs.<br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/1038274/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    </details>
+<a name="CommAnchor1056442"></a>
+    <details class="CommentBox" open>
+      <summary><h3 class="CommentTitle">How configurable is the Linux kernel?</h3>
+      <div class="AnnLine">
+      <p class="CommentPoster"> Posted Jan 29, 2026 11:01 UTC (Thu)
+                               by <b>ekuiter</b> (guest, #165041)
+                              [<a href="/Articles/1056442/">Link</a>] 
+      </p>
+      
+      </div>
+      </summary>
+      <div class="FormattedComment">
+FIY, we recently (April 2025) published an empirical study on this exact research question: <a rel="nofollow" href="https://dl.acm.org/doi/10.1145/3729423">https://dl.acm.org/doi/10.1145/3729423</a><br>
+We arrive at different numbers, but overall we find the same growth in the number of features and configurations.<br>
+</div>
+
+      
+          <div class="CommentReplyButton">
+            <form action="/Articles/1056442/comment" method="post">
+            <input type="submit" value="Reply to this comment">
+            </form>
+          </div>
+        
+     <p>
+     
+    </details>
+
+</div> <!-- ArticleText -->
+</div> <!-- middlecolumn -->
+<div class="rightcol not-print">
+<ins data-revive-zoneid="12085" 
+data-revive-id="fa8c6c9da7f33852f7097c4a94da1070"></ins>
+</div>
+</div> <!-- maincolumn -->
+
+            <br clear="all">
+            <center>
+            <P>
+            <span class="ReallySmall">
+            Copyright &copy; 2025, Eklektix, Inc.<BR>
+            This article may be redistributed under the terms of the
+              <a href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+              Commons CC BY-SA 4.0</a> license<br>
+            Comments and public postings are copyrighted by their creators.<br>
+            Linux  is a registered trademark of Linus Torvalds<br>
+            </span>
+            </center>
+            
+            </body></html>

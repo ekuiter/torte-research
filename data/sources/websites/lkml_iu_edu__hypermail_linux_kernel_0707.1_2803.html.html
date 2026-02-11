@@ -1,0 +1,132 @@
+<!-- MHonArc v2.6.6 -->
+<!--X-Subject: Re: [PATCH] Start to genericize kconfig for use by other projects. -->
+<!--X-From-R13: Dbo Znaqyrl <eboNynaqyrl.arg> -->
+<!--X-Date: Fri, 13 Jul 2007 13:19:21 &#45;0400 (EDT) -->
+<!--X-Message-Id: 200707131319.10919.rob@landley.net -->
+<!--X-Content-Type: text/plain -->
+<!--X-Reference: 200707111522.14240.rob@landley.net -->
+<!--X-Reference: 200707121444.18599.rob@landley.net -->
+<!--X-Reference: 20070712231645.GY11166@waste.org -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+                      "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html lang="en">
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-2">
+<title>Linux-Kernel Archive: Re: [PATCH] Start to genericize kconfig for use by other projects.</title>
+<meta NAME="Author" CONTENT="Rob Landley &lt;rob@landley.net&gt;">
+<meta NAME="Subject" CONTENT="Re: [PATCH] Start to genericize kconfig for use by other projects.">
+</head> 
+<body BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<h1>Re: [PATCH] Start to genericize kconfig for use by other projects.</h1>
+<strong>From: </strong>Rob Landley
+<br><strong>Date: </strong> Fri Jul 13 2007 - 13:19:21 EST
+<p>
+<ul>
+<li><strong>Next message: </strong> <a href="2804.html"> Matt Mackall: "Re: [PATCH v2 (updated) -mm 4/9] netconsole: Add some useful tips to documentation"</a>
+
+<li><strong>Previous message: </strong> <a href="2802.html"> Sergei Shtylyov: "Re: [PATCH 2.6.21-rt2] PowerPC: revert fix for threaded fasteoi	IRQhandlers"</a>
+
+<li><strong>In reply to: </strong> <a href="2419.html"> Matt Mackall: "Re: [PATCH] Start to genericize kconfig for use by other projects."</a>
+
+
+
+<li><strong>Messages sorted by: </strong><a href="date.html#2803">[ date ]</a> <a href="index.html#2803">[ thread ]</a> <a href="subject.html#2803">[ subject ]</a> <a href="author.html#2803">[ author ]</a>
+</ul>
+
+<!--X-Subject-Header-End-->
+<!--X-Head-of-Message-->
+<!--X-Head-of-Message-End-->
+<!--X-Head-Body-Sep-Begin-->
+<hr NOSHADE>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+On Thursday 12 July 2007 7:16:45 pm Matt Mackall wrote:<br>
+&gt;<i> On Thu, Jul 12, 2007 at 02:44:18PM -0400, Rob Landley wrote:</i><br>
+&gt;<i> &gt; On Thursday 12 July 2007 12:28:39 pm Roman Zippel wrote:</i><br>
+&gt;<i> &gt; &gt; Hi,</i><br>
+&gt;<i> &gt; &gt;</i><br>
+&gt;<i> &gt; &gt; On Wed, 11 Jul 2007, Rob Landley wrote:</i><br>
+&gt;<i> &gt; &gt; &gt; Replace name &quot;Linux Kernel&quot; in menuconfig with a macro (defaulting to</i><br>
+&gt;<i> &gt; &gt; &gt; &quot;Linux Kernel&quot; if not -Ddefined by the makefile), and remove a few</i><br>
+&gt;<i> &gt; &gt; &gt; unnecessary occurrences of &quot;kernel&quot; in pop-up text.</i><br>
+&gt;<i> &gt; &gt;</i><br>
+&gt;<i> &gt; &gt; Could you drop the PROJECT_NAME changes for now? The rest looks fine.</i><br>
+&gt;<i> &gt; &gt; I would prefer if the project would be settable via Kconfig.</i><br>
+&gt;<i> &gt;</i><br>
+&gt;<i> &gt; Are projects likely to grab a common kconfig binary externally, rather</i><br>
+&gt;<i> &gt; than build their own?</i><br>
+&gt;<i></i><br>
+&gt;<i> Yes.</i><br>
+&gt;<i></i><br>
+&gt;<i> If you really want to share kconfig, it'd be better to break it off</i><br>
+&gt;<i> into a separately packaged project. For the time being, the kernel</i><br>
+&gt;<i> makefiles can look for it in path, then fall back to its own copy</i><br>
+&gt;<i> which we can eventually drop.</i><br>
+<br>
+That is _so_ not my call.<br>
+<br>
+Right now, the version in linux-kernel is the master.  I'm not saying that <br>
+should be the case, I'm just saying it is.  That's why I'm pushing patches <br>
+that way rather than recommending anyone else use the version I cleaned up in <br>
+toybox (which is currently fairly standalone).<br>
+<br>
+If somebody wants to break it out and maintain it as a separate project, fine <br>
+with me, just tell me where I should look and where to send patches.  But if <br>
+the linux kernel doesn't actually start _using_ said external version, and <br>
+instead maintains its own, the external version will go the way of libsysfs <br>
+when udev went &quot;a shared library means we include it in our source tree and <br>
+build our own copy&quot;.<br>
+<br>
+Rob<br>
+-- <br>
+&quot;One of my most productive days was throwing away 1000 lines of code.&quot;<br>
+  - Ken Thompson.<br>
+-<br>
+To unsubscribe from this list: send the line &quot;unsubscribe linux-kernel&quot; in<br>
+the body of a message to majordomo@xxxxxxxxxxxxxxx<br>
+More majordomo info at  <a  href="http://vger.kernel.org/majordomo-info.html">http://vger.kernel.org/majordomo-info.html</a><br>
+Please read the FAQ at  <a  href="http://www.tux.org/lkml/">http://www.tux.org/lkml/</a><br>
+<br>
+<br>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<hr NOSHADE>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+
+
+
+
+
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<li><strong>Next message: </strong> <a href="2804.html"> Matt Mackall: "Re: [PATCH v2 (updated) -mm 4/9] netconsole: Add some useful tips to documentation"</a>
+
+<li><strong>Previous message: </strong> <a href="2802.html"> Sergei Shtylyov: "Re: [PATCH 2.6.21-rt2] PowerPC: revert fix for threaded fasteoi	IRQhandlers"</a>
+
+<li><strong>In reply to: </strong> <a href="2419.html"> Matt Mackall: "Re: [PATCH] Start to genericize kconfig for use by other projects."</a>
+
+
+
+<li><strong>Messages sorted by: </strong><a href="date.html#2803">[ date ]</a> <a href="index.html#2803">[ thread ]</a> <a href="subject.html#2803">[ subject ]</a> <a href="author.html#2803">[ author ]</a>
+</ul>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</body>
+</html>

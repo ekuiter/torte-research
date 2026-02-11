@@ -1,0 +1,118 @@
+<!-- MHonArc v2.6.6 -->
+<!--X-Subject: Re: [PATCH] Start to genericize kconfig for use by other projects. -->
+<!--X-From-R13: [ngg [npxnyy <zczNfryravp.pbz> -->
+<!--X-Date: Thu, 12 Jul 2007 19:17:27 &#45;0400 (EDT) -->
+<!--X-Message-Id: 20070712231645.GY11166@waste.org -->
+<!--X-Content-Type: text/plain -->
+<!--X-Reference: 200707111522.14240.rob@landley.net -->
+<!--X-Reference: Pine.LNX.4.64.0707121820110.1817@scrub.home -->
+<!--X-Reference: 200707121444.18599.rob@landley.net -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+                      "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html lang="en">
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-2">
+<title>Linux-Kernel Archive: Re: [PATCH] Start to genericize kconfig for use by other projects.</title>
+<meta NAME="Author" CONTENT="Matt Mackall &lt;mpm@selenic.com&gt;">
+<meta NAME="Subject" CONTENT="Re: [PATCH] Start to genericize kconfig for use by other projects.">
+</head> 
+<body BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<h1>Re: [PATCH] Start to genericize kconfig for use by other projects.</h1>
+<strong>From: </strong>Matt Mackall
+<br><strong>Date: </strong> Thu Jul 12 2007 - 19:17:27 EST
+<p>
+<ul>
+<li><strong>Next message: </strong> <a href="2420.html"> Rusty Russell: "Re: lguest, Re: -mm merge plans for 2.6.23"</a>
+
+<li><strong>Previous message: </strong> <a href="2418.html"> Miklos Szeredi: "Re: malicious filesystems (was Re: [linux-pm] Re: [PATCH] Remove process freezer from suspend to RAM pathway)"</a>
+
+<li><strong>In reply to: </strong> <a href="2324.html"> Rob Landley: "Re: [PATCH] Start to genericize kconfig for use by other projects."</a>
+
+<li><strong>Next in thread: </strong> <a href="2803.html"> Rob Landley: "Re: [PATCH] Start to genericize kconfig for use by other projects."</a>
+
+<li><strong>Messages sorted by: </strong><a href="date.html#2419">[ date ]</a> <a href="index.html#2419">[ thread ]</a> <a href="subject.html#2419">[ subject ]</a> <a href="author.html#2419">[ author ]</a>
+</ul>
+
+<!--X-Subject-Header-End-->
+<!--X-Head-of-Message-->
+<!--X-Head-of-Message-End-->
+<!--X-Head-Body-Sep-Begin-->
+<hr NOSHADE>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+On Thu, Jul 12, 2007 at 02:44:18PM -0400, Rob Landley wrote:<br>
+&gt;<i> On Thursday 12 July 2007 12:28:39 pm Roman Zippel wrote:</i><br>
+&gt;<i> &gt; Hi,</i><br>
+&gt;<i> &gt;</i><br>
+&gt;<i> &gt; On Wed, 11 Jul 2007, Rob Landley wrote:</i><br>
+&gt;<i> &gt; &gt; Replace name &quot;Linux Kernel&quot; in menuconfig with a macro (defaulting to</i><br>
+&gt;<i> &gt; &gt; &quot;Linux Kernel&quot; if not -Ddefined by the makefile), and remove a few</i><br>
+&gt;<i> &gt; &gt; unnecessary occurrences of &quot;kernel&quot; in pop-up text.</i><br>
+&gt;<i> &gt;</i><br>
+&gt;<i> &gt; Could you drop the PROJECT_NAME changes for now? The rest looks fine.</i><br>
+&gt;<i> &gt; I would prefer if the project would be settable via Kconfig.</i><br>
+&gt;<i> </i><br>
+&gt;<i> Are projects likely to grab a common kconfig binary externally, rather</i><br>
+&gt;<i> than build their own? </i><br>
+<br>
+Yes.<br>
+<br>
+If you really want to share kconfig, it'd be better to break it off<br>
+into a separately packaged project. For the time being, the kernel<br>
+makefiles can look for it in path, then fall back to its own copy<br>
+which we can eventually drop.<br>
+<br>
+-- <br>
+Mathematics is the supreme nostalgia of our time.<br>
+-<br>
+To unsubscribe from this list: send the line &quot;unsubscribe linux-kernel&quot; in<br>
+the body of a message to majordomo@xxxxxxxxxxxxxxx<br>
+More majordomo info at  <a  href="http://vger.kernel.org/majordomo-info.html">http://vger.kernel.org/majordomo-info.html</a><br>
+Please read the FAQ at  <a  href="http://www.tux.org/lkml/">http://www.tux.org/lkml/</a><br>
+<br>
+<br>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<hr NOSHADE>
+
+
+</ul></li></ul>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+
+
+
+
+
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<li><strong>Next message: </strong> <a href="2420.html"> Rusty Russell: "Re: lguest, Re: -mm merge plans for 2.6.23"</a>
+
+<li><strong>Previous message: </strong> <a href="2418.html"> Miklos Szeredi: "Re: malicious filesystems (was Re: [linux-pm] Re: [PATCH] Remove process freezer from suspend to RAM pathway)"</a>
+
+<li><strong>In reply to: </strong> <a href="2324.html"> Rob Landley: "Re: [PATCH] Start to genericize kconfig for use by other projects."</a>
+
+<li><strong>Next in thread: </strong> <a href="2803.html"> Rob Landley: "Re: [PATCH] Start to genericize kconfig for use by other projects."</a>
+
+<li><strong>Messages sorted by: </strong><a href="date.html#2419">[ date ]</a> <a href="index.html#2419">[ thread ]</a> <a href="subject.html#2419">[ subject ]</a> <a href="author.html#2419">[ author ]</a>
+</ul>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</body>
+</html>

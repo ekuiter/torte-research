@@ -1,0 +1,451 @@
+        <!DOCTYPE html>
+        <html lang="en">
+        <head><title>make miniconfig (take 2) [LWN.net]</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:title" content="make miniconfig (take 2)">
+<meta property="og:site_name" content="LWN.net">
+<meta property="og:type" content="article">
+<meta property="og:description" content="">
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="robots" CONTENT="noai, noimageai">
+        <link rel="icon" href="https://static.lwn.net/images/favicon.png"
+              type="image/png">
+        <link rel="alternate" type="application/rss+xml" title="LWN.net headlines" href="https://lwn.net/headlines/rss">
+        <link rel="stylesheet" href="/CSS/lwn">
+<link rel="stylesheet" href="/CSS/nosub">
+
+        
+<script async src="//servedby.aqua-adserver.com/asyncjs.php"></script>
+
+        </head>
+        <body>
+        <a name="t"></a>
+<div id="menu"><a href="/"><img src="https://static.lwn.net/images/logo/barepenguin-70.png" class="logo"
+                 border="0" alt="LWN.net Logo">
+           <span class="logo">LWN<br>.net</span>
+           <span class="logobl">News from the source</span></a>
+           <a href="/"><img src="https://static.lwn.net/images/lcorner-ss.png" class="sslogo"
+                 border="0" alt="LWN"></a><div class="navmenu-container">
+           <ul class="navmenu">
+        <li><a class="navmenu" href="#t"><b>Content</b></a><ul><li><a href="/current/">Weekly Edition</a></li><li><a href="/Archives/">Archives</a></li><li><a href="/Search/">Search</a></li><li><a href="/Kernel/">Kernel</a></li><li><a href="/Security/">Security</a></li><li><a href="/Calendar/">Events calendar</a></li><li><a href="/Comments/unread">Unread comments</a></li><li><hr></li><li><a href="/op/FAQ.lwn">LWN FAQ</a></li><li><a href="/op/AuthorGuide.lwn">Write for us</a></li></ul></li>
+<li><a class="navmenu" href="#t"><b>Edition</b></a><ul><li><a href="/Articles/160501/">Return to the Kernel page</a></li></ul></li>
+</ul></div>
+</div> <!-- menu -->
+<div class="not-handset"
+            	     style="margin-left: 10.5em; display: block;">
+                   <div class="not-print"> <ins data-revive-zoneid="12072" 
+data-revive-id="fa8c6c9da7f33852f7097c4a94da1070"></ins> </div>
+                </div>
+            <div class="topnav-container">
+<div class="not-handset"><form action="https://lwn.net/Login/" method="post" name="loginform"
+                 class="loginform">
+        <label><b>User:</b> <input type="text" name="uname" value="" size="8" id="uc" /></label> 
+		<label><b>Password:</b> <input type="password" name="pword" size="8" id="pc" /></label> <input type="hidden" name="target" value="/Articles/161086/" /> <input type="submit" name="submit" value="Log in" /></form> |
+           <form action="https://lwn.net/subscribe/" method="post" class="loginform">
+           <input type="submit" name="submit" value="Subscribe" />
+           </form> |
+           <form action="https://lwn.net/Login/newaccount" method="post" class="loginform">
+           <input type="submit" name="submit" value="Register" />
+           </form>
+        </div>
+               <div class="handset-only">
+               <a href="/Login/"><b>Log in</b></a> /
+               <a href="/subscribe/"><b>Subscribe</b></a> /
+               <a href="/Login/newaccount"><b>Register</b></a>
+               </div>
+               </div><div class="maincolumn flexcol">
+<div class="middlecolumn">
+<div class="PageHeadline">
+<h1>make miniconfig (take 2)</h1>
+</div>
+<div class="ArticleText">
+<table>
+<tr><td valign="top"><b>From</b>:</td>
+    	     <td>&nbsp;</td><td valign="top">Rob Landley &lt;rob@landley.net&gt;</td></tr>
+<tr><td valign="top"><b>To</b>:</td>
+    	     <td>&nbsp;</td><td valign="top">Roman Zippel &lt;zippel@linux-m68k.org&gt;</td></tr>
+<tr><td valign="top"><b>Subject</b>:</td>
+    	     <td>&nbsp;</td><td valign="top">[PATCH] make miniconfig (take 2)</td></tr>
+<tr><td valign="top"><b>Date</b>:</td>
+    	     <td>&nbsp;</td><td valign="top">Mon, 21 Nov 2005 10:06:47 -0600</td></tr>
+<tr><td valign="top"><b>Cc</b>:</td>
+    	     <td>&nbsp;</td><td valign="top">linux-kernel@vger.kernel.org, Sam Ravnborg &lt;sam@ravnborg.org&gt;</td></tr>
+</table><p>
+<pre>
+Signed-off-by: Rob Landley &lt;rob@landley.net&gt;
+
+Add "make miniconfig", plus documentation, plus the script that creates a
+minimal mini.config from a normal .config file.
+---
+Blah.  Patch I sent last night was missing 2 lines in scripts/kconfig/conf.c
+(in two case statements around lines 86 and 146 set_no: needed set_mini:
+added).  Fixed and retested so that applying this patch gives the behavior I
+tested, and while I was at it I tweaked the documentation a bit more.
+
+Here's the extended description again:
+
+This patch is basically a user interface tweak to the new allno.config
+feature that went into 2.6.15-rc1.  The differences between allnoconfig and
+miniconfig are:
+
+1) Documentation.
+
+2) More easily understandable names (miniconfig and mini.config).
+
+3) More user-friendly output (just show the warnings, not the successes).
+
+4) Better error handling (the make exits with an error if mini.config isn't
+found or if parsing mini.config generates any warnings).
+
+5) A shell script to automatically create mini.config from a normal .config
+file.  (It's very slow, but it works.  Anybody who wants to make confdata.c
+spit this out by itself, feel free.  I definitely took the "bang two rocks
+together, make fire" approach with this shell script.)
+
+diff -ru linux-2.6.15-rc2.old/Documentation/00-INDEX linux-2.6.15-rc2/Documentation/00-INDEX
+--- linux-2.6.15-rc2.old/Documentation/00-INDEX 2005-11-21 09:28:04.000000000 -0600
++++ linux-2.6.15-rc2/Documentation/00-INDEX	2005-11-21 09:46:35.514090656 -0600
+@@ -174,6 +174,8 @@
+ 	- info on boot arguments for the multiple devices driver.
+ memory.txt
+  - info on typical Linux memory problems.
++miniconfig.txt
++ - How to use miniature human-editable configuration files.
+ mips/
+  - directory with info about Linux on MIPS architecture.
+ mono.txt
+diff -ru linux-2.6.15-rc2.old/Documentation/miniconfig.txt
+linux-2.6.15-rc2/Documentation/miniconfig.txt
+--- linux-2.6.15-rc2.old/Documentation/miniconfig.txt 2005-11-21 09:36:38.000000000 -0600
++++ linux-2.6.15-rc2/Documentation/miniconfig.txt 2005-11-21 09:45:23.561029184 -0600
+@@ -0,0 +1,105 @@
++Miniconfig documentation
++November 21, 2005
++Rob Landley &lt;rob@landley.net&gt;
++=============================
++
++What is a miniconfig?
++---------------------
++
++A new feature introduced in 2.6.15 lets you use miniature configuration files,
++listing just the symbols you want to enable and letting the configurator
++enable any dependencies needed to give you a valid configuration.
++
++To use it, create a mini.config file in whatever directory your .config file
++would normally live in, and run "make miniconfig".  (You can specify a
++different file with the argument "KCONFIG_ALLCONFIG=/path/to/mini.config".)
++
++Advantages of miniconfig:
++-------------------------
++
++Miniconfigs have several advantages over conventional configuration files:
++
++ * They're more portable between versions.  A miniconfig from linux 2.6.15 will
++   probably build an equivalent 2.6.16 kernel.
++
++ * It's easy to see exactly what features have been specified.
++
++ * Miniconfigs are human editable, human readable, and provide informative
++   error messages identifying any unrecognized (typoed) symbols.
++
++Creating a mini.config by hand:
++-------------------------------
++
++Run "make allnoconfig", and create an empty mini.config file.  Then go through
++"make menuconfig" enabling the features you want.  For each feature you enable,
++look at the help entry (at the top of which is the symbol name for this
++feature), and add a line to mini.config setting that symbol to the appropriate
++value, such as:
++
++CONFIG_THINGY=y
++
++Creating a mini.config from a full .config file:
++------------------------------------------------
++
++Run scripts/miniconfig.sh to automatically create a mini.conf from a full
++.config file.
++
++The script works via the simple expedient of trying to remove each line from
++.config and keeping only the lines which make a difference in the .config
++generated by "make miniconfig".  (This means it runs "make miniconfig" about
++1300 times, which is very very slow, so it displays a progress indicator.)
++
++To use the script, go into the kernel source directory, create your .config 
++file (via menuconfig or however), rename that .config file to another name
++(like "myconfig"), then run:
++
++scripts/miniconfig.sh myconfig
++
++When the script finishes, you should have a mini.config file containing
++the minimal set of lines necessary to specify that configuration via
++"make miniconfig".
++
++Real-world example:
++-------------------
++
++Here's the mini.config I use to build User Mode Linux:
++
++CONFIG_MODE_SKAS=y
++CONFIG_BINFMT_ELF=y
++CONFIG_HOSTFS=y
++CONFIG_SYSCTL=y
++CONFIG_STDERR_CONSOLE=y
++CONFIG_UNIX98_PTYS=y
++CONFIG_BLK_DEV_LOOP=y
++CONFIG_BLK_DEV_UBD=y
++CONFIG_TMPFS=y
++CONFIG_SWAP=y
++CONFIG_LBD=y
++CONFIG_EXT2_FS=y
++CONFIG_PROC_FS=y
++
++And here's how I build and test it (as a normal user, not as root):
++
++# Configure, building in an external directory and using a mini.config file in
++# my home directory.
++
++make KCONFIG_ALLCONFIG=~/uml-config ARCH=um O=../linux-umlbuild miniconfig
++
++# change to build directory and build User Mode Linux
++
++cd ../linux-umlbuild
++make ARCH=um
++
++# Test run
++
++./linux rootfstype=hostfs rw init=/bin/sh
++$ whoami
++$ mount -t proc /proc /proc
++$ cat /proc/cpuinfo
++$ halt -f
++
++# And if I want to regenerate the mini.config from the .config, I do this.
++# Note the syntax for specifying a different architecture:
++
++cp .config myconfig
++ARCH=um scripts/miniconfig.sh myconfig
+diff -ru linux-2.6.15-rc2.old/scripts/kconfig/conf.c linux-2.6.15-rc2/scripts/kconfig/conf.c
+--- linux-2.6.15-rc2.old/scripts/kconfig/conf.c 2005-11-21 09:28:22.000000000 -0600
++++ linux-2.6.15-rc2/scripts/kconfig/conf.c 2005-11-21 09:23:02.000000000 -0600
+@@ -24,7 +24,8 @@
+  set_yes,
+  set_mod,
+  set_no,
+- set_random
++ set_random,
++ set_mini
+ } input_mode = ask_all;
+ char *defconfig_file;
+ 
+@@ -86,6 +87,7 @@
+  case set_mod:
+  case set_yes:
+  case set_random:
++ case set_mini:
+   if (sym_has_value(sym)) {
+    printf("%s\n", def);
+    return;
+@@ -143,6 +145,7 @@
+    }
+   }
+  case set_no:
++ case set_mini:
+   if (sym_tristate_within_range(sym, no)) {
+    line[0] = 'n';
+    line[1] = '\n';
+@@ -376,6 +379,7 @@
+   case set_yes:
+   case set_mod:
+   case set_no:
++  case set_mini:
+    cnt = def;
+    printf("%d\n", cnt);
+    break;
+@@ -492,7 +496,7 @@
+ 
+ int main(int ac, char **av)
+ {
+- int i = 1;
++ int i = 1, minifail = 0;
+  const char *name;
+  struct stat tmpstat;
+ 
+@@ -530,6 +534,9 @@
+    input_mode = set_random;
+    srandom(time(NULL));
+    break;
++  case 'M':
++   input_mode = set_mini;
++   break;
+   case 'h':
+   case '?':
+    printf("%s [-o|-s] config\n", av[0]);
+@@ -571,22 +578,32 @@
+  case set_mod:
+  case set_yes:
+  case set_random:
++ case set_mini:
+   name = getenv("KCONFIG_ALLCONFIG");
+-  if (name &amp;&amp; !stat(name, &amp;tmpstat)) {
+-   conf_read_simple(name);
+-   break;
++  if (name) {
++   if(!stat(name, &amp;tmpstat)) {
++    conf_read_simple(name);
++    break;
++   } else minifail++;
+   }
+   switch (input_mode) {
+   case set_no:  name = "allno.config"; break;
+   case set_mod:  name = "allmod.config"; break;
+   case set_yes:  name = "allyes.config"; break;
+   case set_random: name = "allrandom.config"; break;
++  case set_mini:  name = "mini.config"; break;
+   default: break;
+   }
+   if (!stat(name, &amp;tmpstat))
+    conf_read_simple(name);
+   else if (!stat("all.config", &amp;tmpstat))
+    conf_read_simple("all.config");
++  else minifail++;
++
++  if ( input_mode == set_mini &amp;&amp; (minifail || conf_warnings)) {
++   fprintf(stderr, _("** Error parsing mini.config\n\n"));
++   return 1;
++  }
+   break;
+  default:
+   break;
+diff -ru linux-2.6.15-rc2.old/scripts/kconfig/confdata.c
+linux-2.6.15-rc2/scripts/kconfig/confdata.c
+--- linux-2.6.15-rc2.old/scripts/kconfig/confdata.c 2005-11-21 09:28:22.000000000 -0600
++++ linux-2.6.15-rc2/scripts/kconfig/confdata.c 2005-11-21 09:21:50.000000000 -0600
+@@ -18,7 +18,8 @@
+  __attribute__ ((format (printf, 1, 2)));
+ 
+ static const char *conf_filename;
+-static int conf_lineno, conf_warnings, conf_unsaved;
++static int conf_lineno, conf_unsaved;
++int conf_warnings;
+ 
+ const char conf_def_filename[] = ".config";
+ 
+diff -ru linux-2.6.15-rc2.old/scripts/kconfig/lkc.h linux-2.6.15-rc2/scripts/kconfig/lkc.h
+--- linux-2.6.15-rc2.old/scripts/kconfig/lkc.h 2005-11-21 09:28:22.000000000 -0600
++++ linux-2.6.15-rc2/scripts/kconfig/lkc.h 2005-11-21 09:21:50.000000000 -0600
+@@ -61,6 +61,7 @@
+ 
+ /* confdata.c */
+ extern const char conf_def_filename[];
++extern int conf_warnings;
+ 
+ char *conf_get_default_confname(void);
+ 
+diff -ru linux-2.6.15-rc2.old/scripts/kconfig/Makefile linux-2.6.15-rc2/scripts/kconfig/Makefile
+--- linux-2.6.15-rc2.old/scripts/kconfig/Makefile 2005-11-21 09:28:22.000000000 -0600
++++ linux-2.6.15-rc2/scripts/kconfig/Makefile 2005-11-21 09:21:50.000000000 -0600
+@@ -42,7 +42,7 @@
+  $(Q)rm -f arch/um/Kconfig_arch
+  $(Q)rm -f scripts/kconfig/linux_*.pot scripts/kconfig/config.pot
+ 
+-.PHONY: randconfig allyesconfig allnoconfig allmodconfig defconfig
++.PHONY: randconfig allyesconfig allnoconfig allmodconfig defconfig miniconfig
+ 
+ randconfig: $(obj)/conf
+  $&lt; -r arch/$(ARCH)/Kconfig
+@@ -67,6 +67,9 @@
+ %_defconfig: $(obj)/conf
+  $(Q)$&lt; -D arch/$(ARCH)/configs/$@ arch/$(ARCH)/Kconfig
+ 
++miniconfig: $(obj)/conf
++ @ $&lt; -M arch/$(ARCH)/Kconfig &gt; /dev/null
++
+ # Help text used by make help
+ help:
+  @echo  '  config   - Update current config utilising a line-oriented program'
+@@ -79,6 +82,7 @@
+  @echo  '  allmodconfig   - New config selecting modules when possible'
+  @echo  '  allyesconfig   - New config where all options are accepted with yes'
+  @echo  '  allnoconfig   - New minimal config'
++ @echo  '  miniconfig   - New config generated from mini.config
+ 
+ # ===========================================================================
+ # Shared Makefile for the various kconfig executables:
+diff -ru linux-2.6.15-rc2.old/scripts/miniconfig.sh linux-2.6.15-rc2/scripts/miniconfig.sh
+--- linux-2.6.15-rc2.old/scripts/miniconfig.sh 2005-11-21 09:36:44.000000000 -0600
++++ linux-2.6.15-rc2/scripts/miniconfig.sh 2005-11-21 09:21:50.000000000 -0600
+@@ -0,0 +1,46 @@
++#!/bin/sh
++
++# miniconfig.sh copyright 2005 by Rob Landley &lt;rob@landley.net&gt;
++# Licensed under the GNU General Public License version 2.
++
++if [ $# -ne 1 ] || [ ! -f "$1" ]
++then
++  echo "Usage: miniconfig.sh configfile" 
++  exit 1
++fi
++
++if [ "$1" == ".config" ]
++then
++  echo "It overwrites .config, rename it and try again."
++  exit 1
++fi
++
++cp $1 mini.config
++echo "Calculating mini.config..."
++
++LENGTH=`cat $1 | wc -l`
++
++# Loop through all lines in the file 
++I=1
++while true
++do
++  if [ $I -gt $LENGTH ]
++  then
++    exit
++  fi
++  sed -n "${I}!p" mini.config &gt; .config.test
++  # Do a config with this file
++  make allnoconfig KCONFIG_ALLCONFIG=.config.test &gt; /dev/null
++
++  # Compare.  The date changes so expect a small difference each time.
++  D=`diff .config $1 | wc -l`
++  if [ $D -eq 4 ]
++  then
++    mv .config.test mini.config
++    LENGTH=$[$LENGTH-1]
++  else
++    I=$[$I + 1]
++  fi
++  echo -n -e $I/$LENGTH lines `cat mini.config | wc -c` bytes "\r"
++done
++echo
+-
+To unsubscribe from this list: send the line "unsubscribe linux-kernel" in
+the body of a message to majordomo@vger.kernel.org
+More majordomo info at  <a href="http://vger.kernel.org/majordomo-info.html">http://vger.kernel.org/majordomo-info.html</a>
+Please read the FAQ at  <a href="http://www.tux.org/lkml/">http://www.tux.org/lkml/</a>
+
+</pre>
+
+</div> <!-- ArticleText -->
+</div> <!-- middlecolumn -->
+<div class="rightcol not-print">
+<ins data-revive-zoneid="12085" 
+data-revive-id="fa8c6c9da7f33852f7097c4a94da1070"></ins>
+</div>
+</div> <!-- maincolumn -->
+
+            <br clear="all">
+            <center>
+            <P>
+            <span class="ReallySmall">
+            Copyright &copy; 2005, Eklektix, Inc.<BR>
+            
+            Comments and public postings are copyrighted by their creators.<br>
+            Linux  is a registered trademark of Linus Torvalds<br>
+            </span>
+            </center>
+            
+            </body></html>

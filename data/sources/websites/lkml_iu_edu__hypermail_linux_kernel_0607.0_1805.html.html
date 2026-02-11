@@ -1,0 +1,222 @@
+<!-- MHonArc v2.6.6 -->
+<!--X-Subject: [PATCH] Miniconfig revisited (1/3) -->
+<!--X-From-R13: Dbo Znaqyrl <eboNynaqyrl.arg> -->
+<!--X-Date: Thu,  6 Jul 2006 21:42:31 &#45;0400 (EDT) -->
+<!--X-Message-Id: 200607062143.12669.rob@landley.net -->
+<!--X-Content-Type: text/plain -->
+<!--X-Reference: 200607061753.43518.rob@landley.net -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+                      "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html lang="en">
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-2">
+<title>Linux-Kernel Archive: [PATCH] Miniconfig revisited (1/3)</title>
+<meta NAME="Author" CONTENT="Rob Landley &lt;rob@landley.net&gt;">
+<meta NAME="Subject" CONTENT="[PATCH] Miniconfig revisited (1/3)">
+</head> 
+<body BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<h1>[PATCH] Miniconfig revisited (1/3)</h1>
+<strong>From: </strong>Rob Landley
+<br><strong>Date: </strong> Thu Jul 06 2006 - 21:42:31 EST
+<p>
+<ul>
+<li><strong>Next message: </strong> <a href="1806.html"> Robert Hancock: "Re: Generic interface for accelerometers (AMS, HDAPS, ...)"</a>
+
+<li><strong>Previous message: </strong> <a href="1804.html"> Thomas Tuttle: "Re: [PATCH] Integrate asus_acpi LED's with new LED subsystem"</a>
+
+<li><strong>In reply to: </strong> <a href="1714.html"> Rob Landley: "[PATCH] Miniconfig revisited (0/3)"</a>
+
+<li><strong>Next in thread: </strong> <a href="1808.html"> Rob Landley: "[PATCH] Miniconfig revisited (2/3)"</a>
+
+<li><strong>Messages sorted by: </strong><a href="date.html#1805">[ date ]</a> <a href="index.html#1805">[ thread ]</a> <a href="subject.html#1805">[ subject ]</a> <a href="author.html#1805">[ author ]</a>
+</ul>
+
+<!--X-Subject-Header-End-->
+<!--X-Head-of-Message-->
+<!--X-Head-of-Message-End-->
+<!--X-Head-Body-Sep-Begin-->
+<hr NOSHADE>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+My first attempt doesn't seem to have made it through to the list, so...<br>
+<br>
+Add &quot;make miniconfig&quot; target.  Only touches the makefile, no C code.<br>
+<br>
+Signed-off-by: Rob Landley &lt;rob@xxxxxxxxxxx&gt;<br>
+<br>
+<br>
+diff -ur linux-2.6.17.1/scripts/kconfig/Makefile linux-2.6.17.new/scripts/kconfig/Makefile<br>
+--- linux-2.6.17.1/scripts/kconfig/Makefile	2006-06-20 05:31:55.000000000 -0400<br>
++++ linux-2.6.17.new/scripts/kconfig/Makefile	2006-07-06 15:51:25.000000000 -0400<br>
+@@ -2,7 +2,7 @@<br>
+ # Kernel configuration targets<br>
+ # These targets are used from top-level makefile<br>
+ <br>
+-PHONY += oldconfig xconfig gconfig menuconfig config silentoldconfig update-po-config<br>
++PHONY += oldconfig xconfig gconfig menuconfig config silentoldconfig miniconfig update-po-config<br>
+ <br>
+ xconfig: $(obj)/qconf<br>
+ 	$&lt; arch/$(ARCH)/Kconfig<br>
+@@ -23,6 +23,14 @@<br>
+ silentoldconfig: $(obj)/conf<br>
+ 	$&lt; -s arch/$(ARCH)/Kconfig<br>
+ <br>
++MINICONFIG = mini.config<br>
++miniconfig: $(obj)/conf $(MINICONFIG)<br>
++	$(Q)KCONFIG_ALLCONFIG=$(MINICONFIG) $&lt; -n arch/$(ARCH)/Kconfig &gt; /dev/null 2&gt; .config.result ; \<br>
++	cat .config.result ; \<br>
++	RESULT=`cat .config.result`; \<br>
++	rm .config.result ; \<br>
++	if [ ! -z &quot;${RESULT}&quot; ]; then exit 1; fi<br>
++<br>
+ update-po-config: $(obj)/kxgettext<br>
+ 	xgettext --default-domain=linux \<br>
+           --add-comments --keyword=_ --keyword=N_ \<br>
+@@ -79,6 +87,7 @@<br>
+ 	@echo  '  allmodconfig	  - New config selecting modules when possible'<br>
+ 	@echo  '  allyesconfig	  - New config where all options are accepted with yes'<br>
+ 	@echo  '  allnoconfig	  - New config where all options are answered with no'<br>
++	@echo  '  miniconfig	  - New config unpacked from mini.config (or MINICONFIG=file)'<br>
+ <br>
+ # ===========================================================================<br>
+ # Shared Makefile for the various kconfig executables:<br>
+diff -ur linux-2.6.17.1/scripts/shrinkconfig linux-2.6.17.new/scripts/shrinkconfig<br>
+--- linux-2.6.17.1/scripts/shrinkconfig	2006-07-06 16:34:39.000000000 -0400<br>
++++ linux-2.6.17.new/scripts/shrinkconfig	2006-07-06 15:54:40.000000000 -0400<br>
+@@ -0,0 +1,86 @@<br>
++#!/bin/bash<br>
++<br>
++# shrinkconfig copyright 2006 by Rob Landley &lt;rob@xxxxxxxxxxx&gt;<br>
++# Licensed under the GNU General Public License version 2.<br>
++<br>
++if [ $# -ne 1 ]<br>
++then<br>
++  echo &quot;Turns current .config into a miniconfig file.&quot;<br>
++  echo &quot;Usage: shrinkconfig mini.config&quot;<br>
++  exit 1<br>
++fi<br>
++<br>
++if [ ! -f .config ]<br>
++then<br>
++  echo &quot;Need a .config file to shrink.&quot;<br>
++  exit 1<br>
++fi<br>
++LENGTH=$(cat .config | wc -l)<br>
++<br>
++OUTPUT=&quot;$1&quot;<br>
++cp .config &quot;$OUTPUT&quot;<br>
++if [ $? -ne 0 ]<br>
++then<br>
++  echo &quot;Couldn't create $OUTPUT&quot;<br>
++  exit 1<br>
++fi<br>
++<br>
++# If we get interrupted, clean up the mess<br>
++<br>
++KERNELOUTPUT=&quot;&quot;<br>
++<br>
++function cleanup<br>
++{<br>
++  echo<br>
++  echo &quot;Interrupted.&quot;<br>
++  [ ! -z &quot;$KERNELOUTPUT&quot; ] &amp;&amp; rm -rf &quot;$KERNELOUTPUT&quot;<br>
++  rm &quot;$OUTPUT&quot;<br>
++  exit 1<br>
++}<br>
++<br>
++trap cleanup HUP INT QUIT TERM<br>
++<br>
++# Since the &quot;O=&quot; argument to make doesn't work recursively, we need to jump<br>
++# through a few hoops to avoid overwriting the .config that we're shrinking.<br>
++<br>
++# If we're building out of tree, we'll have absolute paths to source and build<br>
++# directories in the Makefile.<br>
++<br>
++KERNELSRC=$(sed -n -e 's/KERNELSRC[^/]*:=[^/]*//p' Makefile)<br>
++[ -z &quot;$KERNELSRC&quot; ] &amp;&amp; KERNELSRC=$(pwd)<br>
++KERNELOUTPUT=`pwd`/.config.minitemp<br>
++<br>
++mkdir -p &quot;$KERNELOUTPUT&quot; || exit 1<br>
++<br>
++echo &quot;Shrinking .config to $OUTPUT...&quot;<br>
++<br>
++# Loop through all lines in the file <br>
++I=1<br>
++while true<br>
++do<br>
++  if [ $I -gt $LENGTH ]<br>
++  then<br>
++    break<br>
++  fi<br>
++<br>
++  echo -n -e &quot;\r&quot;$I/$LENGTH lines $(cat &quot;$OUTPUT&quot; | wc -c) bytes<br>
++<br>
++  sed -n &quot;${I}!p&quot; &quot;$OUTPUT&quot; &gt; &quot;$KERNELOUTPUT&quot;/.config.test<br>
++  # Do a config with this file<br>
++  make -C &quot;$KERNELSRC&quot; O=&quot;$KERNELOUTPUT&quot; allnoconfig KCONFIG_ALLCONFIG=&quot;$KERNELOUTPUT&quot;/.config.test &gt; /dev/null<br>
++<br>
++  # Compare.  The date changes, so expect a small difference each time.<br>
++  D=$(diff &quot;$KERNELOUTPUT&quot;/.config .config | wc -l)<br>
++  if [ $D -eq 4 ]<br>
++  then<br>
++    mv &quot;$KERNELOUTPUT&quot;/.config.test &quot;$OUTPUT&quot;<br>
++    LENGTH=$[$LENGTH-1]<br>
++  else<br>
++    I=$[$I + 1]<br>
++  fi<br>
++done<br>
++<br>
++rm -rf &quot;$KERNELOUTPUT&quot;<br>
++<br>
++# One extra echo to preserve status line.<br>
++echo<br>
+<br>
+-- <br>
+Never bet against the cheap plastic solution.<br>
+-<br>
+To unsubscribe from this list: send the line &quot;unsubscribe linux-kernel&quot; in<br>
+the body of a message to majordomo@xxxxxxxxxxxxxxx<br>
+More majordomo info at  <a  href="http://vger.kernel.org/majordomo-info.html">http://vger.kernel.org/majordomo-info.html</a><br>
+Please read the FAQ at  <a  href="http://www.tux.org/lkml/">http://www.tux.org/lkml/</a><br>
+<br>
+<br>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<hr NOSHADE>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+
+
+
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<li><strong>Next message: </strong> <a href="1806.html"> Robert Hancock: "Re: Generic interface for accelerometers (AMS, HDAPS, ...)"</a>
+
+<li><strong>Previous message: </strong> <a href="1804.html"> Thomas Tuttle: "Re: [PATCH] Integrate asus_acpi LED's with new LED subsystem"</a>
+
+<li><strong>In reply to: </strong> <a href="1714.html"> Rob Landley: "[PATCH] Miniconfig revisited (0/3)"</a>
+
+<li><strong>Next in thread: </strong> <a href="1808.html"> Rob Landley: "[PATCH] Miniconfig revisited (2/3)"</a>
+
+<li><strong>Messages sorted by: </strong><a href="date.html#1805">[ date ]</a> <a href="index.html#1805">[ thread ]</a> <a href="subject.html#1805">[ subject ]</a> <a href="author.html#1805">[ author ]</a>
+</ul>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</body>
+</html>

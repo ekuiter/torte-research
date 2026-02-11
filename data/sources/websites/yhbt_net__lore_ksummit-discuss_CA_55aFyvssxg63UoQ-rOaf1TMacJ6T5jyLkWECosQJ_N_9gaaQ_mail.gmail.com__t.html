@@ -1,0 +1,305 @@
+<html><head><title>Re: [Ksummit-discuss] [TECH TOPIC] is Kconfig a bit hard sometimes? - Linus Torvalds</title><link
+rel=alternate
+title="Atom feed"
+href="../new.atom"
+type="application/atom+xml"/><style>@import url("../216light.css?6177062d") screen AND (prefers-color-scheme:light);pre{white-space:pre-wrap}*{font-size:100%;font-family:monospace}</style><link
+type=text/css
+rel=stylesheet
+href=../216dark.css?611ae2ef
+media=screen /><link
+type=text/css
+rel=stylesheet
+href=../216light.css?6177062d
+media=print /></head><body><form
+action="../"><pre><a
+href="../?t=20170627192712"><b>Ksummit-Discuss Archive mirror</b></a>
+<input
+name=q
+type=text /><input
+type=submit
+value=search /> <a
+href="../_/text/help/">help</a> / <a
+href="../_/text/color/">color</a> / <a
+id=mirror
+href="../_/text/mirror/">mirror</a> / <a
+href="../new.atom">Atom feed</a></pre></form><pre
+id=b>From: Linus Torvalds &lt;torvalds@linux-foundation.org&gt;
+To: &#34;Luis R. Rodriguez&#34; &lt;mcgrof@kernel.org&gt;
+Cc: Michal Hocko &lt;mhocko@kernel.org&gt;,
+	Christoph Hellwig &lt;hch@infradead.org&gt;,
+	Cristina Moraru &lt;cristina.moraru09@gmail.com&gt;,
+	ksummit &lt;<a
+href="https://yhbt.net/lore/ksummit-discuss/?t=20170627192712">ksummit-discuss@lists.linuxfoundation.org</a>&gt;
+Subject: <a
+href="#r"
+id=t>Re: [Ksummit-discuss] [TECH TOPIC] is Kconfig a bit hard sometimes?</a>
+Date: Tue, 27 Jun 2017 12:27:10 -0700	<a
+href="#r">[thread overview]</a>
+Message-ID: &lt;CA+55aFyvssxg63UoQ-rOaf1TMacJ6T5jyLkWECosQJ_N=9gaaQ@mail.gmail.com&gt; (<a href="raw">raw</a>)
+In-Reply-To: &lt;<a
+href="../20170627184448.GU21846@wotan.suse.de/">20170627184448.GU21846@wotan.suse.de</a>&gt;
+
+On Tue, Jun 27, 2017 at 11:44 AM, Luis R. Rodriguez &lt;mcgrof@kernel.org&gt; wrote:
+<span
+class="q">&gt;
+&gt; Such things exist now:
+&gt;
+&gt; make kvmconfig
+&gt; make xenconfig
+</span>
+Not really. Not for normal users. Those are literally only for the
+special cases that are *not* normal.
+
+<span
+class="q">&gt; So you mean a menu of the defconfigs ?
+</span>
+No. The defconfigs are useless. They are fundamentally broken, excatly
+because there is never one config that can work.
+
+They do need to be of the &#34;kvmconfig&#34; type, but for sane subconfirurations.
+
+So I&#39;d look for something like
+
+    make modernpcconfig # enable minimal modern PC workstation stuff
+    make f25config  # enable minimal stuff required for F25
+    make amdconfig # enable the core modern AMD stuff
+
+or something like that.
+
+But it&#39;s not going to happen, because everybody thinks *their* code is
+so supremely important, so the &#34;minimal config&#34; is literally a doomed
+concept ;(
+
+<span
+class="q">&gt; Sensible defaults per subsystem would help.
+</span>
+No. We&#39;ve tried. The only sensible default (and that I try to enforce)
+is &#34;new featrures default to &#39;n&#39;&#34;
+
+Why? Exactly because of that &#34;everybody thinks *their* code is
+important&#34;. Developers always think &#34;I have to enable my code&#34;. It
+doesn&#39;t matter how stupid or esoteric their code is, the developer by
+definition thinks their own code is supremely important, and
+particularly all the new cool features.
+
+So subsystem defaults are always completely broken, unless I come
+along and swear at people who think their new cool feature is
+important.
+
+Which I do regularly. And I&#39;m sure I miss things, because I just don&#39;t see them.
+
+<span
+class="q">&gt; If you have a set of requirements but need to fold in a large lump of
+&gt; other desirables then surely a SAT solver can help.
+</span>
+No. The SAT solver will only hurt, because it will bring in all those
+irrelevant people who are interested in SAT solving, not in making
+things easy for users.
+
+It should be perfectly sufficient to just have a series of &#39;select
+XYZ&#39; statements, and yes, update them manually, but since the point is
+to go for minimal, automation by definition just breaks it. It will
+just make people select big things and leave it at that.
+
+<span
+class="q">&gt; Actually ideally something like udevadm dumping respective kconfig symbols
+&gt; should give you what kconfig a system needs at a specific boot time.
+</span>
+So we already have localmodconfig that uses other things to figure out
+what is needed, but no, it&#39;s not good enough.
+
+Partly it&#39;s not good enough because realistically there are base
+configs that you want enabled whether they are used or not. For
+example, enabling USB without enabling USB_STORAGE is kind of crazy in
+this day and age. But USB storage is not required for booting in most
+circumstances, it&#39;s just reuired for occasional day-to-day things.
+
+Also, one problem really is that distro configurations by definition
+will be pretty damn large. If you want that config, then use the
+distro config. But if you want anything else, then udevadm isn&#39;t going
+to help you at all, because it&#39;s not going to show you any of the
+stuff that just worked because it was built in and never neeed any
+action at all.
+
+
+<span
+class="q">&gt;   * Arnd noted a kconfig &#34;Suggests&#34; tag seems appropriate, he seems to have
+&gt;     volunteered to work on it :)
+</span>
+Yeah, that&#39;s not goping to work either, simply because what is
+suggested in one context makes no sense at all in another.
+
+Are you doing a PC workstation kind of thing like many developers are?
+Very different from qwhen you&#39;re doing an embedded thing or a server
+or whatever.
+
+<span
+class="q">&gt;   * David Howells noted he&#39;d prefer to have a cache of enabled features.
+&gt;     He also volunteered this ;)
+</span>
+I do that. There&#39;s a reason &#34;make defconfig&#34; reads your
+/etc/kernel-config. It&#39;s just that it&#39;s machine-specific.
+
+And it&#39;s there exactly so that you can make your machine-specific
+config *once*, and then it&#39;s there, and it never affects anybody else
+(unless you share your /etc directory, but that&#39;s crazy).
+
+But even with that, I find our config stuff annoying. Upgrading
+hardware or distros is always just painful, because it means
+re-generating a new machine-specific configuration (either because the
+hardware changed, or because the distro baseline requirements
+changed).
+
+                    Linus
+</pre><hr><pre><a
+href="../CAGXu5jKeORY3Djv1EFNitdc=7X9rdvRekBiu2mRTER_Z6nJ=Mw@mail.gmail.com/"
+rel=next>next</a> <a
+href="../20170627184448.GU21846@wotan.suse.de/"
+rel=prev>prev parent</a> <a
+href="#R">reply</a><a id=related>	</a>other threads:[<a
+href="../?t=20170627192712">~2017-06-27 19:27 UTC</a>|<a
+href="../">newest</a>]
+
+<b>Thread overview: </b>45+ messages / expand[<a
+href="T/#u">flat</a>|<a
+href="t/#u">nested</a>]  <a
+href="t.mbox.gz">mbox.gz</a>  <a
+href="t.atom">Atom feed</a>  <a
+href="#b">top</a>
+2017-06-27 13:58 <a
+href="../20170627135839.GB1886@jagdpanzerIV.localdomain/">[Ksummit-discuss] [TECH TOPIC] is Kconfig a bit hard sometimes?</a> Sergey Senozhatsky
+2017-06-27 17:18 ` <a
+href="../CA+55aFxBUe4QAa11i-ySr2i959EpvcEZYf=9NumWyTDH+6BEQw@mail.gmail.com/">Linus Torvalds</a>
+2017-06-27 18:44   ` <a
+href="../20170627184448.GU21846@wotan.suse.de/">Luis R. Rodriguez</a>
+<b>2017-06-27 19:27     ` <a
+id=r
+href="#t">Linus Torvalds [this message]</a></b>
+2017-06-27 20:53       ` <a
+href="../CAGXu5jKeORY3Djv1EFNitdc=7X9rdvRekBiu2mRTER_Z6nJ=Mw@mail.gmail.com/">Kees Cook</a>
+2017-06-27 21:16       ` <a
+href="../CAOesGMimO1rYi7RpcsZYX9uDgWUJdv4XSgQR+RJaaS2qt_FCLw@mail.gmail.com/">Olof Johansson</a>
+2017-06-27 21:36         ` <a
+href="../CA+55aFxDyj-9koeDemqUvxYrLyKxV8Xggy=ad_EQmGrfEef_gg@mail.gmail.com/">Linus Torvalds</a>
+2017-06-27 23:10           ` <a
+href="../20170627231011.GA10543@mail.hallyn.com/">Serge E. Hallyn</a>
+2017-06-28  0:09             ` <a
+href="../CAB=NE6Wd9WWCyRzO=TjaTiPNruSwt24G3BD2qTuUue8B3kRX5g@mail.gmail.com/">Luis R. Rodriguez</a>
+2017-06-28  0:14               ` <a
+href="../CA+55aFzgumwC-HqDpsj-OEVoQdhcnRo9Fh2Kg7SMPL6+wP4ctg@mail.gmail.com/">Linus Torvalds</a>
+2017-06-28  0:26                 ` <a
+href="../CAB=NE6VS9iA+VN_-QOL1f8WGO-wrcQP5n+W=R6yjwQ=_OO3Sfg@mail.gmail.com/">Luis R. Rodriguez</a>
+2017-06-28  3:54                   ` <a
+href="../20170627205443.1de0f0d8@xeon-e3/">Stephen Hemminger</a>
+     [not found]                 ` &lt;<a
+href="../CAFhKne-o0S8fMo_XD_aUk2Rf7VbDhgO+PT_bjnM-9WpKfnWBvw@mail.gmail.com/">CAFhKne-o0S8fMo_XD_aUk2Rf7VbDhgO+PT_bjnM-9WpKfnWBvw@mail.gmail.com</a>&gt;
+     [not found]                   ` &lt;<a
+href="../CAFhKne8FE=17wNdp=Svf2Z2tADok6htfYqTABEiZUrCOyeMaYg@mail.gmail.com/">CAFhKne8FE=17wNdp=Svf2Z2tADok6htfYqTABEiZUrCOyeMaYg@mail.gmail.com</a>&gt;
+2017-06-28 13:35                     ` <a
+href="../CAFhKne_tu1WaVFQuccRwN1cTYvtCKA-1sxq73fkw_Df+Wa79=w@mail.gmail.com/">Matthew Wilcox</a>
+2017-06-28 17:56                 ` <a
+href="../CAMuHMdXQ3FVOQcRBfbc68f5KWmZw7q=YKyeQYUfKqikqrcAAmQ@mail.gmail.com/">Geert Uytterhoeven</a>
+2017-06-29 10:02                   ` <a
+href="../20170629070252.21c782d3@vento.lan/">Mauro Carvalho Chehab</a>
+2017-06-28  0:11             ` <a
+href="../CA+55aFyu4OXPcggG2_9XCPxHJrFC_vXz-Afdp1trHgU9VnPBpg@mail.gmail.com/">Linus Torvalds</a>
+2017-06-29 10:23           ` <a
+href="../20170629072320.22ac0049@vento.lan/">Mauro Carvalho Chehab</a>
+2017-06-28 12:58     ` <a
+href="../20170628125819.vgmr63uw3hl5yoib@mwanda/">Dan Carpenter</a>
+2017-06-30 17:11   ` <a
+href="../20170630131110.181c3b7a@gandalf.local.home/">Steven Rostedt</a>
+2017-06-30 17:52   ` <a
+href="../20170630175201.GC26257@fury/">Darren Hart</a>
+2017-06-30 17:58     ` <a
+href="../20170630175850.GD26257@fury/">Darren Hart</a>
+2017-07-01 17:24     ` <a
+href="../92305974-328a-d1b2-7301-4321f374ab8f@suse.com/">Hannes Reinecke</a>
+2017-06-27 20:41 ` <a
+href="../CAGXu5jJWH2cUnr5yiYS90SzROa3coZcgeRKEYOYYwhLUK8aPtw@mail.gmail.com/">Kees Cook</a>
+2017-07-06 14:40 ` <a
+href="../20170706144028.46a2mt2mdzpt6ip7@mwanda/">Dan Carpenter</a>
+2017-07-06 14:41   ` <a
+href="../20170706144116.kcvhyxezcpinhwq7@mwanda/">[Ksummit-discuss] [PATCH 1/2] kconfig: add a silent option to conf_write()</a> Dan Carpenter
+2017-07-06 15:08     ` <a
+href="../20170706110804.44ca24b9@gandalf.local.home/">Steven Rostedt</a>
+2017-07-06 14:42   ` <a
+href="../20170706144208.6hlgxwo37gntk6qm@mwanda/">[Ksummit-discuss] [PATCH 2/2] kconfig: new command line kernel configuration tool</a> Dan Carpenter
+2017-07-07  5:55     ` <a
+href="../CAJKOXPfE+ffRWq_1JB_1LSpg4gDne5pWNN2fKd-3t1hwX7amFA@mail.gmail.com/">Krzysztof Kozlowski</a>
+2017-07-07  9:02       ` <a
+href="../20170707090206.uiry6j7yizpl7yw4@mwanda/">Dan Carpenter</a>
+2017-07-09  3:56         ` <a
+href="../CACRpkdZB9g3rCgRDnZFDT2g9qQTtUZhKG2Pxp8qKrGP3u1p5+Q@mail.gmail.com/">Linus Walleij</a>
+2017-07-09  8:31           ` <a
+href="../CAMuHMdUBt4g=VHNBeN9OCq76hWMtR=_Giu55MkeqQZT9+TsX4w@mail.gmail.com/">Geert Uytterhoeven</a>
+2017-07-09 17:03             ` <a
+href="../404833db-da51-e348-060e-c3b4f6a27e0d@infradead.org/">Randy Dunlap</a>
+2017-07-09 19:43               ` <a
+href="../CAMuHMdUe1oRr0SNGz=0Gq4A2k=BO+PA4Lr810YsPELPpqrEAbg@mail.gmail.com/">Geert Uytterhoeven</a>
+2017-07-09 17:32             ` <a
+href="../596268A6.3080007@gmail.com/">Frank Rowand</a>
+2017-07-10  9:44     ` <a
+href="../CAMuHMdW4FFJkhA7oj0uA1an_WNt1wS-tM1KvnjYWwdfjRLjQ7A@mail.gmail.com/">Geert Uytterhoeven</a>
+2017-07-10 11:15       ` <a
+href="../20170710111555.b66w4vuc6irur5n4@mwanda/">Dan Carpenter</a>
+2017-07-06 16:41   ` <a
+href="../CA+55aFyPQeMYUafR32parh=jGU0O8prn5vhOhhW+WBU-LbR4HQ@mail.gmail.com/">[Ksummit-discuss] [TECH TOPIC] is Kconfig a bit hard sometimes?</a> Linus Torvalds
+2017-07-06 17:11     ` <a
+href="../966c1fce-6f2f-d158-d086-cf8e2eac97a9@infradead.org/">Randy Dunlap</a>
+2017-07-07 11:36     ` <a
+href="../20170707113650.ee6oys5u4vq5hgdi@mwanda/">Dan Carpenter</a>
+2017-07-10 17:15       ` <a
+href="../3908561D78D1C84285E8C5FCA982C28F613009A7@ORSMSX114.amr.corp.intel.com/">Luck, Tony</a>
+2017-07-10 17:33         ` <a
+href="../20170710173335.4ksnso6dzaekoxz4@piout.net/">Alexandre Belloni</a>
+2017-07-10 18:28           ` <a
+href="../CA+55aFzmjA1gkaVwr5J7UoW2Ovgsqr3aJJC_18Wv59QWp94+wA@mail.gmail.com/">Linus Torvalds</a>
+2017-07-10 19:44             ` <a
+href="../e210384a-4873-d439-7031-43abfc74d134@infradead.org/">Randy Dunlap</a>
+2017-07-11  6:21             ` <a
+href="../20170711062132.GA13470@nebuchadnezzar.suse.de/">Valentin Rothberg</a>
+2017-07-06 21:19   ` <a
+href="../1601331.LiGNiPeBdk@avalon/">Laurent Pinchart</a>
+</pre><hr><pre
+id=R><b>Reply instructions:</b>
+
+You may reply publicly to <a
+href=#t>this message</a> via plain-text email
+using any one of the following methods:
+
+* Save the following mbox file, import it into your mail client,
+  and reply-to-all from there: <a
+href=raw>mbox</a>
+
+  Avoid top-posting and favor interleaved quoting:
+  <a
+href="https://en.wikipedia.org/wiki/Posting_style#Interleaved_style">https://en.wikipedia.org/wiki/Posting_style#Interleaved_style</a>
+
+* Reply using the <b>--to</b>, <b>--cc</b>, and <b>--in-reply-to</b>
+  switches of git-send-email(1):
+
+  git send-email \
+    --in-reply-to=&#39;CA+55aFyvssxg63UoQ-rOaf1TMacJ6T5jyLkWECosQJ_N=9gaaQ@mail.gmail.com&#39; \
+    --to=torvalds@linux-foundation.org \
+    --cc=cristina.moraru09@gmail.com \
+    --cc=hch@infradead.org \
+    --cc=ksummit-discuss@lists.linuxfoundation.org \
+    --cc=mcgrof@kernel.org \
+    --cc=mhocko@kernel.org \
+    /path/to/YOUR_REPLY
+
+  <a
+href="https://kernel.org/pub/software/scm/git/docs/git-send-email.html">https://kernel.org/pub/software/scm/git/docs/git-send-email.html</a>
+
+* If your mail client supports setting the <b>In-Reply-To</b> header
+  via mailto: links, try the <a
+href="mailto:torvalds@linux-foundation.org?In-Reply-To=%3CCA+55aFyvssxg63UoQ-rOaf1TMacJ6T5jyLkWECosQJ_N=9gaaQ@mail.gmail.com%3E&#38;Cc=cristina.moraru09%40gmail.com%2Chch%40infradead.org%2Cksummit-discuss%40lists.linuxfoundation.org%2Cmcgrof%40kernel.org%2Cmhocko%40kernel.org&#38;Subject=Re%3A%20%5BKsummit-discuss%5D%20%5BTECH%20TOPIC%5D%20is%20Kconfig%20a%20bit%20hard%20sometimes%3F">mailto: link</a>
+</pre>
+
+  Be sure your reply has a <b>Subject:</b> header at the top and a blank line
+  before the message body.
+<hr><pre>This is a public inbox, see <a
+href="../_/text/mirror/">mirroring instructions</a>
+for how to clone and mirror all data and code used for this inbox;
+as well as URLs for read-only IMAP folder(s) and NNTP newsgroup(s).</pre></body></html>

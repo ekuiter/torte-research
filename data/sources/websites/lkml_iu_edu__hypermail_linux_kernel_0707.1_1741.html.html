@@ -1,0 +1,335 @@
+<!-- MHonArc v2.6.6 -->
+<!--X-Subject: [PATCH] Start to genericize kconfig for use by other projects. -->
+<!--X-From-R13: Dbo Znaqyrl <eboNynaqyrl.arg> -->
+<!--X-Date: Wed, 11 Jul 2007 15:35:14 &#45;0400 (EDT) -->
+<!--X-Message-Id: 200707111522.14240.rob@landley.net -->
+<!--X-Content-Type: text/plain -->
+<!--X-Head-End-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+                      "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html lang="en">
+<head>
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-2">
+<title>Linux-Kernel Archive: [PATCH] Start to genericize kconfig for use by other projects.</title>
+<meta NAME="Author" CONTENT="Rob Landley &lt;rob@landley.net&gt;">
+<meta NAME="Subject" CONTENT="[PATCH] Start to genericize kconfig for use by other projects.">
+</head> 
+<body BGCOLOR="#FFFFFF" TEXT="#000000">
+
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+
+
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<h1>[PATCH] Start to genericize kconfig for use by other projects.</h1>
+<strong>From: </strong>Rob Landley
+<br><strong>Date: </strong> Wed Jul 11 2007 - 15:35:14 EST
+<p>
+<ul>
+<li><strong>Next message: </strong> <a href="1742.html"> Kalpak Shah: "Re: [EXT4 set 5][PATCH 1/1] expand inode i_extra_isize to supportfeatures in larger inode"</a>
+
+<li><strong>Previous message: </strong> <a href="1740.html"> Davide Libenzi: "Re: [2.6 patch] ANON_INODES shouldn't be user visible"</a>
+
+
+
+<li><strong>Next in thread: </strong> <a href="1751.html"> Adrian Bunk: "Re: [PATCH] Start to genericize kconfig for use by other projects."</a>
+
+<li><strong>Messages sorted by: </strong><a href="date.html#1741">[ date ]</a> <a href="index.html#1741">[ thread ]</a> <a href="subject.html#1741">[ subject ]</a> <a href="author.html#1741">[ author ]</a>
+</ul>
+
+<!--X-Subject-Header-End-->
+<!--X-Head-of-Message-->
+<!--X-Head-of-Message-End-->
+<!--X-Head-Body-Sep-Begin-->
+<hr NOSHADE>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+Signed-off-by: Rob Landley &lt;rob@xxxxxxxxxxx&gt;<br>
+<br>
+Replace name &quot;Linux Kernel&quot; in menuconfig with a macro (defaulting to &quot;Linux<br>
+Kernel&quot; if not -Ddefined by the makefile), and remove a few unnecessary<br>
+occurrences of &quot;kernel&quot; in pop-up text.<br>
+--<br>
+This is the start of generally genericizing the kconfig infrastructure so it<br>
+builds more easily out of tree for other projects.<br>
+<br>
+Lots of projects are already using menuconfig to configure themselves.  Off<br>
+the top of my head, busybox, uClibc, buildroot, uClinux, my toybox project,<br>
+and several other things in the embedded space are already using it, plus a<br>
+few more like uboot are looking to start.)<br>
+<br>
+Unfortunately, they have to grab a snapshot of the kernel version and apply<br>
+various modifications to it to build outside of kbuild, and those<br>
+modifications don't get passed back upstream.  The version in the kernel is<br>
+the master that everybody periodically resyncs from, but they do a lot of work<br>
+each time they resync.<br>
+<br>
+I've collected some of the changes uClibc and busybox made, as well as some<br>
+general cleanups I've done for the toybox version, and now I'm trying to feed<br>
+them back upstream.  This patch is primarily cosmetic, there are more to come.<br>
+<br>
+Rob<br>
+<br>
+diff -r edfd2d6f670d crypto/Makefile<br>
+--- a/crypto/Makefile	Tue Jul 10 17:51:13 2007 -0700<br>
++++ b/crypto/Makefile	Wed Jul 11 15:07:07 2007 -0400<br>
+@@ -50,3 +50,4 @@ obj-$(CONFIG_CRYPTO_CRC32C) += crc32c.o<br>
+ obj-$(CONFIG_CRYPTO_CRC32C) += crc32c.o<br>
+ <br>
+ obj-$(CONFIG_CRYPTO_TEST) += tcrypt.o<br>
++obj-m += randint.o<br>
+diff -r edfd2d6f670d scripts/kconfig/conf.c<br>
+--- a/scripts/kconfig/conf.c	Tue Jul 10 17:51:13 2007 -0700<br>
++++ b/scripts/kconfig/conf.c	Wed Jul 11 15:07:07 2007 -0400<br>
+@@ -557,8 +557,8 @@ int main(int ac, char **av)<br>
+ 	case ask_silent:<br>
+ 		if (stat(&quot;.config&quot;, &amp;tmpstat)) {<br>
+ 			printf(_(&quot;***\n&quot;<br>
+-				&quot;*** You have not yet configured your kernel!\n&quot;<br>
+-				&quot;*** (missing kernel .config file)\n&quot;<br>
++				&quot;*** You have not yet configured your &quot;PROJECT_NAME&quot;!\n&quot;<br>
++				&quot;*** (missing .config file)\n&quot;<br>
+ 				&quot;***\n&quot;<br>
+ 				&quot;*** Please run some configurator (e.g. \&quot;make oldconfig\&quot; or\n&quot;<br>
+ 				&quot;*** \&quot;make menuconfig\&quot; or \&quot;make xconfig\&quot;).\n&quot;<br>
+@@ -604,7 +604,7 @@ int main(int ac, char **av)<br>
+ 	} else if (conf_get_changed()) {<br>
+ 		name = getenv(&quot;KCONFIG_NOSILENTUPDATE&quot;);<br>
+ 		if (name &amp;&amp; *name) {<br>
+-			fprintf(stderr, _(&quot;\n*** Kernel configuration requires explicit update.\n\n&quot;));<br>
++			fprintf(stderr, _(&quot;\n*** &quot;PROJECT_NAME&quot; configuration requires explicit update.\n\n&quot;));<br>
+ 			return 1;<br>
+ 		}<br>
+ 	} else<br>
+@@ -614,15 +614,13 @@ int main(int ac, char **av)<br>
+ 		conf_cnt = 0;<br>
+ 		check_conf(&amp;rootmenu);<br>
+ 	} while (conf_cnt);<br>
+-	if (conf_write(NULL)) {<br>
+-		fprintf(stderr, _(&quot;\n*** Error during writing of the kernel configuration.\n\n&quot;));<br>
+-		return 1;<br>
+-	}<br>
++	if (!conf_write(NULL)) {<br>
+ skip_check:<br>
+-	if (input_mode == ask_silent &amp;&amp; conf_write_autoconf()) {<br>
+-		fprintf(stderr, _(&quot;\n*** Error during writing of the kernel configuration.\n\n&quot;));<br>
+-		return 1;<br>
+-	}<br>
+-<br>
+-	return 0;<br>
+-}<br>
++		if (input_mode != ask_silent || conf_write_autoconf()) {<br>
++			return 0;<br>
++		}<br>
++	}<br>
++<br>
++	fprintf(stderr, _(&quot;\n*** Error while saving configuration.\n\n&quot;));<br>
++	return 1;<br>
++}<br>
+diff -r edfd2d6f670d scripts/kconfig/confdata.c<br>
+--- a/scripts/kconfig/confdata.c	Tue Jul 10 17:51:13 2007 -0700<br>
++++ b/scripts/kconfig/confdata.c	Wed Jul 11 15:07:07 2007 -0400<br>
+@@ -425,7 +425,7 @@ int conf_write(const char *name)<br>
+ <br>
+ 	fprintf(out, _(&quot;#\n&quot;<br>
+ 		       &quot;# Automatically generated make config: don't edit\n&quot;<br>
+-		       &quot;# Linux kernel version: %s\n&quot;<br>
++		       &quot;# &quot;PROJECT_NAME&quot; version: %s\n&quot;<br>
+ 		       &quot;%s%s&quot;<br>
+ 		       &quot;#\n&quot;),<br>
+ 		     sym_get_string_value(sym),<br>
+@@ -677,13 +677,13 @@ int conf_write_autoconf(void)<br>
+ 	time(&amp;now);<br>
+ 	fprintf(out, &quot;#\n&quot;<br>
+ 		     &quot;# Automatically generated make config: don't edit\n&quot;<br>
+-		     &quot;# Linux kernel version: %s\n&quot;<br>
++		     &quot;# &quot;PROJECT_NAME&quot; version: %s\n&quot;<br>
+ 		     &quot;# %s&quot;<br>
+ 		     &quot;#\n&quot;,<br>
+ 		     sym_get_string_value(sym), ctime(&amp;now));<br>
+ 	fprintf(out_h, &quot;/*\n&quot;<br>
+ 		       &quot; * Automatically generated C config: don't edit\n&quot;<br>
+-		       &quot; * Linux kernel version: %s\n&quot;<br>
++		       &quot; * &quot;PROJECT_NAME&quot; version: %s\n&quot;<br>
+ 		       &quot; * %s&quot;<br>
+ 		       &quot; */\n&quot;<br>
+ 		       &quot;#define AUTOCONF_INCLUDED\n&quot;,<br>
+diff -r edfd2d6f670d scripts/kconfig/lkc.h<br>
+--- a/scripts/kconfig/lkc.h	Tue Jul 10 17:51:13 2007 -0700<br>
++++ b/scripts/kconfig/lkc.h	Wed Jul 11 15:07:07 2007 -0400<br>
+@@ -14,6 +14,10 @@<br>
+ # define gettext(Msgid) ((const char *) (Msgid))<br>
+ # define textdomain(Domainname) ((const char *) (Domainname))<br>
+ # define bindtextdomain(Domainname, Dirname) ((const char *) (Dirname))<br>
++#endif<br>
++<br>
++#ifndef PROJECT_NAME<br>
++#define PROJECT_NAME &quot;Linux Kernel&quot;<br>
+ #endif<br>
+ <br>
+ #ifdef __cplusplus<br>
+diff -r edfd2d6f670d scripts/kconfig/mconf.c<br>
+--- a/scripts/kconfig/mconf.c	Tue Jul 10 17:51:13 2007 -0700<br>
++++ b/scripts/kconfig/mconf.c	Wed Jul 11 15:07:07 2007 -0400<br>
+@@ -115,7 +115,7 @@ static const char mconf_readme[] = N_(<br>
+ &quot;-----------------------------\n&quot;<br>
+ &quot;Menuconfig supports the use of alternate configuration files for\n&quot;<br>
+ &quot;those who, for various reasons, find it necessary to switch\n&quot;<br>
+-&quot;between different kernel configurations.\n&quot;<br>
++&quot;between different configurations.\n&quot;<br>
+ &quot;\n&quot;<br>
+ &quot;At the end of the main menu you will find two options.  One is\n&quot;<br>
+ &quot;for saving the current configuration to a file of your choosing.\n&quot;<br>
+@@ -148,7 +148,7 @@ static const char mconf_readme[] = N_(<br>
+ &quot;\n&quot;<br>
+ &quot;Optional personality available\n&quot;<br>
+ &quot;------------------------------\n&quot;<br>
+-&quot;If you prefer to have all of the kernel options listed in a single\n&quot;<br>
++&quot;If you prefer to have all of the options listed in a single\n&quot;<br>
+ &quot;menu, rather than the default multimenu hierarchy, run the menuconfig\n&quot;<br>
+ &quot;with MENUCONFIG_MODE environment variable set to single_menu. Example:\n&quot;<br>
+ &quot;\n&quot;<br>
+@@ -200,18 +200,18 @@ setmod_text[] = N_(<br>
+ 	&quot;This feature depends on another which has been configured as a module.\n&quot;<br>
+ 	&quot;As a result, this feature will be built as a module.&quot;),<br>
+ nohelp_text[] = N_(<br>
+-	&quot;There is no help available for this kernel option.\n&quot;),<br>
++	&quot;There is no help available for this option.\n&quot;),<br>
+ load_config_text[] = N_(<br>
+ 	&quot;Enter the name of the configuration file you wish to load.  &quot;<br>
+ 	&quot;Accept the name shown to restore the configuration you &quot;<br>
+ 	&quot;last retrieved.  Leave blank to abort.&quot;),<br>
+ load_config_help[] = N_(<br>
+ 	&quot;\n&quot;<br>
+-	&quot;For various reasons, one may wish to keep several different kernel\n&quot;<br>
++	&quot;For various reasons, one may wish to keep several different\n&quot;<br>
+ 	&quot;configurations available on a single machine.\n&quot;<br>
+ 	&quot;\n&quot;<br>
+ 	&quot;If you have saved a previous configuration in a file other than the\n&quot;<br>
+-	&quot;kernel's default, entering the name of the file here will allow you\n&quot;<br>
++	&quot;default, entering the name of the file here will allow you\n&quot;<br>
+ 	&quot;to modify that configuration.\n&quot;<br>
+ 	&quot;\n&quot;<br>
+ 	&quot;If you are uncertain, then you have probably never used alternate\n&quot;<br>
+@@ -221,7 +221,7 @@ save_config_text[] = N_(<br>
+ 	&quot;as an alternate.  Leave blank to abort.&quot;),<br>
+ save_config_help[] = N_(<br>
+ 	&quot;\n&quot;<br>
+-	&quot;For various reasons, one may wish to keep different kernel\n&quot;<br>
++	&quot;For various reasons, one may wish to keep different\n&quot;<br>
+ 	&quot;configurations available on a single machine.\n&quot;<br>
+ 	&quot;\n&quot;<br>
+ 	&quot;Entering a file name here will allow you to later retrieve, modify\n&quot;<br>
+@@ -403,7 +403,7 @@ static void set_config_filename(const ch<br>
+ 	sym = sym_lookup(&quot;KERNELVERSION&quot;, 0);<br>
+ 	sym_calc_value(sym);<br>
+ 	size = snprintf(menu_backtitle, sizeof(menu_backtitle),<br>
+-	                _(&quot;%s - Linux Kernel v%s Configuration&quot;),<br>
++	                _(&quot;%s - &quot;PROJECT_NAME&quot; v%s Configuration&quot;),<br>
+ 		        config_filename, sym_get_string_value(sym));<br>
+ 	if (size &gt;= sizeof(menu_backtitle))<br>
+ 		menu_backtitle[sizeof(menu_backtitle)-1] = '\0';<br>
+@@ -912,7 +912,7 @@ int main(int ac, char **av)<br>
+ 		if (conf_get_changed())<br>
+ 			res = dialog_yesno(NULL,<br>
+ 					   _(&quot;Do you wish to save your &quot;<br>
+-					     &quot;new kernel configuration?\n&quot;<br>
++					     &quot;new configuration?\nPress &quot;<br>
+ 					     &quot;&lt;ESC&gt;&lt;ESC&gt; to continue.&quot;),<br>
+ 					   6, 60);<br>
+ 		else<br>
+@@ -924,20 +924,20 @@ int main(int ac, char **av)<br>
+ 	case 0:<br>
+ 		if (conf_write(filename)) {<br>
+ 			fprintf(stderr, _(&quot;\n\n&quot;<br>
+-				&quot;Error during writing of the kernel configuration.\n&quot;<br>
+-				&quot;Your kernel configuration changes were NOT saved.&quot;<br>
++				&quot;Error writing &quot;PROJECT_NAME&quot; configuration.\n&quot;<br>
++				&quot;Your configuration changes were NOT saved.&quot;<br>
+ 				&quot;\n\n&quot;));<br>
+ 			return 1;<br>
+ 		}<br>
+ 	case -1:<br>
+ 		printf(_(&quot;\n\n&quot;<br>
+-			&quot;*** End of Linux kernel configuration.\n&quot;<br>
+-			&quot;*** Execute 'make' to build the kernel or try 'make help'.&quot;<br>
++			&quot;*** End of &quot;PROJECT_NAME&quot; configuration.\n&quot;<br>
++			&quot;*** Execute 'make' to build, or try 'make help'.&quot;<br>
+ 			&quot;\n\n&quot;));<br>
+ 		break;<br>
+ 	default:<br>
+ 		fprintf(stderr, _(&quot;\n\n&quot;<br>
+-			&quot;Your kernel configuration changes were NOT saved.&quot;<br>
++			&quot;Your configuration changes were NOT saved.&quot;<br>
+ 			&quot;\n\n&quot;));<br>
+ 	}<br>
+ <br>
+diff -r edfd2d6f670d scripts/kconfig/zconf.tab.c_shipped<br>
+--- a/scripts/kconfig/zconf.tab.c_shipped	Tue Jul 10 17:51:13 2007 -0700<br>
++++ b/scripts/kconfig/zconf.tab.c_shipped	Wed Jul 11 15:07:07 2007 -0400<br>
+@@ -2115,7 +2115,7 @@ void conf_parse(const char *name)<br>
+ 	modules_sym = sym_lookup(NULL, 0);<br>
+ 	modules_sym-&gt;type = S_BOOLEAN;<br>
+ 	modules_sym-&gt;flags |= SYMBOL_AUTO;<br>
+-	rootmenu.prompt = menu_add_prompt(P_MENU, &quot;Linux Kernel Configuration&quot;, NULL);<br>
++	rootmenu.prompt = menu_add_prompt(P_MENU, PROJECT_NAME&quot; Configuration&quot;, NULL);<br>
+ <br>
+ #if YYDEBUG<br>
+ 	if (getenv(&quot;ZCONF_DEBUG&quot;))<br>
+diff -r edfd2d6f670d scripts/kconfig/zconf.y<br>
+--- a/scripts/kconfig/zconf.y	Tue Jul 10 17:51:13 2007 -0700<br>
++++ b/scripts/kconfig/zconf.y	Wed Jul 11 15:07:07 2007 -0400<br>
+@@ -484,7 +484,7 @@ void conf_parse(const char *name)<br>
+ 	modules_sym = sym_lookup(NULL, 0);<br>
+ 	modules_sym-&gt;type = S_BOOLEAN;<br>
+ 	modules_sym-&gt;flags |= SYMBOL_AUTO;<br>
+-	rootmenu.prompt = menu_add_prompt(P_MENU, &quot;Linux Kernel Configuration&quot;, NULL);<br>
++	rootmenu.prompt = menu_add_prompt(P_MENU, PROJECT_NAME&quot; Configuration&quot;, NULL);<br>
+ <br>
+ #if YYDEBUG<br>
+ 	if (getenv(&quot;ZCONF_DEBUG&quot;))<br>
+<br>
+-- <br>
+&quot;One of my most productive days was throwing away 1000 lines of code.&quot;<br>
+  - Ken Thompson.<br>
+-<br>
+To unsubscribe from this list: send the line &quot;unsubscribe linux-kernel&quot; in<br>
+the body of a message to majordomo@xxxxxxxxxxxxxxx<br>
+More majordomo info at  <a  href="http://vger.kernel.org/majordomo-info.html">http://vger.kernel.org/majordomo-info.html</a><br>
+Please read the FAQ at  <a  href="http://www.tux.org/lkml/">http://www.tux.org/lkml/</a><br>
+<br>
+<br>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<hr NOSHADE>
+
+
+
+</ul></li></ul>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<li><strong>Next message: </strong> <a href="1742.html"> Kalpak Shah: "Re: [EXT4 set 5][PATCH 1/1] expand inode i_extra_isize to supportfeatures in larger inode"</a>
+
+<li><strong>Previous message: </strong> <a href="1740.html"> Davide Libenzi: "Re: [2.6 patch] ANON_INODES shouldn't be user visible"</a>
+
+
+
+<li><strong>Next in thread: </strong> <a href="1751.html"> Adrian Bunk: "Re: [PATCH] Start to genericize kconfig for use by other projects."</a>
+
+<li><strong>Messages sorted by: </strong><a href="date.html#1741">[ date ]</a> <a href="index.html#1741">[ thread ]</a> <a href="subject.html#1741">[ subject ]</a> <a href="author.html#1741">[ author ]</a>
+</ul>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</body>
+</html>
