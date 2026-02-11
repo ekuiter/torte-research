@@ -11,7 +11,7 @@ Here, we list who contributed to this website and its contents (last update: 202
 
 All raw data is available as CSV files in our [GitHub repository](https://github.com/ekuiter/torte-research).
 For archival purposes, we also provide snapshots of all third-party [KConfig extractors](https://github.com/ekuiter/torte-research/tree/main/data/sources/extractors) and [CNF transformations](https://github.com/ekuiter/torte-research/tree/main/data/sources/extractors) listed above.
-We also provide all [website sources](https://github.com/ekuiter/torte-research/tree/main/data/sources/website) (especially conversations on mailing lists), which may become unavailable (or otherwise hard to locate) in the future.
+We also provide all [website sources](https://github.com/ekuiter/torte-research/tree/main/data/sources/websites) (especially conversations on mailing lists), which may become unavailable (or otherwise hard to locate) in the future.
 
 Data collection and analysis was done exclusively by a human (under the [data](https://github.com/ekuiter/torte-research/tree/main/data) directory).
 AI was only involved in the website design and implementation (i.e., `index.html`, `script.js`, `style.css`).

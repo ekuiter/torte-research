@@ -1,0 +1,143 @@
+*linux-kernel.vger.kernel.org archive mirror* <https://lore.kernel.org/lkml/?t=20230322165623>
+ help <https://lore.kernel.org/lkml/_/text/help/> / color <https://lore.kernel.org/lkml/_/text/color/> / mirror <https://lore.kernel.org/lkml/_/text/mirror/> / Atom feed <https://lore.kernel.org/lkml/new.atom>
+
+From: Linus Torvalds <torvalds@linux-foundation.org>
+To: sedat.dilek@gmail.com
+Cc: Kalle Valo <kvalo@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org <https://lore.kernel.org/lkml/?t=20230322165623>>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	dri-devel@lists.freedesktop.org <https://lore.kernel.org/dri-devel/?t=20230322165623>,
+	linux-toolchains@vger.kernel.org <https://lore.kernel.org/linux-toolchains/?t=20230322165623>, llvm@lists.linux.dev <https://lore.kernel.org/llvm/?t=20230322165623>
+Subject: Re: Linux 6.3-rc3 <#r>
+Date: Wed, 22 Mar 2023 09:55:57 -0700	[thread overview] <#r>
+Message-ID: <CAHk-=whdrvCkSWh=BRrwZwNo3=yLBXXM88NGx8VEpP1VTgmkyQ@mail.gmail.com> (raw <https://lore.kernel.org/lkml/CAHk-=whdrvCkSWh=BRrwZwNo3=yLBXXM88NGx8VEpP1VTgmkyQ@mail.gmail.com/raw>)
+In-Reply-To: <CA+icZUUYyqhV2HFzVtpi_KjBoYxjk7OB0UBVd2mX6abjmYhDjg@mail.gmail.com <https://lore.kernel.org/lkml/CA+icZUUYyqhV2HFzVtpi_KjBoYxjk7OB0UBVd2mX6abjmYhDjg@mail.gmail.com/>>
+
+On Wed, Mar 22, 2023 at 9:40 AM Sedat Dilek <sedat.dilek@gmail.com> wrote:
+>
+> You have to pass `make LLVM=1` in any case... to `oldconfig` or when
+> adding any MAKEFLAGS like -j${number-of-available-cpus}.
+
+I actually think we should look (again) at just making the compiler
+choice (and the prefix) be a Kconfig option.
+
+That would simplify *so* many use cases.
+
+It used to be that gcc was "THE compiler" and anything else was just
+an odd toy special case, but that's clearly not true any more.
+
+So it would be lovely to make the kernel choice a Kconfig choice - so
+you'd set it only at config time, and then after that a kernel build
+wouldn't need special flags any more, and you'd never need to play
+games with GNUmakefile or anything like that.
+
+Yes, you'd still use environment variables (or make arguments) for
+that initial Kconfig, but that's no different from the other
+environment variables we already have, like KCONFIG_SEED that kconfig
+uses internally, but also things like "$(ARCH)" that we already use
+*inside* the Kconfig files themselves.
+
+I really dislike how you have to set ARCH and CROSS_COMPILE etc
+externally, and can't just have them *in* the config file.
+
+So when you do cross-compiles, right now you have to do something like
+
+    make ARCH=i386 allmodconfig
+
+to build the .config file, but then you have to *repeat* that
+ARCH=i386 when you actually build things:
+
+    make ARCH=i386
+
+because the ARCH choice ends up being in the .config file, but the
+makefiles themselves always take it from the environment.
+
+There are good historical reasons for our behavior (and probably a
+number of extant practical reasons too), but it's a bit annoying, and
+it would be lovely if we could start moving away from this model.
+
+            Linus
+
+------------------------------------------------------------------------
+
+next <https://lore.kernel.org/lkml/CAKwvOdm1VpSSxN9zPVdEuDcyq2z2quQ1-qAQ5H+Q4y2xp1Focg@mail.gmail.com/> prev parent <https://lore.kernel.org/lkml/CA+icZUUYyqhV2HFzVtpi_KjBoYxjk7OB0UBVd2mX6abjmYhDjg@mail.gmail.com/> reply <#R>	other threads:[~2023-03-22 16:56 UTC <https://lore.kernel.org/lkml/?t=20230322165623>|newest <https://lore.kernel.org/lkml/>]
+
+*Thread overview: *34+ messages / expand[flat <https://lore.kernel.org/lkml/CAHk-=whdrvCkSWh=BRrwZwNo3=yLBXXM88NGx8VEpP1VTgmkyQ@mail.gmail.com/T/#u>|nested <https://lore.kernel.org/lkml/CAHk-=whdrvCkSWh=BRrwZwNo3=yLBXXM88NGx8VEpP1VTgmkyQ@mail.gmail.com/t/#u>]  mbox.gz <https://lore.kernel.org/lkml/CAHk-=whdrvCkSWh=BRrwZwNo3=yLBXXM88NGx8VEpP1VTgmkyQ@mail.gmail.com/t.mbox.gz>  Atom feed <https://lore.kernel.org/lkml/CAHk-=whdrvCkSWh=BRrwZwNo3=yLBXXM88NGx8VEpP1VTgmkyQ@mail.gmail.com/t.atom>  top <#b>
+2023-03-19 20:50 Linux 6.3-rc3 <https://lore.kernel.org/lkml/CAHk-=wiPd8R8-zSqTOtJ9KYeZLBByHug7ny3rgP-ZqzpP_KELg@mail.gmail.com/> Linus Torvalds
+2023-03-20  8:21 ` Build regressions/improvements in v6.3-rc3 <https://lore.kernel.org/lkml/20230320082146.4117022-1-geert@linux-m68k.org/> Geert Uytterhoeven
+2023-03-21  5:38   ` Build regressions/improvements in v6.3-rc3 (drm/msm/) <https://lore.kernel.org/lkml/c85681c6-6fcf-33ed-210f-661e539f78d8@infradead.org/> Randy Dunlap
+2023-03-21  7:34     ` Geert Uytterhoeven <https://lore.kernel.org/lkml/CAMuHMdWw0OdLPUORh6=Be8AW6bN+Pa2t=dcF47B1m=-ihsNPZQ@mail.gmail.com/>
+2023-03-21 15:10       ` Randy Dunlap <https://lore.kernel.org/lkml/7e876937-4254-a2d8-f810-513f067b4855@infradead.org/>
+2023-03-21 15:33         ` Geert Uytterhoeven <https://lore.kernel.org/lkml/CAMuHMdU+t2-LO2WbWCpOuVWm1ZqR29GKH3k8WfCGKK1Vsr0K5w@mail.gmail.com/>
+2023-03-20 18:05 ` Linux 6.3-rc3 <https://lore.kernel.org/lkml/20230320180501.GA598084@dev-arch.thelio-3990X/> Nathan Chancellor
+2023-03-20 18:26   ` Linus Torvalds <https://lore.kernel.org/lkml/CAHk-=wgSqpdkeJBb92M37JNTdRQJRnRUApraHKE8uGHTqQuu2Q@mail.gmail.com/>
+2023-03-20 18:49     ` Linus Torvalds <https://lore.kernel.org/lkml/CAHk-=whXi1qgeDLHbaCyMpZ4XXYqS=fT2daYAmWntEK2rhG25g@mail.gmail.com/>
+2023-03-20 18:56       ` Nathan Chancellor <https://lore.kernel.org/lkml/20230320185602.GB615556@dev-arch.thelio-3990X/>
+2023-03-20 19:05         ` Linus Torvalds <https://lore.kernel.org/lkml/CAHk-=wjhKfp=tBHsNMnqFh7bSO1CiHXSv+hycOr0dueR_GQeZw@mail.gmail.com/>
+2023-03-20 18:53     ` Nathan Chancellor <https://lore.kernel.org/lkml/20230320185337.GA615556@dev-arch.thelio-3990X/>
+2023-03-20 19:22       ` Nathan Chancellor <https://lore.kernel.org/lkml/20230320192215.GA617563@dev-arch.thelio-3990X/>
+2023-03-22 12:44       ` Kalle Valo <https://lore.kernel.org/lkml/87pm91uf9c.fsf@kernel.org/>
+2023-03-22 16:36         ` Nathan Chancellor <https://lore.kernel.org/lkml/20230322163637.GA918620@dev-arch.thelio-3990X/>
+2023-03-22 20:36           ` Nathan Chancellor <https://lore.kernel.org/lkml/20230322203600.GA2837284@dev-arch.thelio-3990X/>
+2023-03-24 10:54           ` Kalle Valo <https://lore.kernel.org/lkml/87wn36ctdi.fsf@kernel.org/>
+2023-03-24 15:11             ` Nathan Chancellor <https://lore.kernel.org/lkml/20230324151150.GC428955@dev-arch.thelio-3990X/>
+2023-03-24 15:23               ` Kalle Valo <https://lore.kernel.org/lkml/87o7oicgwv.fsf@kernel.org/>
+2023-03-28 19:07                 ` Nathan Chancellor <https://lore.kernel.org/lkml/20230328190745.GA375033@dev-arch.thelio-3990X/>
+2023-03-29  8:39                   ` Kalle Valo <https://lore.kernel.org/lkml/87h6u4t0ha.fsf@kernel.org/>
+2023-03-22 16:40         ` Sedat Dilek <https://lore.kernel.org/lkml/CA+icZUUYyqhV2HFzVtpi_KjBoYxjk7OB0UBVd2mX6abjmYhDjg@mail.gmail.com/>
+*2023-03-22 16:55           ` Linus Torvalds [this message] <#t>*
+2023-03-22 18:17             ` Nick Desaulniers <https://lore.kernel.org/lkml/CAKwvOdm1VpSSxN9zPVdEuDcyq2z2quQ1-qAQ5H+Q4y2xp1Focg@mail.gmail.com/>
+2023-03-24 17:16             ` Masahiro Yamada <https://lore.kernel.org/lkml/CAK7LNATe7Ah-ow9wYGrtL9i4z-VD=MCo=sJjbC_S0ofEoH6CFQ@mail.gmail.com/>
+2023-03-27 16:12               ` Jani Nikula <https://lore.kernel.org/lkml/87bkke5g31.fsf@intel.com/>
+2023-03-27 17:03                 ` Kalle Valo <https://lore.kernel.org/lkml/87jzz2cejd.fsf@kernel.org/>
+2023-03-20 20:04     ` Guenter Roeck <https://lore.kernel.org/lkml/4adbed5a-6f73-42ac-b7be-e12c764ae808@roeck-us.net/>
+2023-03-20 20:30       ` Linus Torvalds <https://lore.kernel.org/lkml/CAHk-=wgyJREUR1WgfFmie5XVJnBLr1VPVbSibh1+Cq57Bh4Tag@mail.gmail.com/>
+2023-03-20 22:06         ` Nathan Chancellor <https://lore.kernel.org/lkml/20230320220631.GA637514@dev-arch.thelio-3990X/>
+2023-03-20 22:48           ` Segher Boessenkool <https://lore.kernel.org/lkml/20230320224840.GG25951@gate.crashing.org/>
+2023-03-20 23:41           ` Linus Torvalds <https://lore.kernel.org/lkml/CAHk-=whf82-im76ovESE2RZBh5=Y3uR1GDbae60=TWjM7OkLdA@mail.gmail.com/>
+2023-03-24  9:41   ` Daniel Vetter <https://lore.kernel.org/lkml/CAKMK7uEvAQ53iSdVesR1+vFm0X03dqZU_sRkuMv0FVvg_pCF4g@mail.gmail.com/>
+2023-03-20 20:07 ` Guenter Roeck <https://lore.kernel.org/lkml/14197fd5-26fe-4d1e-9bcc-4012145f0eac@roeck-us.net/>
+
+------------------------------------------------------------------------
+
+*Reply instructions:*
+
+You may reply publicly to this message <#t> via plain-text email
+using any one of the following methods:
+
+* Save the following mbox file, import it into your mail client,
+  and reply-to-all from there: mbox <https://lore.kernel.org/lkml/CAHk-=whdrvCkSWh=BRrwZwNo3=yLBXXM88NGx8VEpP1VTgmkyQ@mail.gmail.com/raw>
+
+  Avoid top-posting and favor interleaved quoting:
+  https://en.wikipedia.org/wiki/Posting_style#Interleaved_style <https://en.wikipedia.org/wiki/Posting_style#Interleaved_style>
+
+* Reply using the *--to*, *--cc*, and *--in-reply-to*
+  switches of git-send-email(1):
+
+  git send-email \
+    --in-reply-to='CAHk-=whdrvCkSWh=BRrwZwNo3=yLBXXM88NGx8VEpP1VTgmkyQ@mail.gmail.com' \
+    --to=torvalds@linux-foundation.org \
+    --cc=airlied@gmail.com \
+    --cc=daniel@ffwll.ch \
+    --cc=dri-devel@lists.freedesktop.org \
+    --cc=kvalo@kernel.org \
+    --cc=linux-kernel@vger.kernel.org \
+    --cc=linux-toolchains@vger.kernel.org \
+    --cc=llvm@lists.linux.dev \
+    --cc=nathan@kernel.org \
+    --cc=sedat.dilek@gmail.com \
+    /path/to/YOUR_REPLY
+
+  https://kernel.org/pub/software/scm/git/docs/git-send-email.html <https://kernel.org/pub/software/scm/git/docs/git-send-email.html>
+
+* If your mail client supports setting the *In-Reply-To* header
+  via mailto: links, try the mailto: link <mailto:torvalds@linux-foundation.org?In-Reply-To=%3CCAHk-=whdrvCkSWh=BRrwZwNo3=yLBXXM88NGx8VEpP1VTgmkyQ@mail.gmail.com%3E&Cc=airlied%40gmail.com%2Cdaniel%40ffwll.ch%2Cdri-devel%40lists.freedesktop.org%2Ckvalo%40kernel.org%2Clinux-kernel%40vger.kernel.org%2Clinux-toolchains%40vger.kernel.org%2Cllvm%40lists.linux.dev%2Cnathan%40kernel.org%2Csedat.dilek%40gmail.com&Subject=Re%3A%20Linux%206.3-rc3>
+
+Be sure your reply has a *Subject:* header at the top and a blank line
+before the message body.
+------------------------------------------------------------------------
+
+This is a public inbox, see mirroring instructions <https://lore.kernel.org/lkml/_/text/mirror/>
+for how to clone and mirror all data and code used for this inbox;
+as well as URLs for NNTP newsgroup(s).
