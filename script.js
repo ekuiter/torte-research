@@ -613,6 +613,7 @@ class FilterTable {
             exactMatchColumns: [],
             commaSplitColumns: null,
             numericSortColumns: [],
+            columnWidths: {},
             splitDelimiter: ',',
             scrollToTopOnDraw: false,
             ...config
@@ -644,6 +645,8 @@ class FilterTable {
         const renderMarkdown = (cellData) => {
             if (!cellData) return '';
             let result = cellData.toString();
+            // Render literal "\n" markers from CSV as line breaks in the browser.
+            result = result.replace(/\\n/g, '<br>');
             // Render markdown links [text](url)
             result = result.replace(
                 /\[([^\]]+)\]\(([^)]+)\)/g,
@@ -658,11 +661,25 @@ class FilterTable {
             return result;
         };
 
+        const parseNumericSortValue = (cellData) => {
+            if (cellData === null || cellData === undefined) return -1;
+            const text = cellData.toString().replace(/\s*\([^)]*\)/g, ' ').trim();
+            const match = text.match(/-?\d[\d,]*/);
+            if (!match) return -1;
+            const number = Number(match[0].replace(/,/g, ''));
+            return Number.isFinite(number) ? number : -1;
+        };
+
         const columns = Object.keys(data[0]).map(key => {
             return {
                 title: key,
                 data: key,
-                render: renderMarkdown
+                render: (cellData, type) => {
+                    if (this.config.numericSortColumns.includes(key) && (type === 'sort' || type === 'type')) {
+                        return parseNumericSortValue(cellData);
+                    }
+                    return renderMarkdown(cellData);
+                }
             };
         });
 
@@ -678,6 +695,16 @@ class FilterTable {
         const filterRow = "<tr>" + columns.map(() => `<th></th>`).join('') + "</tr>";
         thead.innerHTML = headerRow + filterRow;
 
+        const columnDefs = [];
+        // NOTE: In DataTables, earlier columnDefs have higher priority.
+        columns.forEach((column, idx) => {
+            const width = this.config.columnWidths[column.title];
+            if (width) {
+                columnDefs.push({ width, targets: idx });
+            }
+        });
+        columnDefs.push({ width: '125px', targets: '_all' });
+
         // Initialize DataTable
         this.table = $(this.config.tableSelector).DataTable({
             data: data,
@@ -687,7 +714,7 @@ class FilterTable {
             scrollX: true,
             responsive: false,
             scrollCollapse: true,
-            columnDefs: [{ width: '125px', targets: '_all'}],
+            columnDefs: columnDefs,
             pageLength: this.config.pageLength,
             lengthMenu: [[5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "all"]],
             initComplete: () => {
@@ -702,7 +729,6 @@ class FilterTable {
                 zeroRecords: "No matching entries found"
             }
         });
-
         // Scroll to top on table redraw + highlight matches
         if (this.config.scrollToTopOnDraw) {
             this.table.on('draw', () => {
@@ -792,6 +818,11 @@ class FilterTable {
 
         // Show table now that filters are ready
         $(this.config.tableSelector).closest('.dataTables_wrapper').addClass('table-ready');
+        // Recalculate after injecting filter widgets into header cells.
+        setTimeout(() => {
+            this.table.columns.adjust().draw(false);
+            this.syncHeaderScroll();
+        }, 0);
 
         // Hide loading indicator
         $(this.config.tableSelector + 'Loading').addClass('hidden');
@@ -1228,6 +1259,7 @@ class FilterTable {
             scrollBody.trigger('scroll');
         }
     }
+
 }
 
 // Adjust columns on window resize for all tables
@@ -1303,7 +1335,8 @@ function initializeTables(tables) {
             skipColumns: config.skipColumns || [],
             exactMatchColumns: [],
             commaSplitColumns: config.commaSplitColumns || [],
-            numericSortColumns: []
+            numericSortColumns: config.numericSortColumns || [],
+            columnWidths: config.columnWidths || {}
         });
     });
 }

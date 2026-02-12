@@ -155,7 +155,9 @@
         id: 'systems',
         title: 'Configurable System Software',
         csvFile: 'data/systems.csv',
-        skipColumns: ['System', 'Notes', 'References'],
+        skipColumns: ['System', 'Description', 'System Software?', '#Commits', '#Releases', 'First Release', 'Last Release', 'Notes', 'Table Updated', 'References'],
+        numericSortColumns: ['#Commits', '#Releases'],
+        columnWidths: { Description: '480px', 'System Software?': '380px', Notes: '480px' },
         pageLength: -1
       },
       {
