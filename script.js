@@ -99,6 +99,7 @@ function setupCollapsibleSection(section) {
             preview.style.display = 'none';
             refreshDataTablesIn(section);
         }
+        updateToggleAllButton();
     };
 
     preview.addEventListener('click', () => {
@@ -142,6 +143,25 @@ function collapseAllSections() {
             }
         }
     });
+    updateToggleAllButton();
+}
+
+function expandAllSections() {
+    document.querySelectorAll('section').forEach(section => {
+        if (section.classList.contains('section-collapsed')) {
+            section.classList.remove('section-collapsed');
+            const toggle = section.querySelector('.section-toggle');
+            if (toggle) {
+                toggle.setAttribute('aria-expanded', 'true');
+            }
+            const preview = section.querySelector('.section-preview');
+            if (preview) {
+                preview.style.display = 'none';
+            }
+            refreshDataTablesIn(section);
+        }
+    });
+    updateToggleAllButton();
 }
 
 function setupCollapseAllTrigger() {
@@ -153,6 +173,36 @@ function setupCollapseAllTrigger() {
             window.history.replaceState(null, '', newUrl);
         }
         collapseAllSections();
+    });
+}
+
+function updateToggleAllButton() {
+    const toggleAll = document.getElementById('toggle-all');
+    if (!toggleAll) return;
+    const anyCollapsed = document.querySelector('section.section-collapsed') !== null;
+    if (anyCollapsed) {
+        toggleAll.textContent = 'Expand All';
+        toggleAll.setAttribute('aria-label', 'Expand all sections');
+    } else {
+        toggleAll.textContent = 'Collapse All';
+        toggleAll.setAttribute('aria-label', 'Collapse all sections');
+    }
+}
+
+function setupToggleAllTrigger() {
+    const toggleAll = document.getElementById('toggle-all');
+    if (!toggleAll) return;
+    toggleAll.addEventListener('click', () => {
+        if (window.location.hash) {
+            const newUrl = window.location.pathname + window.location.search;
+            window.history.replaceState(null, '', newUrl);
+        }
+        const anyCollapsed = document.querySelector('section.section-collapsed') !== null;
+        if (anyCollapsed) {
+            expandAllSections();
+        } else {
+            collapseAllSections();
+        }
     });
 }
 
@@ -355,6 +405,7 @@ function loadMarkdownSections() {
 document.addEventListener('DOMContentLoaded', loadMarkdownSections);
 document.addEventListener('DOMContentLoaded', setupCollapsibleSections);
 document.addEventListener('DOMContentLoaded', setupCollapseAllTrigger);
+document.addEventListener('DOMContentLoaded', setupToggleAllTrigger);
 window.addEventListener('hashchange', expandSectionForAnchor);
 document.addEventListener('DOMContentLoaded', expandSectionForAnchor);
 document.addEventListener('DOMContentLoaded', () => {
@@ -365,6 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+document.addEventListener('DOMContentLoaded', updateToggleAllButton);
 
 /**
  * FilterTable - Reusable DataTable with multi-select filters
@@ -1075,7 +1127,7 @@ function initializeTables(tables) {
             tableSelector: `#${config.id}Table`,
             filtersContainerSelector: `#${config.id}-filters-container`,
             clearButtonSelector: `#${config.id}-clear-filters`,
-            pageLength: -1,
+            pageLength: config.pageLength ?? -1,
             skipColumns: config.skipColumns || [],
             exactMatchColumns: [],
             commaSplitColumns: config.commaSplitColumns || [],

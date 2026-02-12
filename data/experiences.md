@@ -1,6 +1,6 @@
 ### Experiences with KConfig {#experiences}
 
-These are various quotes on KConfig by kernel practitioners and system-software project maintainers.
+Here, we collect various quotes on KConfig by kernel practitioners and system software maintainers.
 
 We collected these quotes by searching the web, inspecting the websites of system-software projects, and reading the Linux kernel mailing list (LKML) and associated Google Groups.
 

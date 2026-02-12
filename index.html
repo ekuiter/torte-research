@@ -24,8 +24,13 @@
 <body>
   <div class="container js-loading">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h1 class="mb-0"><button class="page-title" id="collapse-all" type="button" aria-label="Collapse all sections">torte 🍰 <span style="font-weight: normal; letter-spacing: 0px; font-size: 1.75rem;">Research</span></button></h1>
+      <h1 class="mb-0">
+        <button class="page-title" id="collapse-all" type="button" aria-label="Collapse all sections">
+          torte 🍰 <span style="font-weight: normal; letter-spacing: 0px; font-size: 1.75rem;">Research</span>
+        </button>
+      </h1>
       <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-outline-secondary btn-sm" id="toggle-all" type="button" aria-label="Expand all sections">Expand All</button>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
           <i class="icon-sun fa-solid fa-sun"></i>
           <i class="icon-moon fa-solid fa-moon"></i>
@@ -36,7 +41,7 @@
 
     <p>
       This interactive website allows exploring research data associated with <a href="https://github.com/ekuiter/torte" target="_blank">torte</a>.
-      We manually compiled this information using web search, domain knowledge, and backward snowballing in relevant publications.
+      We manually compiled this information using web search, gray literature, domain knowledge, and backward snowballing in relevant publications.
       We do not claim to be complete - feel free to submit a <a href="https://github.com/ekuiter/torte-research" target="_blank">pull request</a> or comment on <a href="https://github.com/ekuiter/torte-research/issues/1" target="_blank">our roadmap</a> with potential additions or corrections.
     </p>
     <p>
@@ -56,9 +61,21 @@
       <p>Here, we survey implementations of the KConfig language used in various projects.</p>
     </section> -->
 
+    <section id="systems">
+      <p>
+        Here, we maintain a repository of configurable system software.
+        Specifically, we consider software systems in the domain of system software (e.g., operating systems, firmware, embedded systems, ...).
+      </p>
+      <div class="section-notes" data-markdown="data/systems-notes.md">
+        <div class="loading">
+          <i class="fa-solid fa-spinner fa-spin"></i> Loading ...
+        </div>
+      </div>
+    </section>
+
     <section id="extractors">
       <p>
-        Here, we survey tools that extract feature-model formulas from KConfig-based software systems (e.g., the Linux kernel).
+        Here, we survey tools that extract feature-model formulas from KConfig-based system software.
         The following table is intended to facilitate choosing the right tool for extracting such formulas.
         The tools differ considerably in their strategies to parse KConfig and encode its semantics.
       </p>
@@ -71,7 +88,7 @@
 
     <section id="transformations">
       <p>
-        Here, we survey tools that implement a CNF transformation for (feature-model or general Boolean) formulas.
+        Here, we survey tools that implement a CNF transformation for propositional formulas.
         The following table is intended to facilitate choosing the right tool for transforming into CNF.
         Most importantly, these tools subtly differ in the preserved semantics of the transformed formulas, and may be of varying time and space complexity.
         Also, the supported input/outputs formats and tool integrations sometimes differ considerably.
@@ -119,25 +136,36 @@
         id: 'languages',
         title: 'Configuration Languages',
         csvFile: 'data/languages.csv',
-        skipColumns: ['Language', 'Notes']
+        skipColumns: ['Language', 'Notes'],
+        pageLength: -1
       },
       {
         id: 'implementations',
         title: 'KConfig Implementations',
         csvFile: 'data/implementations.csv',
-        skipColumns: ['Implementation', 'Notes']
+        skipColumns: ['Implementation', 'Notes'],
+        pageLength: -1
+      },
+      {
+        id: 'systems',
+        title: 'Configurable System Software',
+        csvFile: 'data/systems.csv',
+        skipColumns: ['Name', 'Notes'],
+        pageLength: 10
       },
       {
         id: 'extractors',
         title: 'KConfig Extraction Tools',
         csvFile: 'data/extractors.csv',
-        skipColumns: ['Year', 'Tool', 'Notes', 'References']
+        skipColumns: ['Year', 'Tool', 'Notes', 'References'],
+        pageLength: -1
       },
       {
         id: 'transformations',
         title: 'CNF Transformation Tools',
         csvFile: 'data/transformations.csv',
-        skipColumns: ['Year', 'Tool', 'Notes', 'References']
+        skipColumns: ['Year', 'Tool', 'Notes', 'References'],
+        pageLength: -1
       }
     ]);
   </script>
