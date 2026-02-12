@@ -1,7 +1,7 @@
 ##### Notes
 
-- **Year**: For each extractor, we include the year it was first mentioned in the research literature (to the best of our knowledge). We do this to establish a rough timeline of all extractors.
-- **KConfig parser**: We consider an extractor to support *evolutionary analysis* when it has been applied successfully on at least one project (e.g., Linux) over an extended time frame (i.e., over most of the project's lifetime).
+- For each extractor, we include the year it was first mentioned in the research literature (to the best of our knowledge). We do this to establish a rough timeline of all extractors.
+- We consider an extractor to support *evolutionary analysis* when it has been applied successfully on at least one project (e.g., Linux) over an extended time frame (i.e., over most of the project's lifetime).
   Likewise, an extractor supports *cross-project analysis* when it has been applied successfully across different projects (e.g., Linux *and* BusyBox).
   We assign both of these properties only with sufficient evidence (i.e., either we personally confirmed the property or it was explicitly documented in the literature).
   For all other extractors, we do not know for sure the extent to which they support evolutionary or cross-project analysis.

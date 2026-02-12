@@ -50,11 +50,11 @@
       We do not claim to be complete - feel free to submit a <a href="https://github.com/ekuiter/torte-research" target="_blank">pull request</a> or comment on <a href="https://github.com/ekuiter/torte-research/issues/1" target="_blank">our roadmap</a> with potential additions or corrections.
     </p>
     <p>
-      Our overall goal here is to give a broad overview over the tool ecosystem for feature-model analysis.
-      We discuss tools related to and relevant for the analysis of variability in system software, such as the Linux kernel.
+      Our overall goal here is to give a broad overview over the system and tool ecosystem for feature-model analysis.
+      We discuss systems and tools related to and relevant for (the analysis of) variability in system software, such as the Linux kernel.
       We focus on the problem space (e.g., KConfig) instead of the solution space (e.g., KBuild and the C preprocessor).
       The whole ecosystem has become very fragmented over time and is only partially interoperable.
-      To mitigate this to some degree, we integrate several of the below-mentioned tools into our declarative experimentation platform <a href="https://github.com/ekuiter/torte" target="_blank">torte</a>.
+      To mitigate this to some degree, we integrate several of the below-mentioned systems and tools into our declarative experimentation platform <a href="https://github.com/ekuiter/torte" target="_blank">torte</a>.
     </p>
 
     <!-- Table sections - just add id and description, JS generates the rest -->
@@ -70,6 +70,8 @@
       <p>
         Here, we maintain a repository of configurable system software.
         Specifically, we consider software systems in the domain of system software (e.g., operating systems, firmware, embedded systems, ...).
+        We also include supplementary ("higher-order") tools designed to assist in building system software (e.g., build systems for custom Linux distributions).
+        We exclude systems in the domain of pure application software (even if they use KConfig).
       </p>
       <div class="section-notes" data-markdown="data/systems-notes.md">
         <div class="loading">
@@ -162,14 +164,14 @@
       },
       {
         id: 'extractors',
-        title: 'KConfig Extraction Tools',
+        title: 'KConfig Extractors',
         csvFile: 'data/extractors.csv',
         skipColumns: ['Year', 'Tool', 'Notes', 'References'],
         pageLength: -1
       },
       {
         id: 'transformations',
-        title: 'CNF Transformation Tools',
+        title: 'CNF Transformations',
         csvFile: 'data/transformations.csv',
         skipColumns: ['Year', 'Tool', 'Notes', 'References'],
         pageLength: -1
