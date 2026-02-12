@@ -42,6 +42,36 @@ function setTextNodeContent(node, text) {
     node.appendChild(document.createTextNode(text));
 }
 
+let sectionCollapseStateBeforeSearch = null;
+let pageSearchDebounceTimer = null;
+
+function setToggleAllSearchDisabled(isDisabled) {
+    const toggleAll = document.getElementById('toggle-all');
+    if (!toggleAll) return;
+    toggleAll.disabled = isDisabled;
+    toggleAll.classList.toggle('search-disabled', isDisabled);
+}
+
+function setSectionCollapsedState(section, shouldCollapse) {
+    if (!section) return;
+
+    if (shouldCollapse) {
+        section.classList.add('section-collapsed');
+    } else {
+        section.classList.remove('section-collapsed');
+    }
+
+    const toggle = section.querySelector('.section-toggle');
+    if (toggle) {
+        toggle.setAttribute('aria-expanded', shouldCollapse ? 'false' : 'true');
+    }
+
+    const preview = section.querySelector('.section-preview');
+    if (preview) {
+        preview.style.display = shouldCollapse ? '' : 'none';
+    }
+}
+
 function setupCollapsibleSection(section) {
     if (!section || section.dataset.collapsibleInitialized === 'true') return;
 
@@ -132,15 +162,7 @@ function setupCollapsibleSections() {
 function collapseAllSections() {
     document.querySelectorAll('section').forEach(section => {
         if (!section.classList.contains('section-collapsed')) {
-            section.classList.add('section-collapsed');
-            const toggle = section.querySelector('.section-toggle');
-            if (toggle) {
-                toggle.setAttribute('aria-expanded', 'false');
-            }
-            const preview = section.querySelector('.section-preview');
-            if (preview) {
-                preview.style.display = '';
-            }
+            setSectionCollapsedState(section, true);
         }
     });
     updateToggleAllButton();
@@ -149,15 +171,7 @@ function collapseAllSections() {
 function expandAllSections() {
     document.querySelectorAll('section').forEach(section => {
         if (section.classList.contains('section-collapsed')) {
-            section.classList.remove('section-collapsed');
-            const toggle = section.querySelector('.section-toggle');
-            if (toggle) {
-                toggle.setAttribute('aria-expanded', 'true');
-            }
-            const preview = section.querySelector('.section-preview');
-            if (preview) {
-                preview.style.display = 'none';
-            }
+            setSectionCollapsedState(section, false);
             refreshDataTablesIn(section);
         }
     });
@@ -173,6 +187,7 @@ function setupCollapseAllTrigger() {
             window.history.replaceState(null, '', newUrl);
         }
         collapseAllSections();
+        reapplyPageSearchIfActive();
     });
 }
 
@@ -203,6 +218,7 @@ function setupToggleAllTrigger() {
         } else {
             collapseAllSections();
         }
+        reapplyPageSearchIfActive();
     });
 }
 
@@ -215,16 +231,169 @@ function expandSectionForAnchor() {
     const section = target.closest('section');
     if (!section || !section.classList.contains('section-collapsed')) return;
 
-    section.classList.remove('section-collapsed');
-    const toggle = section.querySelector('.section-toggle');
-    if (toggle) {
-        toggle.setAttribute('aria-expanded', 'true');
-    }
-    const preview = section.querySelector('.section-preview');
-    if (preview) {
-        preview.style.display = 'none';
-    }
+    setSectionCollapsedState(section, false);
     refreshDataTablesIn(section);
+}
+
+function escapeRegExp(value) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function clearPageSearchHighlights(root) {
+    const searchRoot = root || document;
+    searchRoot.querySelectorAll('mark.page-search-highlight').forEach(mark => {
+        const parent = mark.parentNode;
+        if (!parent) return;
+        parent.replaceChild(document.createTextNode(mark.textContent || ''), mark);
+        parent.normalize();
+    });
+}
+
+function highlightPageSearchMatches(root, terms) {
+    if (!root || !Array.isArray(terms) || terms.length === 0) return;
+
+    const sortedTerms = [...new Set(terms.filter(Boolean))].sort((a, b) => b.length - a.length);
+    if (!sortedTerms.length) return;
+
+    const regex = new RegExp(`(${sortedTerms.map(escapeRegExp).join('|')})`, 'gi');
+    const nodes = [];
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+            const value = node.nodeValue;
+            if (!value || !value.trim()) return NodeFilter.FILTER_REJECT;
+
+            const parent = node.parentElement;
+            if (!parent) return NodeFilter.FILTER_REJECT;
+            if (parent.closest('script, style, noscript, mark, button, input, textarea, select, option, .multi-select-options')) {
+                return NodeFilter.FILTER_REJECT;
+            }
+
+            const lowerText = value.toLowerCase();
+            const hasMatch = sortedTerms.some(term => lowerText.includes(term));
+            return hasMatch ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+        }
+    });
+
+    while (walker.nextNode()) {
+        nodes.push(walker.currentNode);
+    }
+
+    nodes.forEach(node => {
+        const text = node.nodeValue || '';
+        regex.lastIndex = 0;
+        if (!regex.test(text)) return;
+
+        const fragment = document.createDocumentFragment();
+        let lastIndex = 0;
+        text.replace(regex, (match, _group, offset) => {
+            if (offset > lastIndex) {
+                fragment.appendChild(document.createTextNode(text.slice(lastIndex, offset)));
+            }
+            const mark = document.createElement('mark');
+            mark.className = 'page-search-highlight';
+            mark.textContent = match;
+            fragment.appendChild(mark);
+            lastIndex = offset + match.length;
+            return match;
+        });
+        if (lastIndex < text.length) {
+            fragment.appendChild(document.createTextNode(text.slice(lastIndex)));
+        }
+        const parent = node.parentNode;
+        if (parent) {
+            parent.replaceChild(fragment, node);
+        }
+    });
+}
+
+function reapplyPageSearchIfActive() {
+    const input = document.getElementById('page-search');
+    if (!input) return;
+    const value = input.value.trim();
+    if (!value) return;
+    applyPageSearch(value);
+}
+
+function applyPageSearch(rawQuery) {
+    const container = document.querySelector('.container');
+    const query = (rawQuery || '').trim().toLowerCase();
+    const terms = query.split(/\s+/).filter(Boolean);
+
+    if (container) {
+        clearPageSearchHighlights(container);
+    }
+
+    if (terms.length === 0) {
+        setToggleAllSearchDisabled(false);
+        if (sectionCollapseStateBeforeSearch) {
+            document.querySelectorAll('section').forEach(section => {
+                if (sectionCollapseStateBeforeSearch.has(section)) {
+                    setSectionCollapsedState(section, sectionCollapseStateBeforeSearch.get(section));
+                }
+            });
+            sectionCollapseStateBeforeSearch = null;
+        }
+        updateToggleAllButton();
+        return;
+    }
+
+    setToggleAllSearchDisabled(true);
+
+    if (!sectionCollapseStateBeforeSearch) {
+        sectionCollapseStateBeforeSearch = new Map();
+        document.querySelectorAll('section').forEach(section => {
+            sectionCollapseStateBeforeSearch.set(section, section.classList.contains('section-collapsed'));
+        });
+    }
+
+    document.querySelectorAll('section').forEach(section => {
+        const sectionText = (section.textContent || '').toLowerCase();
+        const hasMatch = terms.every(term => sectionText.includes(term));
+        setSectionCollapsedState(section, !hasMatch);
+        if (hasMatch) {
+            refreshDataTablesIn(section);
+        }
+    });
+
+    if (container) {
+        highlightPageSearchMatches(container, terms);
+    }
+    updateToggleAllButton();
+}
+
+function setupPageSearch() {
+    const input = document.getElementById('page-search');
+    const clearButton = document.getElementById('page-search-clear');
+    if (!input) return;
+
+    const updateClearButtonVisibility = () => {
+        if (!clearButton) return;
+        clearButton.classList.toggle('visible', input.value.trim().length > 0);
+    };
+
+    input.addEventListener('input', () => {
+        window.clearTimeout(pageSearchDebounceTimer);
+        pageSearchDebounceTimer = window.setTimeout(() => {
+            applyPageSearch(input.value);
+            updateClearButtonVisibility();
+        }, 120);
+    });
+
+    input.addEventListener('search', () => {
+        applyPageSearch(input.value);
+        updateClearButtonVisibility();
+    });
+
+    if (clearButton) {
+        clearButton.addEventListener('click', () => {
+            input.value = '';
+            applyPageSearch('');
+            updateClearButtonVisibility();
+            input.focus();
+        });
+    }
+
+    updateClearButtonVisibility();
 }
 
 function extractFirstSentence(container) {
@@ -390,6 +559,7 @@ function loadMarkdownSections() {
                 section.replaceChildren(template.content);
                 setupCollapsibleSection(section);
                 expandSectionForAnchor();
+                reapplyPageSearchIfActive();
             })
             .catch(error => {
                 console.error(error);
@@ -406,6 +576,7 @@ document.addEventListener('DOMContentLoaded', loadMarkdownSections);
 document.addEventListener('DOMContentLoaded', setupCollapsibleSections);
 document.addEventListener('DOMContentLoaded', setupCollapseAllTrigger);
 document.addEventListener('DOMContentLoaded', setupToggleAllTrigger);
+document.addEventListener('DOMContentLoaded', setupPageSearch);
 window.addEventListener('hashchange', expandSectionForAnchor);
 document.addEventListener('DOMContentLoaded', expandSectionForAnchor);
 document.addEventListener('DOMContentLoaded', () => {
@@ -548,6 +719,7 @@ class FilterTable {
 
         // Setup filter badge click handler
         this.setupFilterBadgeHandler();
+        reapplyPageSearchIfActive();
     }
 
     initFilters(columns) {
