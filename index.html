@@ -57,12 +57,12 @@
       To mitigate this to some degree, we integrate several of the below-mentioned systems and tools into our declarative experimentation platform <a href="https://github.com/ekuiter/torte" target="_blank">torte</a>.
     </p>
 
-    <section id="languages">
+    <section id="techniques">
       <p>
-        Here, we survey configuration languages used throughout system software to define features and their dependencies.
-        We only include explicit domain-specific languages for specifying features and their dependencies.
+        Here, we survey techniques used throughout system software to express features and their dependencies.
+        In the following sections, we mostly focus on KConfig, as it is the single dominant configuration language in the domain of system software.
       </p>
-      <div class="section-notes" data-markdown="data/languages-notes.md">
+      <div class="section-notes" data-markdown="data/techniques-notes.md">
         <div class="loading">
           <i class="fa-solid fa-spinner fa-spin"></i> Loading ...
         </div>
@@ -75,7 +75,7 @@
 
     <section id="systems">
       <p>
-        Here, we maintain a repository of configurable system software.
+        Here, we maintain a repository of configurable system software that relies on KConfig.
         Specifically, we consider software systems in the domain of system software (e.g., operating systems, firmware, embedded systems, ...).
         We also include supplementary ("higher-order") tools designed to assist in building or running system software (e.g., build systems for custom Linux distributions or low-level system libraries).
         We exclude systems in the domain of pure application software (even if they use KConfig).
@@ -147,10 +147,11 @@
     // Table configurations - add new tables here
     initializeTables([
       {
-        id: 'languages',
-        title: 'Configuration Languages',
-        csvFile: 'data/languages.csv',
-        skipColumns: ['Language', 'Notes'],
+        id: 'techniques',
+        title: 'Configuration Techniques',
+        csvFile: 'data/techniques.csv',
+        skipColumns: ['Technique', 'Description', 'References'],
+        columnWidths: { Description: '480px' },
         pageLength: -1
       },
       {
@@ -162,7 +163,7 @@
       },
       {
         id: 'systems',
-        title: 'Configurable System Software',
+        title: 'KConfig Systems',
         csvFile: 'data/systems.csv',
         skipColumns: ['System', 'Description', 'System Software', '#Commits', '#Releases', 'First Release', 'Last Release', 'Notes', 'Row Updated', 'References'],
         numericSortColumns: ['#Commits', '#Releases'],

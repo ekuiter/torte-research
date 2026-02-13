@@ -1,2 +1,0 @@
-Language,Notes,References
-[KConfig](https://docs.kernel.org/kbuild/kconfig-language.html),"developed in the mainline Linux kernel, used in many other systems as well","[SB:TR10](https://arxiv.org/abs/2209.04916), [BSLWC:ASE10](https://dl.acm.org/doi/10.1145/1858996.1859010), [WWK:ConfWS15](https://ceur-ws.org/Vol-1453/20_WalchWalterKuechlin_FormalAnalysisOfTheLinuxKernel_Confws-15_p131.pdf), [EKS:GPCE15](https://doi.org/10.1145/2814204.2814222), [OYBG:TR21](https://zenodo.org/records/4950763) (+ [extractor](#extractors) references)"
