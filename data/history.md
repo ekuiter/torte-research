@@ -3,7 +3,8 @@
 Here, we summarize the history of this project and notable developments in its scope, such as KConfig.
 
 **2002**
-- **October**: [Linux v2.5.45](https://lwn.net/Articles/14197/) introduces [KConfig](https://github.com/torvalds/linux/tree/master/scripts/kconfig) (developed by Roman Zippel), the successor of CML1 for specifying Linux's features and their dependencies.
+- **October**: [Linux v2.5.45](https://lwn.net/Articles/14197/) introduces [KConfig](#languages), the successor of CML1 for specifying Linux's features and their dependencies.
+  KConfig and its implementation, the [Linux kernel configurator](#implementations) (LKC), was developed by Roman Zippel.
 
 **2010**
 - **October**: [Vegard Nossum](https://github.com/vegard) (still an active KConfig developer in 2025) [proposes](https://lkml.org/lkml/2010/5/17/164) the first known [integration of a SAT solver](https://github.com/vegard/linux-2.6-archive/blob/kconfig-sat/scripts/kconfig/satconf.c) into KConfig as part of a *Google Summer of Code* project.
@@ -25,8 +26,8 @@ Here, we summarize the history of this project and notable developments in its s
   Valentin Rothberg [states that](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/KMa6_EGoBQAJ), beyond technical challenges, integration of a SAT solver remains difficult because the community needs "something that is easy to use, is easy to maintain, doesn't consume much time, (and most importantly) doesn't disturb the dinosaurs' working environment".
 
 **2017**
-- **June**: Linus Torvalds [expresses his skepticism](https://yhbt.net/lore/ksummit-discuss/CA+55aFyvssxg63UoQ-rOaf1TMacJ6T5jyLkWECosQJ_N=9gaaQ@mail.gmail.com/#t) towards a [SAT integration](https://kernelnewbies.org/KernelProjects/kconfig-sat) into KConfig: "The SAT solver will only hurt, because it will bring in all those irrelevant people who are interested in SAT solving, not in making things easy for users."
-- **September**: [Ulf Magnusson](https://github.com/ulfalizer) releases version 1.0.0 of [KConfigLib](https://github.com/ulfalizer/Kconfiglib), a standalone reimplementation of a KConfig parser in Python, which will be adopted by several projects over the following years.
+- **June**: Linus Torvalds [expresses his skepticism](https://yhbt.net/lore/ksummit-discuss/CA+55aFyvssxg63UoQ-rOaf1TMacJ6T5jyLkWECosQJ_N=9gaaQ@mail.gmail.com/#t) towards a [SAT integration](https://kernelnewbies.org/KernelProjects/kconfig-sat) into LKC: "The SAT solver will only hurt, because it will bring in all those irrelevant people who are interested in SAT solving, not in making things easy for users."
+- **September**: [Ulf Magnusson](https://github.com/ulfalizer) releases version 1.0.0 of [KConfigLib](#implementations), a standalone reimplementation of a KConfig parser in Python (alternative to LKC), which will be adopted by several projects over the following years.
 
 **2018**
 - **May**: We release [kmax-vm](https://github.com/ekuiter/kmax-vm), an [early predecessor](https://github.com/ekuiter/torte?tab=readme-ov-file#history) of torte that automates feature-model extraction with [KClause](#extractors) in a virtual machine.
@@ -52,20 +53,20 @@ Here, we summarize the history of this project and notable developments in its s
 - **May**: [Urs-Benedict Braun](https://elias-kuiter.de/publications/#Braun25) performs initial experiments that show [SAT solvers cannot keep up with the Linux kernel](https://elias-kuiter.de/publications/#KBT+:ICSE26).
 - **May**: [Rami Alfish](https://elias-kuiter.de/publications/#Alfish25) integrates [ConfigFix](#extractors) into torte and evaluates it on various systems.
 - **August**: After eight years, [Masahiro Yamada](https://github.com/masahir0y) [steps down](https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=8d6841d5cb20) as Linux's maintainer of KBuild and KConfig, "two complex pieces of infrastructure that many people interact with, but few truly understand" (Source: [LWN](https://lwn.net/Articles/1032722/)).
-  Nathan Chancellor and Nicolas Schier now maintain KBuild.
-  KConfig is now entirely unmaintained and an integration of a SAT solver in the foreseeable future seems unlikely.
+  Nathan Chancellor and Nicolas Schier [now](https://www.phoronix.com/news/Kconfig-No-Longer-Orphaned) [maintain](https://lore.kernel.org/lkml/20251023-update-kconfig-maintainers-v1-1-0ebd5b4ecced@kernel.org/) KBuild, only providing "odd fixes" for KConfig.
+  KConfig is now effectively unmaintained, and an integration of a SAT solver in the foreseeable future seems unlikely.
 - **August**: LWN editor Daroc Alden counts [how many ways there are to configure the Linux kernel](https://lwn.net/Articles/1034811/), [exceeding](https://lwn.net/Articles/1034812/) our [own estimation](https://elias-kuiter.de/publications/#KST+:TOSEM25).
-- **September**: [Taylan Karakaya](https://elias-kuiter.de/publications/#Karakaya25) analyzes the [evolution of KConfig](https://github.com/torvalds/linux/commits/master/scripts/kconfig?after=05f7e89ab9731565d8a62e3b5d1ec206485eeb0b+69) in the Linux kernel from its pre-Git era all the way up until May 2025.
+- **September**: [Taylan Karakaya](https://elias-kuiter.de/publications/#Karakaya25) analyzes the [evolution of LKC](https://github.com/torvalds/linux/commits/master/scripts/kconfig?after=05f7e89ab9731565d8a62e3b5d1ec206485eeb0b+69) from its pre-Git era all the way up until May 2025.
   From June 2025 onwards, we provide informal updates on KConfig below.
-- **September**: The [transitional](https://github.com/torvalds/linux/commit/f9afce4f32e9a120fc902fa6c9e0b90ad799a6ec) keyword is introduced to the Linux kernel.
+- **September**: The [transitional](https://github.com/torvalds/linux/commit/f9afce4f32e9a120fc902fa6c9e0b90ad799a6ec) keyword is introduced to LKC.
   This promptly causes a bug [reported by](https://github.com/torvalds/linux/commit/0902b3cb23ce7f436bddbdf6ba7b1ed427b36bd9) Linus Torvalds.
   It also [breaks parsing](https://github.com/zephyrproject-rtos/Kconfiglib/issues/25) in KConfigLib, an issue which is [being discussed](https://github.com/zephyrproject-rtos/Kconfiglib/pull/30), as simply ignoring the keyword creates new issues.
   To address this, the [Yocto project](https://git.yoctoproject.org/yocto-kernel-tools/commit/?id=f589e1df23251d8319063da0a61c1016b2a0bf85) proposes a change to KConfigLib, which is being reviewed.
 - **September**: At [SPLC'25](https://2025.splc.net/accepted-papers/), we discuss [open challenges](https://elias-kuiter.de/publications/#K:SPLC25) of analyzing problem-space variability in system software.
-- **October**: After [years](https://github.com/ulfalizer/Kconfiglib/issues/121) of [inactivity](https://github.com/zephyrproject-rtos/zephyr/issues/53894), [KConfigLib](https://github.com/zephyrproject-rtos/Kconfiglib) is now officially [being maintained](https://github.com/zephyrproject-rtos/Kconfiglib/issues/17) at Zephyr by [Torsten Tejlmand Rasmussen](https://github.com/tejlmand).
+- **October**: After [years](https://github.com/ulfalizer/Kconfiglib/issues/121) of [inactivity](https://github.com/zephyrproject-rtos/zephyr/issues/53894), [KConfigLib](#implementations) is now officially [being maintained](https://github.com/zephyrproject-rtos/Kconfiglib/issues/17) at Zephyr by [Torsten Tejlmand Rasmussen](https://github.com/tejlmand).
 
 **2026**
-- **February**: KConfig remains unmaintained and receives [almost no commits](https://github.com/torvalds/linux/commits/master/scripts/kconfig).
+- **February**: KConfig remains effectively unmaintained and receives [almost no commits](https://github.com/torvalds/linux/commits/master/scripts/kconfig).
   We release this website to summarize our knowledge and insights on the tool ecosystem for feature-model analysis.
 - **March**: [Ljubica Ðorđević](https://elias-kuiter.de/publications/#Dordevic26) introduces a transformation from [KConfigLib](https://github.com/zephyrproject-rtos/Kconfiglib) specifications into Linux's KConfig dialect, which enables feature-model analysis of [Zephyr](https://github.com/zephyrproject-rtos/zephyr) and related projects.
 - **April**: At [ICSE'26](https://conf.researchr.org/track/icse-2026/icse-2026-research-track), we study whether [SAT solvers can keep up with the Linux kernel](https://elias-kuiter.de/publications/#KBT+:ICSE26).

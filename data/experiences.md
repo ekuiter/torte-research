@@ -4,6 +4,8 @@ Here, we collect various quotes on KConfig by kernel practitioners and system so
 
 We collected these quotes by searching the web, inspecting the websites of system-software projects, and reading the Linux kernel mailing list (LKML) and associated Google Groups.
 
+We have yet to encounter anyone explicitly praising KConfig, its tooling, or the overall configuration process.
+
 ##### Linux Kernel Practitioners
 
 This is a shortened excerpt from our [TOSEM paper](https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2025/2025-TOSEM-Kuiter.pdf) on the configurability of Linux.

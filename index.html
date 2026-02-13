@@ -57,20 +57,24 @@
       To mitigate this to some degree, we integrate several of the below-mentioned systems and tools into our declarative experimentation platform <a href="https://github.com/ekuiter/torte" target="_blank">torte</a>.
     </p>
 
-    <!-- Table sections - just add id and description, JS generates the rest -->
-    <!-- <section id="languages">
-      <p>Here, we survey configuration languages used throughout systems software to manage variability and build options.</p>
-    </section> -->
+    <section id="languages">
+      <p>Here, we survey configuration languages used throughout system software to define features and their dependencies.</p>
+      <div class="section-notes" data-markdown="data/languages-notes.md">
+        <div class="loading">
+          <i class="fa-solid fa-spinner fa-spin"></i> Loading ...
+        </div>
+      </div>
+    </section>
 
-    <!-- <section id="implementations">
-      <p>Here, we survey implementations of the KConfig language used in various projects.</p>
-    </section> -->
+    <section id="implementations">
+      <p>Here, we survey implementations of the KConfig language used throughout system software.</p>
+    </section>
 
     <section id="systems">
       <p>
         Here, we maintain a repository of configurable system software.
         Specifically, we consider software systems in the domain of system software (e.g., operating systems, firmware, embedded systems, ...).
-        We also include supplementary ("higher-order") tools designed to assist in building system software (e.g., build systems for custom Linux distributions).
+        We also include supplementary ("higher-order") tools designed to assist in building or running system software (e.g., build systems for custom Linux distributions or low-level system libraries).
         We exclude systems in the domain of pure application software (even if they use KConfig).
       </p>
       <div class="section-notes" data-markdown="data/systems-notes.md">
