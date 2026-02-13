@@ -70,6 +70,24 @@ body {
   color: var(--accent-color);
 }
 
+.torte-icon {
+  display: inline-block;
+  transform-origin: 50% 75%;
+}
+
+.page-title:hover .torte-icon {
+  animation: torte-wiggle 420ms ease-in-out;
+}
+
+@keyframes torte-wiggle {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(-10deg); }
+  40% { transform: rotate(8deg); }
+  60% { transform: rotate(-6deg); }
+  80% { transform: rotate(4deg); }
+  100% { transform: rotate(0deg); }
+}
+
 .page-search-input {
   min-width: 8rem;
   max-width: 11rem;
