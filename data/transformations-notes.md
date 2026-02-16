@@ -5,4 +5,15 @@
 - A **total Tseitin transformation** introduces auxiliary (aka fresh) variables for every nontrivial subformula (typically everything but leaves or negated leaves). The transformed formula is always [quasi-equivalent](https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf) to the original formula (NOT necessarily equivalent). The length of the resulting formula is linear in the size of the input formula.
 - A **partial Tseitin transformation** introduces auxiliary variables for subformulas that satisfy a certain criterion. Typically, this means predicting the potential blowup during distribution, and only introducing a fresh variable if a (possibly configurable) threshold is exceeded (listed in the table above). The transformed formula is always [quasi-equivalent](https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf) to the original formula (NOT necessarily equivalent).
 - A **Plaisted-Greenbaum transformation** is a variant of a Tseitin transformation that introduces fewer clauses, at the cost of losing equi-countability. The transformed formula is always [equi-assignable](https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf) to the original formula (NOT necessarily equi-countable). A Plaisted-Greenbaum transformation can be polarity-based. If not polarity-based, the formula must first be transformed into negation normal form, aka NNF.
+- In addition to the functional correctness properties outlined above, Tseitin and polarity-based Plaisted-Greenbaum transformations are [extremely inefficient](https://doi.org/10.1613/jair.1.16870) for partial enumeration aka AllSAT (i.e., listing all valid parte configurations).
+  Interestingly, NNF-based Plaisted-Greenbaum transformation [does not suffer](https://doi.org/10.1613/jair.1.16870) from this problem.
+  (Neither does distributive transformation, which is the baseline of measuring enumeration efficiency.)
+  This comment does not apply to total enumeration (where every single valid configuration is spelled out, instead of grouping them with partial configurations).
 - There are various advanced CNF transformation algorithms (mentioned [here](https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2022/2022-ASE-Kuiter.pdf)). However, we are not aware of any practical implementation of such an advanced algorithm.
+- As a rough simplified recommendation, use:
+  - **distributive transformation** on small formulas for SAT, #SAT, AllSAT, and algebraic reasoning (e.g., slicing or differencing),
+  - (any variant of) **Tseitin or Plaisted-Greenbaum transformation** on large formulas for SAT and #SAT, and
+  - (any variant of) **NNF-based Plaisted-Greenbaum** on large formulas for (partial) AllSAT.
+  
+  Algebraic reasoning on large formulas is not generally compositional and currently an unsolved problem.
+  That is, Tseitin and Plaisted-Greenbaum transformation are not homomorphisms and must therefore be applied last (and only once) before a solver call.
