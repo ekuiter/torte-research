@@ -10,7 +10,7 @@ These links were provided by us and are not part of the quotes themselves.
   KConfig and its implementation, the [Linux kernel configurator](#implementations) (LKC), was developed by Roman Zippel.
 
 **2010**
-- **June**: While discussing the necessity of `defconfig` files, linus Torvalds and others [consider](https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/eJMOR9o_yQMJ) whether a SAT integration into the kernel would be reasonable (see [Experiences](#sat-integration-in-kconfig-2010)).
+- **June**: While discussing the necessity of `defconfig` files, Linus Torvalds and others [consider](https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/eJMOR9o_yQMJ) whether a SAT integration into the kernel would be reasonable ([read more](#sat-integration-in-kconfig-2010)).
   This discussion is ultimately inconclusive.
 - **October**: [Vegard Nossum](https://github.com/vegard) (an active KConfig developer in 2025 with [background](https://vegard.github.io/twitter/) in SAT solving) [proposes](https://lkml.org/lkml/2010/5/17/164) the first known [integration of a SAT solver](https://github.com/vegard/linux-2.6-archive/blob/kconfig-sat/scripts/kconfig/satconf.c) into KConfig as part of a [Google Summer of Code](https://web.archive.org/web/20101103123431/http://socghop.appspot.com/gsoc/student_project/show/google/gsoc2010/psu_home/t127230762803) project.
   While this [initial pitch](https://groups.google.com/g/linux.kernel/c/FgujvYD3AG4/m/bKM_FHyfo1QJ) was received well, the idea was [not discussed further](https://groups.google.com/g/linux.kernel/search?q=Vegard%20Nossum%20SAT) until 2015.
@@ -28,7 +28,7 @@ These links were provided by us and are not part of the quotes themselves.
   He [suggests](https://groups.google.com/g/kconfig-sat/c/utCcD2R6sKU/m/u9f3bmyaFgAJ) that it would be reasonable to limit the scope of KConfig to better support a SAT integration, and that "the semantics are a bit loose and that's just due to history".
   However, he also [recognizes](https://groups.google.com/g/kconfig-sat/c/g7i9BjLHr8E/m/2CdqA_kSFgAJ) that "one of the issues is the lack of keeping up to date. To solve this I recommend folks to simply work off of Linus' tree and then daily just do [a rebase]".
   
-  Vegard Nossum also [follows up](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/E1hHH5pWDAAJ) on their SAT integration, stating that there are "a lot of problems with finding the right encoding/formalisation of the kconfig language. It's simply not very well documented (the code is the only standard) and there are a lot of weird corner cases with hidden prompts, choice values, prompt dependencies, symbol dependencies, default values, conditional default values, you name it" (see [Experiences](#experiences)).
+  Vegard Nossum also [follows up](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/E1hHH5pWDAAJ) on their SAT integration, naming various problems ([read more](#sat-integration-in-kconfig-2015)).
   One issue [discussed](https://lkml.org/lkml/2010/5/17/172) [repeatedly](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/Ld2wKTtSDAAJ) is explainability of solver results, which would require clause-constraint traceability and [MUS](https://en.wikipedia.org/wiki/Unsatisfiable_core) support in the solver.
   Other discussed challenges include the handling of [non-Boolean features](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/E1hHH5pWDAAJ) (notably, [tristate](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/n71Nh1WmBQAJ) features, but also [int/hex/string](https://groups.google.com/g/kconfig-sat/c/utCcD2R6sKU/m/FHEVBjSKFgAJ) and [imply constraints](https://groups.google.com/g/kconfig-sat/c/3zb3PX7e4OE/m/FqC74X8CBgAJ)) and [constraints](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/yPZsCWWnBQAJ), [solver interfaces](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/5YdKwddqBgAJ), [SAT](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/5YdKwddqBgAJ) [vs.](https://groups.google.com/g/kconfig-sat/c/g7i9BjLHr8E/m/EAWYu6xnJwAJ) [SMT](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/zrRbr1JjBgAJ) solvers, and [inaccuracies](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/1u5OcGMdCwAJ) in [existing](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/vn3j0xWCAAAJ) [translations](https://groups.google.com/g/kconfig-sat/c/utCcD2R6sKU/m/YSmSeYgQCgAJ).
   
@@ -37,13 +37,21 @@ These links were provided by us and are not part of the quotes themselves.
   Thus, it is easily possible to create [invalid configurations](https://groups.google.com/g/linux.kernel/c/dA6vvKbft7A/m/uef9JbEGCwAJ) with LKC.
   This could be [entirely circumvented](https://groups.google.com/g/linux.kernel/c/RTSr0z64uD0/m/IN7w7M7yFxMJ) by integrating a SAT solver, which also motivates the initiation of [KConfig-SAT](https://kernelnewbies.org/KernelProjects/kconfig-sat).
 
-  This underlines the most fundamental challenge for any SAT integration into the kernel (our opinion following, based on our impression of the entire discussion):
+  <details>
+  <summary>Our summary and opinion (based on our impression of this entire discussion)</summary>
+  <p>Valentin Rothberg's comments ring true and underline a fundamental challenge for any SAT integration into the kernel:
   That is, KConfig has some questionable language design in the first place, which causes misleading semantics and unintuitive tool behavior.
   These issues are generally known and addressed in practice by (sometimes long-established) "workarounds" and also by accepting that KConfig is deeply flawed, but here to stay.
-  However, this acceptance and the desire for perfect backwards compatibility stands in the way of real, productive change.
-  Integrating a SAT solver has the potential to drastically improve the configuration experience - but it would also change said experience considerably and invasively:
-  A "transparent" integration of SAT is nonsensical, as it would carry over all of KConfig's legacy deficiencies.
+  However, this acceptance and the desire for perfect backwards compatibility stands in the way of real, productive change.</p>
+
+  <p>Integrating a SAT solver has the potential to drastically improve the configuration experience - but it would also change said experience considerably and invasively:
+  A "transparent" integration of SAT is nonsensical, as it would also preserve all of KConfig's legacy deficiencies.
   Instead, integrating SAT would essentially imply fixing KConfig, which would also disrupt every single person working with/automation on the Linux kernel.
+  It is thus wholly unclear how to integrate a SAT solver non-invasively (e.g., fully transparently, or even just in small "appetizing" steps).</p>
+  
+  <p>Considering that this discussion has started in 2010 and is still ongoing in 2025 (with KConfig only growing more complex in the meantime), no real progress has been made.
+  Thus, the benefits of analyzing Linux's feature model with SAT solvers remain indirect (e.g., to <a href="https://dl.acm.org/doi/10.1145/3468264.3468578">find specification bugs</a> and <a href="https://dl.acm.org/doi/10.1145/3643746">improve testing procedures</a>), unrelated to the actual configuration process, and ultimately inconsequential for the improvement of KConfig.</p>
+  </details>
 
 **2016**
 - **May**: [Daniel](https://groups.google.com/g/kconfig-sat/c/FErSkmhgjIk) [Jonsson](https://groups.google.com/g/kconfig-sat/c/g7i9BjLHr8E) [runs](https://groups.google.com/g/kconfig-sat/c/g7i9BjLHr8E/m/EAWYu6xnJwAJ) a [survey](https://docs.google.com/forms/d/e/1FAIpQLSeiUT-thlTK7lKvW4DQRMfwRZ66_3eNRNqS5cyIhCEVEsGO1Q/viewform?c=0&w=1) and [integrates](https://hdl.handle.net/20.500.12380/238168) an [implementation](https://github.com/DanOpcode/rangeFix) of the [RangeFix](https://xiongyingfei.github.io/papers/TSE14.pdf) algorithm into [LVAT](#extractors) ([video](https://www.youtube.com/watch?v=4oVzJMhn3Kw) [demonstrations](https://www.youtube.com/watch?v=F8RZ8YpBeew)), but struggles with its [inaccurate KConfig extraction](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/vn3j0xWCAAAJ) (discovering "[many subtle errors](https://groups.google.com/g/kconfig-sat/c/g7i9BjLHr8E/m/EAWYu6xnJwAJ)", including a significant [bug](https://groups.google.com/g/kconfig-sat/c/utCcD2R6sKU/m/2KXvqKG3HQAJ) in Vegard Nossum's tristate encoding) and various [limitations](https://groups.google.com/g/kconfig-sat/c/g7i9BjLHr8E/m/uB0BVgcjFQAJ).
@@ -54,9 +62,9 @@ These links were provided by us and are not part of the quotes themselves.
 - **November**: During the [Linux Plumbers Conference](https://blog.linuxplumbersconf.org/2016/), a one-hour [kernel summit track](https://blog.linuxplumbersconf.org/2016/ocw/proposals/4605.html) held by Luis Chamberlain acknowledges that "Linux kconfig semantics are loose and this creates issues, let's review them and fix them".
 
 **2017**
-- **June**: In a followup discussion of 2016's kernel summit track, Linus Torvalds [expresses his skepticism](https://yhbt.net/lore/ksummit-discuss/CA+55aFyvssxg63UoQ-rOaf1TMacJ6T5jyLkWECosQJ_N=9gaaQ@mail.gmail.com/#t) towards a [SAT integration](https://kernelnewbies.org/KernelProjects/kconfig-sat) into LKC: "The SAT solver will only hurt, because it will bring in all those irrelevant people who are interested in SAT solving, not in making things easy for users." <a href="https://imgflip.com/i/ak4tgh" target="_blank"><i class="fa-regular fa-face-grin-beam-sweat"></i></a>
+- **June**: In a followup discussion of 2016's kernel summit track, Linus Torvalds [expresses his skepticism](https://yhbt.net/lore/ksummit-discuss/CA+55aFyvssxg63UoQ-rOaf1TMacJ6T5jyLkWECosQJ_N=9gaaQ@mail.gmail.com/#t) towards a [SAT integration](https://kernelnewbies.org/KernelProjects/kconfig-sat) into LKC ([read more](#fixing-kconfig-semantics-2016)).
 - **September**: [Ulf Magnusson](https://github.com/ulfalizer) (also an [active developer](https://lore.kernel.org/all/20180207225551.imdp6gqbdwzyvhwm@huvuddator/) of LKC) [releases](https://groups.google.com/g/kconfig-sat/c/lNRUPZ-bDLs) version 1.0.0 of [KConfigLib](#implementations), a standalone reimplementation of a KConfig parser in Python (alternative to LKC), which will be adopted by several projects over the following years.
-  KConfigLib is [tested against](https://lore.kernel.org/all/20180207225551.imdp6gqbdwzyvhwm@huvuddator/) LKC to avoid regressions.
+  KConfigLib is [tested against](https://lore.kernel.org/all/20180207225551.imdp6gqbdwzyvhwm@huvuddator/) LKC to avoid regressions ([read more](#complexity-of-kconfig)).
 
 **2018**
 - **February**: Luis Chamberlain [acknowledges](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/J1pDLZldAwAJ) that "the status of [the KConfig-SAT initiative] is a few folks were volunteered to work on the things each complained about, but no one has done any of the work", which concludes the major [discussion thread](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI) of KConfig-SAT.
@@ -91,6 +99,8 @@ These links were provided by us and are not part of the quotes themselves.
 - **April**: Our paper on [counting the features and configurations of Linux](https://doi.org/10.1145/3729423) was accepted at [TOSEM](https://dl.acm.org/journal/tosem).
 - **May**: [Urs-Benedict Braun](https://elias-kuiter.de/publications/#Braun25) performs initial experiments that show [SAT solvers cannot keep up with the Linux kernel](https://doi.org/10.1145/3744916.3787823).
 - **May**: [Rami Alfish](https://elias-kuiter.de/publications/#Alfish25) integrates [ConfigFix](#extractors) into torte and evaluates it on various systems.
+- **June**: `defconfig` files are again [being discussed](https://lwn.net/Articles/1026337/).
+  According to LWN editor Jonathan Corbet, "the kernel's build system is an area where few developers choose to go; it is maintained (and probably only really understood) by a single developer. If a consensus cannot be reached even on a set of basic defaults, it seems unlikely that more significant improvements can be expected."
 - **August**: After eight years, [Masahiro Yamada](https://github.com/masahir0y) [steps down](https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=8d6841d5cb20) as Linux's maintainer of KBuild and KConfig, "two complex pieces of infrastructure that many people interact with, but few truly understand" (Source: [LWN](https://lwn.net/Articles/1032722/)).
   Nathan Chancellor and Nicolas Schier [now](https://www.phoronix.com/news/Kconfig-No-Longer-Orphaned) [maintain](https://lore.kernel.org/lkml/20251023-update-kconfig-maintainers-v1-1-0ebd5b4ecced@kernel.org/) KBuild, only providing "odd fixes" for KConfig.
   KConfig is now effectively unmaintained, and an integration of a SAT solver into LKC seems unlikely in the foreseeable future.

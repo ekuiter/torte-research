@@ -1,10 +1,11 @@
 ### Experiences with KConfig {#experiences}
 
 Here, we collect various quotes on KConfig by kernel practitioners and system software maintainers.
-We collected these quotes by searching the web, inspecting the websites of system-software projects, and reading the Linux kernel mailing list (LKML, aka "[kernel lore](https://lore.kernel.org/)") and [associated](https://groups.google.com/g/linux.kernel/) [Google Groups](https://groups.google.com/g/kconfig-sat/).
+We collected these quotes by searching the web, inspecting the websites of system-software projects, and reading the Linux kernel mailing list (LKML, aka "[kernel lore](https://lore.kernel.org/)") and [associated](https://groups.google.com/g/linux.kernel/) [Google Groups](https://groups.google.com/g/kconfig-sat/) as well as the [LWN archive](https://lwn.net/Archives/).
 
-As for the various discussions on how to integrate a SAT solver into KConfig, we document those chronologically under [history](#history).
-We include some quotes on SAT solvers both here and in the history section.
+Wherever it is sensible to understand the chronology of quotes in a larger context, we document them under [history](#history) instead.
+So, the quotes included here can be considered relatively "timeless".
+Also, we limit ourselves to quotes of (non-)kernel developers here - we include quotes of various researchers under [history](#history), because they are often meta-level and usually make more sense in the context of a specific discussion.
 
 #### Kernel Configuration in General
 
@@ -25,12 +26,23 @@ Most of these experiences also relate to KConfig to some degree.
 > LWN editor Jonathan Corbet [summarizes](https://lwn.net/Articles/733405/) the situation as follows: "The kernel’s configuration system can be challenging to deal with; Linus Torvalds recently [called it](https://lwn.net/Articles/733418/) 'one of the worst parts of the whole project.' But it is also a part that nobody is really working on; it receives a bit of maintenance, but there does not appear to be any significant effort out there to address its shortcomings. Two-hundred companies support work on each kernel development cycle, but none of them see the configuration system as one of the problems that they need to solve. Until that changes, we are likely to continue to see users struggling with it."
 <p class="quote-source"><a href="https://doi.org/10.1145/3729423" target="_blank" rel="noopener noreferrer">Kuiter et al. (2025)</a></p>
 
----
-
 > The config phase of the kernel is one of the worst parts of the whole
 > project, and adding these kinds of random and incomprehensible config
 > options does *not* help.
 <p class="quote-source"><a href="https://lwn.net/Articles/733418/" target="_blank" rel="noopener noreferrer">Linus Torvalds (2017)</a></p>
+
+> People, I've said this before, and apparently I need to say it again:
+> the kernel config is likely the nastiest part of building a local
+> kernel, and the biggest impediment to people actually building their
+> own kernels.
+> 
+> And people building their own kernel is the first step to becoming a
+> kernel developer.
+> 
+> So the kernel configuration is already one of the less pleasant parts
+> of the kernel, but that does NOT mean that we should strive to make it
+> even worse.
+<p class="quote-source"><a href="https://lwn.net/ml/all/CAHk-=wigjok_oSyrwiJMxQgTGYg9QtbG5xomMm9qQeO68MwsRw@mail.gmail.com/" target="_blank" rel="noopener noreferrer">Linus Torvalds (2021)</a></p>
 
 #### SAT Integration in KConfig (2010)
 
@@ -73,14 +85,16 @@ Some reactions include:
 > That doesn't seem un-reasonable. Although the solver to me seems more
 > elegant and we're getting the solver for some other reasons it seems
 > (unrelated to this defconfig issue).
-<p class="quote-source"><a href="https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/u_PpgUFFKBUJ" target="_blank" rel="noopener noreferrer">Daniel Walker (2010)</a></p>
-
+> <p class="quote-source-inline"><a href="https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/u_PpgUFFKBUJ" target="_blank" rel="noopener noreferrer">Daniel Walker (2010)</a></p>
+> 
 > Seems to me that the brokenness of select is the main technical issue
 > stopping us getting rid of the defconfigs. If there was a way to tell
 > the Kconfig machinery "I want CONFIG_USB on, you figure out what has
 > to be enabled for that to make sense" then it would all work. But
 > that's a hard problem (and may possibly have multiple solutions).
 <p class="quote-source"><a href="https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/kfQBfPFRc34J" target="_blank" rel="noopener noreferrer">Paul Mackerras (2010)</a></p>
+
+Minimization (towards uniquely determined partial configurations) is discussed as well:
 
 > > > How about instead of using full defconfigs, we use minimal ones and
 > > > let the rest be determined with defaults.
@@ -94,7 +108,7 @@ Some reactions include:
 > documentation and makefile changes to call it and so on.
 <p class="quote-source"><a href="https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/ap_3tMeKl7sJ" target="_blank" rel="noopener noreferrer">Rob Landley, toybox (2010)</a></p>
 
-This code was seemingly never merged.
+This script was seemingly never merged.
 
 #### SAT Integration in KConfig (2015)
 
@@ -159,10 +173,18 @@ This code was seemingly never merged.
 > not necessarily a feature.
 <p class="quote-source"><a href="https://groups.google.com/g/linux.kernel/c/RTSr0z64uD0/m/IITe1j2l98MJ" target="_blank" rel="noopener noreferrer">Josh Triplett (2015)</a></p>
 
+#### ["Fixing KConfig Semantics"](https://blog.linuxplumbersconf.org/2016/ocw/proposals/4605.html) (2016)
 
+> We all seem to have decided having *both* depends and select is dumb.
+<p class="quote-source"><a href="https://yhbt.net/lore/ksummit-discuss/20170627184448.GU21846@wotan.suse.de/" target="_blank" rel="noopener noreferrer">Luis Chamberlain (2017)</a></p>
 
+> > If you have a set of requirements but need to fold in a large lump of
+> > other desirables then surely a SAT solver can help.
+> <p class="quote-source"><a href="https://yhbt.net/lore/ksummit-discuss/20170627184448.GU21846@wotan.suse.de/" target="_blank" rel="noopener noreferrer">Luis Chamberlain (2017)</a></p>
+> The SAT solver will only hurt, because it will bring in all those irrelevant people who are interested in SAT solving, not in making things easy for users.
+<p class="quote-source"><a href="https://yhbt.net/lore/ksummit-discuss/CA+55aFyvssxg63UoQ-rOaf1TMacJ6T5jyLkWECosQJ_N=9gaaQ@mail.gmail.com/#t" target="_blank" rel="noopener noreferrer">Linus Torvalds (2017)</a></p>
 
-##### Linux Kernel Developers
+#### Complexity of KConfig
 
 > > > I am applying various patches to Kconfig these days.
 > > > However, I fear regressions.  I have been thinking of unit-tests.
@@ -186,7 +208,7 @@ This code was seemingly never merged.
 > output of the C tools get flagged as well (with a diff).
 <p class="quote-source"><a href="https://lore.kernel.org/all/CAFkk2KSdg0+AdnncRuwUNeHHoXv7zsdrrZEsMgq0esvAU5U7Eg@mail.gmail.com/" target="_blank" rel="noopener noreferrer">Ulf Magnusson (2018)</a></p>
 
-##### System Software Maintainers
+#### KConfig Outside the Kernel
 
 > This is the start of generally genericizing the kconfig infrastructure so it
 > builds more easily out of tree for other projects.

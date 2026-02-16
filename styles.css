@@ -341,6 +341,17 @@ section h6:hover .section-anchor {
   color: var(--accent-color);
 }
 
+.markdown-content details > summary {
+  color: var(--accent-color);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.markdown-content details > summary:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+}
+
 section h1 .section-toggle,
 section h2 .section-toggle,
 section h3 .section-toggle,
