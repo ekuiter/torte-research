@@ -233,6 +233,9 @@ function expandSectionForAnchor() {
 
     setSectionCollapsedState(section, false);
     refreshDataTablesIn(section);
+    window.requestAnimationFrame(() => {
+        target.scrollIntoView({ block: 'start', behavior: 'auto' });
+    });
 }
 
 function escapeRegExp(value) {
@@ -531,7 +534,7 @@ function loadMarkdownSections() {
                 template.innerHTML = rawHtml;
                 section.classList.add('markdown-content');
 
-                const headings = template.content.querySelectorAll('h3');
+                const headings = template.content.querySelectorAll('h3, h4');
                 headings.forEach(heading => {
                     let headingText = heading.textContent.trim();
                     let explicitId = null;

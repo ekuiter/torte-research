@@ -32,9 +32,9 @@ Most of these experiences also relate to KConfig to some degree.
 > options does *not* help.
 <p class="quote-source"><a href="https://lwn.net/Articles/733418/" target="_blank" rel="noopener noreferrer">Linus Torvalds (2017)</a></p>
 
-#### SAT Integration in KConfig
+#### SAT Integration in KConfig (2010)
 
-> > > I can understand that, but at the same time, I do think that the
+> > > [...] I do think that the
 > > > "defconfig" file concept as it is now is just broken. To the point of
 > > > being unfixable. It's obviously just a copy of the final .config, and it's
 > > > fundamentally not really readable (and especially not writable) by humans.
@@ -49,8 +49,7 @@ Most of these experiences also relate to KConfig to some degree.
 > > duplication like they do now.
 > <p class="quote-source"><a href="https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/WCkHm40YGGYJ" target="_blank" rel="noopener noreferrer">Daniel Walker (2010)</a></p>
 > 
-> It's often tedious for other cases too ("I just want to enable a
-> particular driver, what do I need to do so?"), and I do agree with Daniel
+> [...] I do agree with Daniel
 > that the SAT solver approach sounds interesting as a way to solve some of
 > the complexities.
 > 
@@ -68,8 +67,8 @@ Most of these experiences also relate to KConfig to some degree.
 > *defconfig" is perfectly acceptable.
 <p class="quote-source"><a href="https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/DBZkkzkidjQJ" target="_blank" rel="noopener noreferrer">Linus Torvalds (2010)</a></p>
 
-Linus goes on to [discuss](https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/xvWlAZ1gWwgJ) how one might (in feature modeling terms) complete partial configurations in KConfig without a SAT solver.
-Some answers include:
+Linus goes on to [discuss](https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/xvWlAZ1gWwgJ) how one might (in feature-modeling terms) complete partial configurations in KConfig without a SAT solver.
+Some reactions include:
 
 > That doesn't seem un-reasonable. Although the solver to me seems more
 > elegant and we're getting the solver for some other reasons it seems
@@ -83,19 +82,21 @@ Some answers include:
 > that's a hard problem (and may possibly have multiple solutions).
 <p class="quote-source"><a href="https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/kfQBfPFRc34J" target="_blank" rel="noopener noreferrer">Paul Mackerras (2010)</a></p>
 
-Linus answers:
-
-> > How about instead of using full defconfigs, we use minimal ones and
-> > let the rest be determined with defaults.
-> <p class="quote-source"><a href="https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/v7u1XtHbnIcJ" target="_blank" rel="noopener noreferrer">Felipe Contreras (2010)</a></p>
+> > > How about instead of using full defconfigs, we use minimal ones and
+> > > let the rest be determined with defaults.
+> > <p class="quote-source"><a href="https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/v7u1XtHbnIcJ" target="_blank" rel="noopener noreferrer">Felipe Contreras (2010)</a></p>
+> > 
+> > I wouldn't mind that either, but there needs to be some way to check that
+> > they _are_ minimal. Which is more complicated than even SAT, afaik. 
+> <p class="quote-source"><a href="https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/OIn_ufRahIwJ" target="_blank" rel="noopener noreferrer">Linus Torvalds (2010)</a></p>
 > 
-> I wouldn't mind that either, but there needs to be some way to check that
-> they _are_ minimal. Which is more complicated than even SAT, afaik. 
-<p class="quote-source"><a href="https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/OIn_ufRahIwJ" target="_blank" rel="noopener noreferrer">Linus Torvalds (2010)</a></p>
+> FYI, I repeatedly submitted a [bash script](https://lwn.net/Articles/161086/) to do this back in 2005, with
+> documentation and makefile changes to call it and so on.
+<p class="quote-source"><a href="https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/ap_3tMeKl7sJ" target="_blank" rel="noopener noreferrer">Rob Landley, toybox (2010)</a></p>
 
+This code was seemingly never merged.
 
-
-##### Linux Kernel Developers
+#### SAT Integration in KConfig (2015)
 
 > > Your SAT work is interesting, as it could help with the dependency
 > > resolution of terse kconfig fragments. While I've not looked closely at
@@ -161,6 +162,7 @@ Linus answers:
 
 
 
+##### Linux Kernel Developers
 
 > > > I am applying various patches to Kconfig these days.
 > > > However, I fear regressions.  I have been thinking of unit-tests.

@@ -10,7 +10,7 @@ These links were provided by us and are not part of the quotes themselves.
   KConfig and its implementation, the [Linux kernel configurator](#implementations) (LKC), was developed by Roman Zippel.
 
 **2010**
-- **June**: While discussing the necessity of `defconfig` files, linus Torvalds and others [consider](https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/eJMOR9o_yQMJ) whether a SAT integration into the kernel would be reasonable (see [Experiences](#experiences)).
+- **June**: While discussing the necessity of `defconfig` files, linus Torvalds and others [consider](https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/eJMOR9o_yQMJ) whether a SAT integration into the kernel would be reasonable (see [Experiences](#sat-integration-in-kconfig-2010)).
   This discussion is ultimately inconclusive.
 - **October**: [Vegard Nossum](https://github.com/vegard) (an active KConfig developer in 2025 with [background](https://vegard.github.io/twitter/) in SAT solving) [proposes](https://lkml.org/lkml/2010/5/17/164) the first known [integration of a SAT solver](https://github.com/vegard/linux-2.6-archive/blob/kconfig-sat/scripts/kconfig/satconf.c) into KConfig as part of a [Google Summer of Code](https://web.archive.org/web/20101103123431/http://socghop.appspot.com/gsoc/student_project/show/google/gsoc2010/psu_home/t127230762803) project.
   While this [initial pitch](https://groups.google.com/g/linux.kernel/c/FgujvYD3AG4/m/bKM_FHyfo1QJ) was received well, the idea was [not discussed further](https://groups.google.com/g/linux.kernel/search?q=Vegard%20Nossum%20SAT) until 2015.

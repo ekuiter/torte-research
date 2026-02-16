@@ -218,8 +218,11 @@ a:hover {
 }
 
 section h3,
-section h3 {
+section h4 {
   position: relative;
+}
+
+section h3 {
   cursor: pointer;
 }
 
