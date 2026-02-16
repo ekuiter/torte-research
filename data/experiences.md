@@ -1,10 +1,9 @@
 ### Experiences with KConfig {#experiences}
 
 Here, we collect various quotes on KConfig by kernel practitioners and system software maintainers.
+We collected these quotes by searching the web, inspecting the websites of system-software projects, and reading the Linux kernel mailing list (LKML, aka "[kernel lore](https://lore.kernel.org/)") and [associated](https://groups.google.com/g/linux.kernel/) [Google Groups](https://groups.google.com/g/kconfig-sat/).
 
-We collected these quotes by searching the web, inspecting the websites of system-software projects, and reading the Linux kernel mailing list (LKML) and associated Google Groups.
-
-We have yet to encounter anyone explicitly praising KConfig, its tooling, or the overall configuration process.
+As for the various discussions on how to integrate a SAT solver into KConfig, we document those chronologically under [history](#history).
 
 ##### Linux Kernel Practitioners
 
@@ -24,14 +23,14 @@ Most of these experiences also relate to KConfig to some degree.
 >
 > LWN editor Jonathan Corbet [summarizes](https://lwn.net/Articles/733405/) the situation as follows: "The kernel’s configuration system can be challenging to deal with; Linus Torvalds recently [called it](https://lwn.net/Articles/733418/) 'one of the worst parts of the whole project.' But it is also a part that nobody is really working on; it receives a bit of maintenance, but there does not appear to be any significant effort out there to address its shortcomings. Two-hundred companies support work on each kernel development cycle, but none of them see the configuration system as one of the problems that they need to solve. Until that changes, we are likely to continue to see users struggling with it."
 
-##### Vegard Nossum (kconfig-sat)
+##### Vegard Nossum (KConfig, KConfig-SAT)
 
 > > Your SAT work is interesting, as it could help with the dependency
 > > resolution of terse kconfig fragments. While I've not looked closely at
 > > it yet, I'm just curious to hear what happened with it? Are you still
 > > working on it? Were there any problematic roadblocks that got in your
 > > way?
-> <p class="quote-source"><a href="https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/E1hHH5pWDAAJ" target="_blank" rel="noopener noreferrer">John Stultz (Source)</a></p>
+> <p class="quote-source"><a href="https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/E1hHH5pWDAAJ" target="_blank" rel="noopener noreferrer">John Stultz (2011)</a></p>
 >
 > I guess there was no single roadblock. I mostly ran out of time during
 > the GSoC and never really found the time to finish it afterwards. That
@@ -41,9 +40,86 @@ Most of these experiences also relate to KConfig to some degree.
 > weird corner cases with hidden prompts, choice values, prompt
 > dependencies, symbol dependencies, default values, conditional default
 > values, you name it...
-<p class="quote-source"><a href="https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/E1hHH5pWDAAJ" target="_blank" rel="noopener noreferrer">Source</a></p>
+<p class="quote-source"><a href="https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/E1hHH5pWDAAJ" target="_blank" rel="noopener noreferrer">2015</a></p>
+
+> It's rather complicated and messy: each symbol can have multiple
+> prompts, each prompt places different restrictions on the symbol's
+> value, prompts should not determine the symbol's value if the symbol
+> is selected, each prompt can have one or more default values, default
+> values should not be enforced/used if the symbol is selected, etc. 
+<p class="quote-source"><a href="https://groups.google.com/g/kconfig-sat/c/utCcD2R6sKU/m/m6PpxaTqKgAJ" target="_blank" rel="noopener noreferrer">2015</a></p>
+
+##### Masahiro Yamada, Greg Kroah-Hartman, and Ulf Magnusson (KConfig)
+
+> I am applying various patches to Kconfig these days.
+> However, I fear regressions.  I have been thinking of unit-tests.
+> There are various cryptic parts in Kconfig and corner cases where
+> it is difficult to notice breakage.  If unit-tests cover those,
+> I will be able to apply changes more confidently.
+<p class="quote-source"><a href="https://lore.kernel.org/all/1517877294-4826-1-git-send-email-yamada.masahiro@socionext.com/" target="_blank" rel="noopener noreferrer">Masahiro Yamada (2018)</a></p>
+
+> Personally I think this is great stuff.  I too have never wanted to
+> touch Kconfig stuff due to the complexity, and having unit tests like
+> this is a great idea to help ensure that things do not break.
+<p class="quote-source"><a href="https://lore.kernel.org/all/20180206093803.GC31558@kroah.com/" target="_blank" rel="noopener noreferrer">Greg Kroah-Hartman (2018)</a></p>
+
+> Yeah, breaking Kconfig is a sure way to feel the wrath.
+> 
+> The only reason I feel somewhat confident modifying Kconfig is that
+> the Kconfiglib test suite happens to work as a regression test for the
+> C implementation as well. It compares the .config files produced by
+> the two implementations for all defconfig files and for
+> all{no,yes,def}config, for all ARCHes, meaning any changes to the
+> output of the C tools get flagged as well (with a diff).
+<p class="quote-source"><a href="https://lore.kernel.org/all/CAFkk2KSdg0+AdnncRuwUNeHHoXv7zsdrrZEsMgq0esvAU5U7Eg@mail.gmail.com/" target="_blank" rel="noopener noreferrer">Ulf Magnusson (2018)</a></p>
 
 ##### Rob Landley (toybox)
+
+> This is the start of generally genericizing the kconfig infrastructure so it
+> builds more easily out of tree for other projects.
+>
+> Lots of projects are already using menuconfig to configure themselves. Off
+> the top of my head, busybox, uClibc, buildroot, uClinux, my toybox project,
+> and several other things in the embedded space are already using it, plus a
+> few more like uboot are looking to start.
+>
+> Unfortunately, they have to grab a snapshot of the kernel version and apply
+> various modifications to it to build outside of kbuild, and those
+> modifications don't get passed back upstream. The version in the kernel is
+> the master that everybody periodically resyncs from, but they do a lot of work
+> each time they resync.
+>
+> I've collected some of the changes uClibc and busybox made, as well as some
+> general cleanups I've done for the toybox version, and now I'm trying to feed
+> them back upstream. This patch is primarily cosmetic, there are more to come.
+<p class="quote-source"><a href="http://lkml.iu.edu/hypermail/linux/kernel/0707.1/1741.html" target="_blank" rel="noopener noreferrer">2007</a></p>
+
+The above-mentioned code was never merged.
+
+>> If you really want to share kconfig, it'd be better to break it off
+>> into a separately packaged project. For the time being, the kernel
+>> makefiles can look for it in path, then fall back to its own copy
+>> which we can eventually drop.
+><p class="quote-source"><a href="https://lkml.iu.edu/hypermail/linux/kernel/0707.1/2419.html" target="_blank" rel="noopener noreferrer">Matt Mackall (2007)</a></p>
+>
+> That is _so_ not my call.
+> 
+> Right now, the version in linux-kernel is the master. I'm not saying that
+> should be the case, I'm just saying it is. That's why I'm pushing patches
+> that way rather than recommending anyone else use the version I cleaned up in
+> toybox (which is currently fairly standalone).
+> 
+> If somebody wants to break it out and maintain it as a separate project, fine
+> with me, just tell me where I should look and where to send patches. But if
+> the linux kernel doesn't actually start _using_ said external version, and
+> instead maintains its own, the external version will go the way of libsysfs
+> when udev went "a shared library means we include it in our source tree and
+> build our own copy".
+<p class="quote-source"><a href="https://lkml.iu.edu/hypermail/linux/kernel/0707.1/2803.html" target="_blank" rel="noopener noreferrer">2007</a></p>
+
+This is exactly what happened with various attempts at standalone KConfig implementations.
+
+In the toybox repository, he later explains "the craptacular nature of kconfig, and the plan to replace it":
 
 > This is a snapshot of linux 2.6.12 kconfig as washed through busybox and
 > further modified by Rob Landley.
@@ -72,63 +148,9 @@ Most of these experiences also relate to KConfig to some degree.
 > GPL code left in the tree, and none of its code winds up in the resulting
 > binary. It's just an editor that reads our Config.in files to update the top
 > level .config file; you can edit they by hand if you really want to.
-
-<p class="quote-source"><a href="https://github.com/landley/toybox/blob/ea6c172dadd035a09b5157edf83f4f6e5d2f19b0/kconfig/README#L1" target="_blank" rel="noopener noreferrer">Source</a></p>
+<p class="quote-source"><a href="https://github.com/landley/toybox/commit/a89f05496c2b5f88f980a136fc9f9cc4c271584e" target="_blank" rel="noopener noreferrer">2015</a></p>
 
 This code never went away, KConfig in toybox is still out-of-tree.
-
-> This is the start of generally genericizing the kconfig infrastructure so it
-> builds more easily out of tree for other projects.
->
-> Lots of projects are already using menuconfig to configure themselves. Off
-> the top of my head, busybox, uClibc, buildroot, uClinux, my toybox project,
-> and several other things in the embedded space are already using it, plus a
-> few more like uboot are looking to start.
->
-> Unfortunately, they have to grab a snapshot of the kernel version and apply
-> various modifications to it to build outside of kbuild, and those
-> modifications don't get passed back upstream. The version in the kernel is
-> the master that everybody periodically resyncs from, but they do a lot of work
-> each time they resync.
->
-> I've collected some of the changes uClibc and busybox made, as well as some
-> general cleanups I've done for the toybox version, and now I'm trying to feed
-> them back upstream. This patch is primarily cosmetic, there are more to come.
-
-<p class="quote-source"><a href="http://lkml.iu.edu/hypermail/linux/kernel/0707.1/1741.html" target="_blank" rel="noopener noreferrer">Source</a></p>
-
-The above-mentioned code was never merged.
-
->> If you really want to share kconfig, it'd be better to break it off
->> into a separately packaged project. For the time being, the kernel
->> makefiles can look for it in path, then fall back to its own copy
->> which we can eventually drop.
-><p class="quote-source"><a href="https://lkml.iu.edu/hypermail/linux/kernel/0707.1/2419.html" target="_blank" rel="noopener noreferrer">Matt Mackall (Source)</a></p>
->
-> That is _so_ not my call.
-> 
-> Right now, the version in linux-kernel is the master. I'm not saying that
-> should be the case, I'm just saying it is. That's why I'm pushing patches
-> that way rather than recommending anyone else use the version I cleaned up in
-> toybox (which is currently fairly standalone).
-> 
-> If somebody wants to break it out and maintain it as a separate project, fine
-> with me, just tell me where I should look and where to send patches. But if
-> the linux kernel doesn't actually start _using_ said external version, and
-> instead maintains its own, the external version will go the way of libsysfs
-> when udev went "a shared library means we include it in our source tree and
-> build our own copy".
-<p class="quote-source"><a href="https://lkml.iu.edu/hypermail/linux/kernel/0707.1/2803.html" target="_blank" rel="noopener noreferrer">Source</a></p>
-
-This is exactly what happened with various attempts at standalone KConfig implementations.
-
-##### Peter Korsgaard (Buildroot)
-
-> The nice thing about [KConfig and Make] is that both of those technologies are technologies that you'll encounter anyway when you do embedded Linux systems.
-> So it's hard to get around not ever configuring the Linux kernel, so menuconfig is something you need to figure out to use anyway, and building any software without using make is also pretty difficult.
-> And of course none of these technologies are specific to Buildroot, so you had them already.
-
-<p class="quote-source"><a href="https://youtu.be/0G_yJ50RA3I?t=287" target="_blank" rel="noopener noreferrer">Source</a></p>
 
 ##### Alexander Kriegisch (Freetz-NG)
 
@@ -144,8 +166,16 @@ This is exactly what happened with various attempts at standalone KConfig implem
 > double definitions of config variables in other Config.in includes at
 > unexpected places. (Did I mention the whole thing was a mess?) Sorry for
 > asking at all.
+<p class="quote-source"><a href="https://buildroot.uclibc.narkive.com/h0ophEJy/kconfig-how-to-implement-hierarchical-un-select-trees" target="_blank" rel="noopener noreferrer">2007</a></p>
 
-<p class="quote-source"><a href="https://buildroot.uclibc.narkive.com/h0ophEJy/kconfig-how-to-implement-hierarchical-un-select-trees" target="_blank" rel="noopener noreferrer">Source</a></p>
+##### Peter Korsgaard (Buildroot)
+
+This is the closest we could find to someone praising KConfig, although this refers more to its adoption advantages than the actual tooling or configuration process.
+
+> The nice thing about [KConfig and Make] is that both of those technologies are technologies that you'll encounter anyway when you do embedded Linux systems.
+> So it's hard to get around not ever configuring the Linux kernel, so menuconfig is something you need to figure out to use anyway, and building any software without using make is also pretty difficult.
+> And of course none of these technologies are specific to Buildroot, so you had them already.
+<p class="quote-source"><a href="https://youtu.be/0G_yJ50RA3I?t=287" target="_blank" rel="noopener noreferrer">2013</a></p>
 
 ##### Other Project Maintainers
 
