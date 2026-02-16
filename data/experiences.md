@@ -8,7 +8,7 @@ We include some quotes on SAT solvers both here and in the history section.
 
 #### Kernel Configuration in General
 
-This is a shortened excerpt from our [TOSEM paper](https://raw.githubusercontent.com/SoftVarE-Group/Papers/main/2025/2025-TOSEM-Kuiter.pdf) on the configurability of Linux.
+This is a shortened excerpt from our [TOSEM paper](https://doi.org/10.1145/3729423) on the configurability of Linux.
 Most of these experiences also relate to KConfig to some degree.
 
 > Kernel practitioners (such as developers, maintainers, or end users) are, to some degree, aware of variability-related issues in Linux.
@@ -23,6 +23,7 @@ Most of these experiences also relate to KConfig to some degree.
 > [Others](https://lwn.net/Articles/733405/) add that "the config system is a nightmare."
 >
 > LWN editor Jonathan Corbet [summarizes](https://lwn.net/Articles/733405/) the situation as follows: "The kernel’s configuration system can be challenging to deal with; Linus Torvalds recently [called it](https://lwn.net/Articles/733418/) 'one of the worst parts of the whole project.' But it is also a part that nobody is really working on; it receives a bit of maintenance, but there does not appear to be any significant effort out there to address its shortcomings. Two-hundred companies support work on each kernel development cycle, but none of them see the configuration system as one of the problems that they need to solve. Until that changes, we are likely to continue to see users struggling with it."
+<p class="quote-source"><a href="https://doi.org/10.1145/3729423" target="_blank" rel="noopener noreferrer">Kuiter et al. (2025)</a></p>
 
 ---
 
@@ -111,8 +112,8 @@ Linus answers:
 > weird corner cases with hidden prompts, choice values, prompt
 > dependencies, symbol dependencies, default values, conditional default
 > values, you name it...
-<p class="quote-source"><a href="https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/E1hHH5pWDAAJ" target="_blank" rel="noopener noreferrer">Vegard Nossum (2015)</a></p>
-
+> <p class="quote-source-inline"><a href="https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/E1hHH5pWDAAJ" target="_blank" rel="noopener noreferrer">Vegard Nossum (2015)</a></p>
+> 
 > It's rather complicated and messy: each symbol can have multiple
 > prompts, each prompt places different restrictions on the symbol's
 > value, prompts should not determine the symbol's value if the symbol
@@ -156,6 +157,8 @@ Linus answers:
 > requires a system that can also solve arbitrary logic problems, which is
 > not necessarily a feature.
 <p class="quote-source"><a href="https://groups.google.com/g/linux.kernel/c/RTSr0z64uD0/m/IITe1j2l98MJ" target="_blank" rel="noopener noreferrer">Josh Triplett (2015)</a></p>
+
+
 
 
 

@@ -455,6 +455,23 @@ function resolveRelativeUrl(baseUrl, relativeUrl) {
     }
 }
 
+function applyBlockquoteDepthStyling(container) {
+    if (!container) return;
+    const blockquotes = container.querySelectorAll('blockquote');
+    blockquotes.forEach((blockquote) => {
+        let depth = 0;
+        let parent = blockquote.parentElement;
+        while (parent) {
+            if (parent.tagName === 'BLOCKQUOTE') {
+                depth += 1;
+            }
+            parent = parent.parentElement;
+        }
+        blockquote.classList.toggle('blockquote-depth-even', depth % 2 === 0);
+        blockquote.classList.toggle('blockquote-depth-odd', depth % 2 === 1);
+    });
+}
+
 function loadMarkdownSections() {
     const markdownSections = document.querySelectorAll('[data-markdown]');
     if (!markdownSections.length) return;
@@ -557,6 +574,7 @@ function loadMarkdownSections() {
                 });
 
                 section.replaceChildren(template.content);
+                applyBlockquoteDepthStyling(section);
                 setupCollapsibleSection(section);
                 expandSectionForAnchor();
                 reapplyPageSearchIfActive();
