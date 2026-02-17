@@ -5,17 +5,17 @@ We include links to the source of every direct quote.
 We also embed links into some quotes to provide additional context.
 These links were provided by us and are not part of the quotes themselves.
 
-**2002**
+#### 2002
 - **October**: [Linux v2.5.45](https://lwn.net/Articles/14197/) introduces [KConfig](#languages), the successor of CML1 for specifying Linux's features and their dependencies.
   KConfig and its implementation, the [Linux kernel configurator](#implementations) (LKC), was developed by Roman Zippel.
 
-**2010**
+#### 2010
 - **June**: While discussing the necessity of `defconfig` files, Linus Torvalds and others [consider](https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/eJMOR9o_yQMJ) whether a SAT integration into the kernel would be reasonable ([read more](#sat-integration-in-kconfig-2010)).
   This discussion is ultimately inconclusive.
 - **October**: [Vegard Nossum](https://github.com/vegard) (an active KConfig developer in 2025 with [background](https://vegard.github.io/twitter/) in SAT solving) [proposes](https://lkml.org/lkml/2010/5/17/164) the first known [integration of a SAT solver](https://github.com/vegard/linux-2.6-archive/blob/kconfig-sat/scripts/kconfig/satconf.c) into KConfig as part of a [Google Summer of Code](https://web.archive.org/web/20101103123431/http://socghop.appspot.com/gsoc/student_project/show/google/gsoc2010/psu_home/t127230762803) project.
   While this [initial pitch](https://groups.google.com/g/linux.kernel/c/FgujvYD3AG4/m/bKM_FHyfo1QJ) was received well, the idea was [not discussed further](https://groups.google.com/g/linux.kernel/search?q=Vegard%20Nossum%20SAT) until 2015.
 
-**2015**
+#### 2015
 - **October** (these discussions span several years, which we summarize here): Kernel developers ([Luis Chamberlain](https://github.com/mcgrof), formerly Rodriguez) and researchers from both software engineering (Thorsten Berger, Valentin Rothberg) and automated reasoning (Armin Biere, Mate Soos, Andrzej Wąsowski) [team up](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI) and [discuss](https://groups.google.com/g/kconfig-sat/) how to [integrate a SAT solver](https://kernelnewbies.org/KernelProjects/kconfig-sat) into KConfig.
   On the kernel developer side, this is motivated partly by [recursive](https://groups.google.com/g/linux.kernel/c/RTSr0z64uD0/m/LH6TymFXtWUJ) [dependency](https://groups.google.com/g/kconfig-sat/c/8H1jBejvQkA/m/0UIUnNPaCgAJ) [issues](https://groups.google.com/g/linux.kernel/c/RTSr0z64uD0/m/NpvN8eow-78J) [with KConfig](https://groups.google.com/g/linux.kernel/c/dA6vvKbft7A/m/1klO3HqxCwAJ).
   The topic is [being discussed](https://groups.google.com/g/linux.kernel/search?q=KConfig%20SAT%20solver) and [documented in the kernel](https://github.com/torvalds/linux/commit/1c199f2878f6c1b8c52125ad9805e94fe2dde472).
@@ -45,15 +45,15 @@ These links were provided by us and are not part of the quotes themselves.
   However, this acceptance and the desire for perfect backwards compatibility stands in the way of real, productive change.</p>
 
   <p>Integrating a SAT solver has the potential to drastically improve the configuration experience - but it would also change said experience considerably and invasively:
-  A "transparent" integration of SAT is nonsensical, as it would also preserve all of KConfig's legacy deficiencies.
+  A "transparent" integration of SAT is nonsensical, as it would also carry over all of KConfig's deficiencies (just as KConfig carries over <a target="_blank" href="https://lkml.org/lkml/2018/4/18/142">Make's deficiencies</a>).
   Instead, integrating SAT would essentially imply fixing KConfig, which would also disrupt every single person working with/automation on the Linux kernel.
   It is thus wholly unclear how to integrate a SAT solver non-invasively (e.g., fully transparently, or even just in small "appetizing" steps).</p>
   
   <p>Considering that this discussion has started in 2010 and is still ongoing in 2025 (with KConfig only growing more complex in the meantime), no real progress has been made.
-  Thus, the benefits of analyzing Linux's feature model with SAT solvers remain indirect (e.g., to <a href="https://dl.acm.org/doi/10.1145/3468264.3468578">find specification bugs</a> and <a href="https://dl.acm.org/doi/10.1145/3643746">improve testing procedures</a>), unrelated to the actual configuration process, and ultimately inconsequential for the improvement of KConfig.</p>
+  Thus, the benefits of analyzing Linux's feature model with SAT solvers remain indirect (e.g., to <a target="_blank" href="https://dl.acm.org/doi/10.1145/3468264.3468578">find specification bugs</a> and <a target="_blank" href="https://dl.acm.org/doi/10.1145/3643746">improve testing procedures</a>), unrelated to the actual configuration process, and ultimately inconsequential for the improvement of KConfig.</p>
   </details>
 
-**2016**
+#### 2016
 - **May**: [Daniel](https://groups.google.com/g/kconfig-sat/c/FErSkmhgjIk) [Jonsson](https://groups.google.com/g/kconfig-sat/c/g7i9BjLHr8E) [runs](https://groups.google.com/g/kconfig-sat/c/g7i9BjLHr8E/m/EAWYu6xnJwAJ) a [survey](https://docs.google.com/forms/d/e/1FAIpQLSeiUT-thlTK7lKvW4DQRMfwRZ66_3eNRNqS5cyIhCEVEsGO1Q/viewform?c=0&w=1) and [integrates](https://hdl.handle.net/20.500.12380/238168) an [implementation](https://github.com/DanOpcode/rangeFix) of the [RangeFix](https://xiongyingfei.github.io/papers/TSE14.pdf) algorithm into [LVAT](#extractors) ([video](https://www.youtube.com/watch?v=4oVzJMhn3Kw) [demonstrations](https://www.youtube.com/watch?v=F8RZ8YpBeew)), but struggles with its [inaccurate KConfig extraction](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/vn3j0xWCAAAJ) (discovering "[many subtle errors](https://groups.google.com/g/kconfig-sat/c/g7i9BjLHr8E/m/EAWYu6xnJwAJ)", including a significant [bug](https://groups.google.com/g/kconfig-sat/c/utCcD2R6sKU/m/2KXvqKG3HQAJ) in Vegard Nossum's tristate encoding) and various [limitations](https://groups.google.com/g/kconfig-sat/c/g7i9BjLHr8E/m/uB0BVgcjFQAJ).
   While discussing SAT solvers vs. alternative solutions, Luis Chamberlain [states](https://groups.google.com/g/kconfig-sat/c/g7i9BjLHr8E/m/2CdqA_kSFgAJ) that "we need a solution to the complex problems Kconfig has and we can't resolve today, you folks working on all these fancy things can help us by advising us upon looking at the problems and telling us what the main differences are. You should be telling us what is best and why."
   
@@ -61,39 +61,43 @@ These links were provided by us and are not part of the quotes themselves.
   He also [states](https://groups.google.com/g/kconfig-sat/c/g7i9BjLHr8E/m/EAWYu6xnJwAJ) that technological decisions regarding a SAT/SMT integration will become easier if we "know the future plans for the configurator" and that they depend "on the future plans with Kconfig", which were not discussed further in this thread (and later turned out to [conflict](https://lkml.org/lkml/2025/2/10/102) with the attempted merge of [ConfigFix](#extractors)).
 - **November**: During the [Linux Plumbers Conference](https://blog.linuxplumbersconf.org/2016/), a one-hour [kernel summit track](https://blog.linuxplumbersconf.org/2016/ocw/proposals/4605.html) held by Luis Chamberlain acknowledges that "Linux kconfig semantics are loose and this creates issues, let's review them and fix them".
 
-**2017**
+#### 2017
 - **June**: In a followup discussion of 2016's kernel summit track, Linus Torvalds [expresses his skepticism](https://yhbt.net/lore/ksummit-discuss/CA+55aFyvssxg63UoQ-rOaf1TMacJ6T5jyLkWECosQJ_N=9gaaQ@mail.gmail.com/#t) towards a [SAT integration](https://kernelnewbies.org/KernelProjects/kconfig-sat) into LKC ([read more](#fixing-kconfig-semantics-2016)).
 - **September**: [Ulf Magnusson](https://github.com/ulfalizer) (also an [active developer](https://lore.kernel.org/all/20180207225551.imdp6gqbdwzyvhwm@huvuddator/) of LKC) [releases](https://groups.google.com/g/kconfig-sat/c/lNRUPZ-bDLs) version 1.0.0 of [KConfigLib](#implementations), a standalone reimplementation of a KConfig parser in Python (alternative to LKC), which will be adopted by several projects over the following years.
   KConfigLib is [tested against](https://lore.kernel.org/all/20180207225551.imdp6gqbdwzyvhwm@huvuddator/) LKC to avoid regressions ([read more](#complexity-of-kconfig)).
 
-**2018**
+#### 2018
 - **February**: Luis Chamberlain [acknowledges](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/J1pDLZldAwAJ) that "the status of [the KConfig-SAT initiative] is a few folks were volunteered to work on the things each complained about, but no one has done any of the work", which concludes the major [discussion thread](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI) of KConfig-SAT.
+- **April**: Masahiro Yamada [introduces](https://lkml.org/lkml/2018/4/17/591) a static [macro language](https://docs.kernel.org/kbuild/kconfig-macro-language.html) into KConfig, finding that "generalized text expansion would make Kconfig more powerful and lovely" and that "people will [easily](https://lkml.org/lkml/2018/4/18/142) [understand](https://lkml.org/lkml/2018/4/18/142) how it works".
+  Unfortunately, this also [complicates](https://github.com/ekuiter/torte/blob/fb4501e056de06b357e4ad6cf046d84244d053ef/src/systems/linux.sh#L43) feature-model extraction, as the feature model will now [gradually become](https://lkml.org/lkml/2018/4/13/350) more machine- and toolchain-dependent.
+  This change was [originally](https://lkml.org/lkml/2018/4/13/562) [suggested](https://lkml.org/lkml/2016/12/9/577) [by](https://lkml.org/lkml/2018/2/7/527) Linus Torvalds in 2016, in order to "move a lot of the nasty ad-hoc runtime
+testing in the Makefiles to the configuration stage".
 - **May**: We release [kmax-vm](https://github.com/ekuiter/kmax-vm), an [early predecessor](https://github.com/ekuiter/torte?tab=readme-ov-file#history) of torte that automates feature-model extraction with [KClause](#extractors) in a virtual machine.
 - **October**: Patrick Franz [aims to](https://groups.google.com/g/kconfig-sat/c/ltjNtqWKYxM) [integrate](https://groups.google.com/g/kconfig-sat/c/utCcD2R6sKU/m/YSmSeYgQCgAJ) a SAT solver in the kernel in the scope of his master thesis (*Realising Configuration Conflict-Resolution for the Linux Kernel Configurator*, no full-text available).
   Together with a testing effort by [Evgeny Groshev](https://gupea.ub.gu.se/items/83baae9b-e730-40ba-8cac-92be4c5d04fc) and an integration into *xconfig* by [Ibrahim](https://groups.google.com/g/kconfig-sat/c/utCcD2R6sKU/m/YSmSeYgQCgAJ) [Fayaz](https://gupea.ub.gu.se/items/83baae9b-e730-40ba-8cac-92be4c5d04fc), this work lays the foundation for the later proposal of [ConfigFix](#extractors).
 
-**2019**
+#### 2019
 - **June**: Armin Biere [muses on](https://groups.google.com/g/kconfig-sat/c/utCcD2R6sKU/m/-I9niC07CgAJ) "the C vs C++ issue" for implementing SAT solvers (with C++ allowing for more comprehensible and faster code, but only C code typically being accepted into the kernel).
   We speculate that this may have partly inspired the release of the [kissat](https://github.com/arminbiere/kissat) SAT solver in May 2020, which is a backport of the efficient C++ solver CaDiCaL into C, and which has had a [huge impact](https://satcompetition.github.io/) on SAT solving ever since.
 - **November**: Paul Gazzillo draws attention to [KMax](https://github.com/paulgazz/kmax/), a part of which ([KClause](#extractors)) later becomes a major feature-model formula extractor.
 
-**2021**
+#### 2021
 - **May**: A [joint](https://groups.google.com/g/kconfig-sat/c/ITjDVQZVebM/m/Dkkum3mTAQAJ) [team](https://github.com/isselab/configfix?tab=readme-ov-file#credits) of developers [proposes](https://ieeexplore.ieee.org/document/9401969) ConfigFix, a [feature-model formula extractor](#extractors) for KConfig that was inspired by the work of [Vegard Nossum's work](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/zrRbr1JjBgAJ), Daniel Jonsson's [work on LVAT](https://github.com/DanOpcode?tab=repositories&q=+linux-variability-analysis-tools&type=&language=&sort=), and the [discussions](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI/m/vn3j0xWCAAAJ) in the [KConfig-SAT](https://kernelnewbies.org/KernelProjects/kconfig-sat) initiative.
 - **September**: We release the [feature-model-repository-pipeline](https://github.com/ekuiter/feature-model-repository-pipeline), which extends [kmax-vm](https://github.com/ekuiter/kmax-vm) with an integration of the [KConfigReader](#extractors) extractor.
 - **October**: Vegard Nossum performs the last [rebase](https://groups.google.com/g/kconfig-sat/c/m_81fIPIGtE/m/J2p4H9d4BgAJ) of their KConfig-SAT work onto [LKC 5.14](https://github.com/vegard/linux/tree/v5.14%2Bkconfig-sat-rc1).
   [However](https://vegard.github.io/twitter/#t:1446824129655627776), "it's NOT production-ready (and the docs are way outdated), but I would say it's ~usable if you want to play with it", and the project receives no further updates afterwards.
 
-**2022**
+#### 2022
 - **March**: We release [tseitin-or-not-tseitin](https://github.com/ekuiter/tseitin-or-not-tseitin), which extends the [feature-model-repository-pipeline](https://github.com/ekuiter/feature-model-repository-pipeline) with several [CNF transformations](#transformations) and Docker support.
 - **October**: At [ASE'22](https://conf.researchr.org/track/ase-2022/ase-2022-research-papers), we study the [influence of CNF transformations](https://elias-kuiter.de/publications/#KKS+:ASE22) on the efficiency and effectiveness of feature-model analyses.
 
-**2023**
+#### 2023
 - **March**: We release [torte](https://github.com/ekuiter/torte), a consequent evolution of [tseitin-or-not-tseitin](https://github.com/ekuiter/tseitin-or-not-tseitin) that supports generalizing over different experiments and integrates many different tools for feature-model analysis.
 - **June**: [Till Sehlen](https://elias-kuiter.de/publications/#Sehlen23) empirically analyzes criteria for switching between [distributive and Tseitin transformation](#transformations) in order to speed up subsequent solver calls.
 
-**2025**
+#### 2025
 - **February**: The [developers](https://github.com/isselab/configfix?tab=readme-ov-file#credits) of [ConfigFix](#extractors) attempt to [merge it](https://lkml.org/lkml/2025/2/8/405) into the kernel.
-  The KConfig maintainer [refuses](https://lkml.org/lkml/2025/2/10/102) due to prioritizing Linus Torvalds's future plans to [integrate](https://lore.kernel.org/lkml/CAHk-=whdrvCkSWh=BRrwZwNo3=yLBXXM88NGx8VEpP1VTgmkyQ@mail.gmail.com/) [dynamically calculable](https://lore.kernel.org/lkml/CAK7LNATe7Ah-ow9wYGrtL9i4z-VD=MCo=sJjbC_S0ofEoH6CFQ@mail.gmail.com/) toolchain-related options (e.g., the compiler) into KConfig.
+  The KConfig maintainer [refuses](https://lkml.org/lkml/2025/2/10/102) due to prioritizing Linus Torvalds's future plans to [integrate](https://lore.kernel.org/lkml/CAHk-=whdrvCkSWh=BRrwZwNo3=yLBXXM88NGx8VEpP1VTgmkyQ@mail.gmail.com/) [dynamically calculable](https://lore.kernel.org/lkml/CAK7LNATe7Ah-ow9wYGrtL9i4z-VD=MCo=sJjbC_S0ofEoH6CFQ@mail.gmail.com/) toolchain-related options (e.g., the compiler) into KConfig (in addition to the existing static [macro language](https://docs.kernel.org/kbuild/kconfig-macro-language.html)).
 - **March**: [Eric Ketzler](https://elias-kuiter.de/publications/#Ketzler25) proposes an algorithm that enriches the feature-model formula extracted by [KClause](#extractors) with the feature hierarchy extracted by KConfigLib.
   This is a crucial step towards releasing a proper [UVL](https://universal-variability-language.github.io/) feature model for Linux.
 - **April**: Our paper on [counting the features and configurations of Linux](https://doi.org/10.1145/3729423) was accepted at [TOSEM](https://dl.acm.org/journal/tosem).
@@ -115,7 +119,7 @@ These links were provided by us and are not part of the quotes themselves.
 - **September**: At [SPLC'25](https://2025.splc.net/accepted-papers/), we discuss [open challenges](https://doi.org/10.1145/3748269.3748593) of analyzing problem-space variability in system software.
 - **October**: After [years](https://github.com/ulfalizer/Kconfiglib/issues/121) of [inactivity](https://github.com/zephyrproject-rtos/zephyr/issues/53894), [KConfigLib](#implementations) is now officially [being maintained](https://github.com/zephyrproject-rtos/Kconfiglib/issues/17) at Zephyr by [Torsten Tejlmand Rasmussen](https://github.com/tejlmand).
 
-**2026**
+#### 2026
 - **February**: KConfig remains effectively unmaintained and receives [almost no commits](https://github.com/torvalds/linux/commits/master/scripts/kconfig).
   We release this website to summarize our knowledge and insights on the tool ecosystem for feature-model analysis.
 - **March**: [Ljubica Ðorđević](https://elias-kuiter.de/publications/#Dordevic26) introduces a transformation from [KConfigLib](https://github.com/zephyrproject-rtos/Kconfiglib) specifications into Linux's KConfig dialect, which enables feature-model analysis of [Zephyr](https://github.com/zephyrproject-rtos/zephyr) and related projects.
