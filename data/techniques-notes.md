@@ -12,3 +12,13 @@
   On the one hand, we have KConfig as the sole dominant configuration language for explicitly defining a feature model and enabling tool-assisted configuration.
   On the other hand, we have a variety of ad-hoc approaches
 - Casing of `KConfig` (vs. `Kconfig` and `kconfig`) is done inconsistently across sources. Here we go with `KConfig` for better readability.
+- We disregard solution-space variability and feature-to-code mapping here, which are relevant, but distinct problems.
+  On interest, here are some pointers for further reading:
+  [BSLC+:SPLC10](https://link.springer.com/chapter/10.1007/978-3-642-15579-6_48),
+  [LAL+:ICSE10](https://dl.acm.org/doi/10.1145/1806799.1806819),
+  [DTS+:SPLC12](https://dl.acm.org/doi/10.1145/2362536.2362544),
+  [HXC:VaMoS12](https://dl.acm.org/doi/10.1145/2110147.2110164),
+  [NH:JSEP14](https://onlinelibrary.wiley.com/doi/10.1002/smr.1595),
+  [NBKC:TSE15](https://ieeexplore.ieee.org/document/7065312),
+  [G:ESECFSE17](https://dl.acm.org/doi/10.1145/3106237.3106283),
+  [MC:SPLC21](https://dl.acm.org/doi/10.1145/3461001.3471151)

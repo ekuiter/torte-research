@@ -1,11 +1,11 @@
 ### Experiences with KConfig {#experiences}
 
 Here, we collect various quotes on KConfig by kernel practitioners and system software maintainers.
-We collected these quotes by searching the web, inspecting the websites of system-software projects, and reading the Linux kernel mailing list (LKML, aka "[kernel lore](https://lore.kernel.org/)") and [associated](https://groups.google.com/g/linux.kernel/) [Google Groups](https://groups.google.com/g/kconfig-sat/) as well as the [LWN archive](https://lwn.net/Archives/).
+We collected these quotes by searching the web, inspecting the websites of system-software projects, and reading the Linux kernel mailing list ([LKML](https://lore.kernel.org/lkml/) and [linux-kbuild](https://lore.kernel.org/linux-kbuild/), aka "[kernel lore](https://lore.kernel.org/)") and [associated](https://groups.google.com/g/linux.kernel/) [Google Groups](https://groups.google.com/g/kconfig-sat/) as well as the [LWN archive](https://lwn.net/Archives/).
 
 Wherever it is sensible to understand the chronology of quotes in a larger context, we document them under [history](#history) instead.
 So, the quotes included here can be considered relatively "timeless".
-Also, we limit ourselves to quotes of (non-)kernel developers here - we include quotes of various researchers under [history](#history), because they are often meta-level and usually make more sense in the context of a specific discussion.
+Consequently, we mostly limit ourselves to quotes of (non-)kernel developers here - we include most quotes of researchers under [history](#history), because they often make more sense in the context of a specific discussion.  
 
 #### Kernel Configuration in General
 
@@ -17,13 +17,13 @@ Most of these experiences also relate to KConfig to some degree.
 > They also mention the negative impact of [introducing too many features on code readability](https://lkml.org/lkml/2008/5/1/65).
 > [Maintaining default configurations](https://lwn.net/Articles/391372/) and [deciding on default values](https://lkml.org/lkml/2020/7/10/1261) are further challenges.
 > The relevance of [feature location](https://lkml.org/lkml/2012/1/6/354) is another issue often discussed.
-> While many issues can be resolved with proper discussion, the kernel’s configuration language KConfig, its tools, and the complexity of the kernel itself are repeatedly criticized.
+> While many issues can be resolved with proper discussion, the kernel's configuration language KConfig, its tools, and the complexity of the kernel itself are repeatedly criticized.
 >
 > [Developers comment](https://lkml.org/lkml/2008/4/30/327): "There are simply already far too many [features] and they make the kernel harder and harder to change." 
-> [Another remark](https://lwn.net/Articles/733405/) is that "the config subsystem has grown so large that it’s gotten out of control."
+> [Another remark](https://lwn.net/Articles/733405/) is that "the config subsystem has grown so large that it's gotten out of control."
 > [Others](https://lwn.net/Articles/733405/) add that "the config system is a nightmare."
 >
-> LWN editor Jonathan Corbet [summarizes](https://lwn.net/Articles/733405/) the situation as follows: "The kernel’s configuration system can be challenging to deal with; Linus Torvalds recently [called it](https://lwn.net/Articles/733418/) 'one of the worst parts of the whole project.' But it is also a part that nobody is really working on; it receives a bit of maintenance, but there does not appear to be any significant effort out there to address its shortcomings. Two-hundred companies support work on each kernel development cycle, but none of them see the configuration system as one of the problems that they need to solve. Until that changes, we are likely to continue to see users struggling with it."
+> LWN editor Jonathan Corbet [summarizes](https://lwn.net/Articles/733405/) the situation as follows: "The kernel's configuration system can be challenging to deal with; Linus Torvalds recently [called it](https://lwn.net/Articles/733418/) 'one of the worst parts of the whole project.' But it is also a part that nobody is really working on; it receives a bit of maintenance, but there does not appear to be any significant effort out there to address its shortcomings. Two-hundred companies support work on each kernel development cycle, but none of them see the configuration system as one of the problems that they need to solve. Until that changes, we are likely to continue to see users struggling with it."
 <p class="quote-source"><a href="https://doi.org/10.1145/3729423" target="_blank" rel="noopener noreferrer">Kuiter et al. (2025)</a></p>
 
 > The config phase of the kernel is one of the worst parts of the whole
@@ -208,6 +208,71 @@ This script was seemingly never merged.
 > output of the C tools get flagged as well (with a diff).
 <p class="quote-source"><a href="https://lore.kernel.org/all/CAFkk2KSdg0+AdnncRuwUNeHHoXv7zsdrrZEsMgq0esvAU5U7Eg@mail.gmail.com/" target="_blank" rel="noopener noreferrer">Ulf Magnusson (2018)</a></p>
 
+Software engineering researchers Andrzej Wąsowski and Thorsten Berger also pointedly analyze the complexity of KConfig:
+
+> We see various explanations for the complexity of Kconfig:
+> - First, the configurator tool is not very intelligent, in the sense that it
+>   does not support intelligent choice propagation or conflict resolution.
+>   A conflict occurs when a user wants to set at least two features to
+>   values that violate constraints. The transitivity of dependencies can make
+>   the resolution of conflicts challenging. Support for conflict resolution
+>   could help users substantially when they need to enable or disable
+>   features, which requires enabling or disabling other features, and so on.
+>   Presently, Kconfig tries to tackle this problem with imperative choice
+>   propagation that is triggered via certain types of constraints (e.g., select
+>   does choice propagation, but depends on does not), which complicates
+>   the language and requires the developers who edit the model to already
+>   think about choice propagation. Still, despite this mechanism, performing
+>   the configuration is still challenging. In fact, [a survey](https://dl.acm.org/doi/10.1145/2110147.2110164) among Linux users
+>   revealed that it takes 68 % of them a few minutes to activate an
+>   inactive feature on average, with 20 % stating even a few dozen minutes.
+>   It also revealed that the advice given by the configurator (and feature
+>   descriptions) is often incomplete, hard to understand, or incorrect.
+> - Second, the Kconfig language was not systematically engineered, as
+>   opposed to what we advocate in this book. In fact, when Kconfig was
+>   introduced in October 2002, the developers decided against another
+>   language [[CML2](#techniques)] that came with more intelligent configuration support (based
+>   on a reasoner in the background) and a language with simpler syntax
+>   and more intuitive semantics. However, Kconfig is a bit more script-like,
+>   which generally appeals to Linux developers.
+> - Third, Kconfig has been [continuously extended](https://elias-kuiter.de/publications/#Karakaya25), together with its configurator
+>   tooling. Language evolution is typically required to be backwards
+>   compatible, which under long lifespans complicates the language.
+> 
+> Kconfig's complexity makes it challenging to extend the configurator
+> or build further (intelligent) tools to support the Kernel configuration. For
+> instance, it would be valuable to incorporate better choice propagation and
+> intelligent conflict resolution support using off-the-shelf logical reasoners,
+> such as SAT, SMT, or CSP solvers. Using such a reasoner, however,
+> requires the kernel model to be transformed into the logical representation
+> needed by the solver (e.g., a propositional logic formula in conjunctive
+> normal form in the case of a SAT solver). This, in turn, requires the exact
+> syntax and semantics of Kconfig to be understood in order to develop a
+> valid model transformation. Unfortunately, from our own experience,
+> reverse-engineering the syntax and semantics of Kconfig is difficult and
+> laborious. Syntax and semantics are hidden in the implementation of the
+> kernel's configurator tool. In our case, we read the Kconfig documentation,
+> tested the behavior of the configurator on small examples, and inspected
+> the configurator's implementation. [Formally defining](https://arxiv.org/abs/2209.04916) syntax and
+> semantics took over one month, and [implementing the transformation](https://dl.acm.org/doi/10.1145/1858996.1859010) into
+> a propositional logic formula another few months. [In a more recent effort](https://doi.org/10.1109/ICSE-SEIP52600.2021.00018),
+> we implemented the semantics and a conflict resolution algorithm fully
+> in C. [Various other researchers](#extractors) also implemented transformations
+> themselves later, and were also challenged by Kconfig's complexity, as
+> shown in [a survey](https://doi.org/10.1145/2814204.2814222) by El-Sharkawy, Krafczyk, and Schmid.
+> 
+> Another open-source DSL used in systems software is [CDL](#techniques) (Component
+> Definition Language), specifically in the embedded operating system
+> eCos. Compared to Kconfig, CDL has a syntax that is more intuitive for
+> users familiar with curly-brace-like languages and a more obvious semantics,
+> lacking many of the surprising behaviors of Kconfig. The configurator
+> tool for CDL is also more intelligent, as it comes with a built-in reasoner that
+> resolves configuration conflicts automatically, showing users sets of changes
+> that can be made to a configuration to a feature to be set to a certain value.
+<p class="quote-source"><a href="https://link.springer.com/chapter/10.1007/978-3-031-23669-3_11" target="_blank" rel="noopener noreferrer">Andrzej Wąsowski and Thorsten Berger (2023, 11.2, page 399-405)</a></p>
+
+These observations corroborate our own analysis on this website.
+
 #### KConfig Outside the Kernel
 
 > This is the start of generally genericizing the kconfig infrastructure so it
@@ -300,6 +365,35 @@ This code never went away, KConfig in toybox is still out-of-tree.
 > unexpected places. (Did I mention the whole thing was a mess?) Sorry for
 > asking at all.
 <p class="quote-source"><a href="https://buildroot.uclibc.narkive.com/h0ophEJy/kconfig-how-to-implement-hierarchical-un-select-trees" target="_blank" rel="noopener noreferrer">Alexander Kriegisch, Freetz-NG (2007)</a></p>
+
+> We have plenty of projects out there that rely
+> on kconfig.
+> What can we do to kconfig to make the integration easier?
+> 
+> We have discussed that kconfig should be a seperate
+> installable tool (as rpm, deb whatever).
+> But there is a few quirks needed before we can do so.
+> 
+> But are there any other thing we could do to
+> make life easier for external users?
+> <p class="quote-source-inline"><a href="https://buildroot.uclibc.narkive.com/h0ophEJy/kconfig-how-to-implement-hierarchical-un-select-trees" target="_blank" rel="noopener noreferrer">Sam Ravnborg, Barebox (2010)</a></p>
+> I actually take this that integrating kconfig should be simpler.
+> So it:
+> 
+> - should be documented using a HOW-TO
+> - we should rely on very little outside scripts/kconfig
+> 
+> The primary 'customer' is the kernel but it would be good
+> to generalize stuff a bit more.
+<p class="quote-source"><a href="https://lists.infradead.org/pipermail/barebox/2010-August/001255.html" target="_blank" rel="noopener noreferrer">Sam Ravnborg, Barebox (2010)</a></p>
+
+> > > We have plenty of projects out there that rely
+> > > on kconfig.
+> > <p class="quote-source"><a href="https://buildroot.uclibc.narkive.com/h0ophEJy/kconfig-how-to-implement-hierarchical-un-select-trees" target="_blank" rel="noopener noreferrer">Sam Ravnborg, Barebox (2010)</a></p>
+> > ptxdist as well.
+> <p class="quote-source"><a href="https://lists.infradead.org/pipermail/barebox/2010-August/001257.html" target="_blank" rel="noopener noreferrer">Robert Schwebel, ptxdist (2010)</a></p>
+> And Buildroot and OpenWrt and crosstool-ng, ...
+<p class="quote-source"><a href="https://lists.infradead.org/pipermail/barebox/2010-August/001353.html" target="_blank" rel="noopener noreferrer">Peter Korsgaard, Buildroot (2010)</a></p>
 
 The following is the closest we could find to someone praising KConfig, although this refers more to its adoption advantages than the actual tooling or configuration process:
 
