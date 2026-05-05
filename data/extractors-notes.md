@@ -6,4 +6,5 @@
   We assign both of these properties only with sufficient evidence (i.e., either we personally confirmed the property or it was explicitly documented in the literature).
   For all other extractors, we do not know for sure the extent to which they support evolutionary or cross-project analysis.
   However, relying on one fixed parser version necessarily restricts these capabilities dramatically (due to evolving KConfig syntax and semantics), which is why we mark these extractors as having *limited* support.
-- Yet another extraction approach is described in [WWK:ConfWS15](https://ceur-ws.org/Vol-1453/20_WalchWalterKuechlin_FormalAnalysisOfTheLinuxKernel_Confws-15_p131.pdf). However, we were not able to locate the implementation mentioned in the paper.
+- Yet another extraction approach is described in [WWK:ConfWS15](https://ceur-ws.org/Vol-1453/20_WalchWalterKuechlin_FormalAnalysisOfTheLinuxKgivenernel_Confws-15_p131.pdf). However, we were not able to locate the implementation mentioned in the paper.
+- [kconfigDetector](https://gitee.com/openeuler/kconfigDetector) can detect errors in a given configuration, but only by explicitly encoding various checking rules in Python. It does not use any logical abstraction, so we omit it here.
