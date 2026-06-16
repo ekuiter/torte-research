@@ -9,7 +9,7 @@ Here, we list who contributed to this website and its contents (last update: 202
   - website design and implementation
 - [Ljubica Ðorđević](https://elias-kuiter.de/publications/#Dordevic26) (University of Magdeburg): data collection and analysis (KConfigLib usage and extensions)
 - [Taylan Karakaya](https://elias-kuiter.de/publications/#Karakaya25) (TU Braunschweig): data collection and analysis ([evolution of KConfig](https://github.com/ekuiter/torte-research/tree/main/kconfig-evolution))
-- [Lennart Pape](https://www.tu-braunschweig.de/isf/team) (TU Braunschweig): original [data table implementation](https://github.com/TUBS-ISF/tertiarystudypla)
+- [Lennart Pape](https://www.tu-braunschweig.de/isf/team) (TU Braunschweig): original [data table implementation](https://github.com/TUBS-ISF/tubs-isf.github.io)
 - Claude Code/OpenAI Codex: assistance in website design and implementation
 
 All raw data is available as CSV files in our [GitHub repository](https://github.com/ekuiter/torte-research).
