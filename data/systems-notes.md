@@ -22,6 +22,7 @@
   The remaining systems are all excluded due to using [ad-hoc techniques](#techniques), or are explicitly excluded below.
 - We deliberately exclude some systems (in addition to all systems that use an [ad-hoc technique](#techniques)):
   - `Freetz`: Excluded as `Freetz-NG` already includes the full history of `Freetz`.
+  - `Entware-ng`: Excluded as `Entware` already includes the full history of `Entware-ng`.
   - `uClinux`:
     In 2002, the main components of `uClinux` were merged into the mainline Linux kernel (version 2.5.46) as `CONFIG_MMU=n`.
     Thus, its [source code](https://github.com/robutest/uclinux) has significant overlap with the mainline Linux kernel.
