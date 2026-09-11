@@ -23,6 +23,17 @@
   --accent-hover: #0b5ed7;
 }
 
+html {
+  scroll-behavior: auto !important;
+}
+
+*,
+*::before,
+*::after {
+  animation: none !important;
+  transition: none !important;
+}
+
 [data-theme="dark"] {
   --bg-primary: #1a1a1a;
   --bg-secondary: #242424;
@@ -43,7 +54,6 @@ body {
   padding: 2rem;
   background: var(--bg-primary);
   color: var(--text-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .page-header {
@@ -73,19 +83,6 @@ body {
 .torte-icon {
   display: inline-block;
   transform-origin: 50% 75%;
-}
-
-.page-title:hover .torte-icon {
-  animation: torte-wiggle 420ms ease-in-out;
-}
-
-@keyframes torte-wiggle {
-  0% { transform: rotate(0deg); }
-  20% { transform: rotate(-10deg); }
-  40% { transform: rotate(8deg); }
-  60% { transform: rotate(-6deg); }
-  80% { transform: rotate(4deg); }
-  100% { transform: rotate(0deg); }
 }
 
 .page-search-input {
@@ -239,7 +236,6 @@ section h3 {
   color: var(--text-muted);
   text-decoration: none;
   opacity: 0;
-  transition: opacity 0.15s ease, color 0.15s ease;
 }
 
 section h1:hover .section-anchor,
@@ -370,7 +366,6 @@ section h6 .section-toggle {
 .section-toggle .toggle-icon::before {
   content: '▸';
   display: inline-block;
-  transition: transform 0.2s ease;
 }
 
 section:not(.section-collapsed) .section-toggle .toggle-icon::before {
@@ -461,7 +456,6 @@ table.dataTable thead tr:nth-child(2) th .multi-select-dropdown {
 .dataTables_scrollHeadInner {
   overflow: hidden !important;
   width: 100% !important;
-  transition: margin-left 0s !important;
   box-sizing: content-box !important;
 }
 
@@ -470,10 +464,6 @@ table.dataTable thead tr:nth-child(2) th .multi-select-dropdown {
   box-sizing: content-box !important;
   position: relative;
   z-index: 1 !important;
-}
-
-.dataTables_scrollHead table {
-  transition: margin-left 0s !important;
 }
 
 /* DataTable - Controls */
@@ -516,7 +506,6 @@ div.dataTables_paginate {
   background-color: var(--bg-secondary);
   color: var(--text-primary);
   border-color: var(--border-color);
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .dataTables_filter input[type="search"]:focus {
@@ -541,7 +530,6 @@ div.dataTables_paginate {
   background-color: var(--bg-secondary);
   color: var(--text-muted) !important;
   border-color: var(--border-color);
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .dataTables_length select:focus {
@@ -593,7 +581,6 @@ div.dataTables_paginate {
   box-sizing: border-box;
   overflow: hidden;
   color: var(--text-secondary);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 [data-theme="dark"] .multi-select-dropdown {
@@ -633,7 +620,6 @@ body > .multi-select-options {
   box-shadow: 0 0.5rem 1rem var(--shadow-color) !important;
   display: none;
   min-width: 150px !important;
-  transition: top 0.2s ease;
 }
 
 body > .multi-select-options.show {
@@ -665,7 +651,6 @@ body > .multi-select-options.show {
   padding: 1rem;
   border-radius: 0.375rem;
   margin-bottom: 1rem;
-  transition: background-color 0.3s ease;
 }
 
 /* Filter Badges */
@@ -678,7 +663,6 @@ body > .multi-select-options.show {
   border-radius: 1rem;
   font-size: 0.75rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 .filter-badge:hover {
@@ -767,7 +751,6 @@ body > .multi-select-options.show {
   padding: 0.5rem;
   font-size: 1.1rem;
   color: var(--text-secondary);
-  transition: color 0.3s ease, transform 0.2s ease;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -776,13 +759,11 @@ body > .multi-select-options.show {
 
 .theme-toggle:hover {
   color: var(--accent-color);
-  transform: scale(1.1);
 }
 
 .theme-toggle .icon-sun,
 .theme-toggle .icon-moon {
   position: absolute;
-  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .theme-toggle .icon-sun {
@@ -896,12 +877,10 @@ body > .multi-select-options.show {
 /* GitHub Icon */
 .github-link {
   color: var(--text-secondary);
-  transition: color 0.3s ease, transform 0.2s ease;
 }
 
 .github-link:hover {
   color: var(--accent-color);
-  transform: scale(1.1);
 }
 
 /* Loading Indicator */

@@ -44,6 +44,45 @@ function setTextNodeContent(node, text) {
 
 let sectionCollapseStateBeforeSearch = null;
 let pageSearchDebounceTimer = null;
+let initialLayoutTasks = 0;
+let initialHashScrollDone = false;
+let initialDomReady = false;
+let userInteractedBeforeInitialHashScroll = false;
+
+if (window.location.hash) {
+    ['wheel', 'touchstart', 'pointerdown', 'keydown'].forEach(eventName => {
+        window.addEventListener(eventName, () => {
+            userInteractedBeforeInitialHashScroll = true;
+        }, { once: true, passive: true });
+    });
+}
+
+function trackInitialLayoutTask() {
+    if (!window.location.hash || initialHashScrollDone) {
+        return () => {};
+    }
+
+    initialLayoutTasks += 1;
+    let isComplete = false;
+
+    return () => {
+        if (isComplete) return;
+        isComplete = true;
+        initialLayoutTasks = Math.max(0, initialLayoutTasks - 1);
+        maybeFinishInitialHashScroll();
+    };
+}
+
+function maybeFinishInitialHashScroll() {
+    if (!window.location.hash || initialHashScrollDone || !initialDomReady || initialLayoutTasks > 0 || userInteractedBeforeInitialHashScroll) {
+        return;
+    }
+
+    initialHashScrollDone = true;
+    window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(expandSectionForAnchor);
+    });
+}
 
 function setToggleAllSearchDisabled(isDisabled) {
     const toggleAll = document.getElementById('toggle-all');
@@ -225,17 +264,31 @@ function setupToggleAllTrigger() {
 function expandSectionForAnchor() {
     const hash = window.location.hash;
     if (!hash) return;
-    const target = document.getElementById(hash.slice(1));
+    const hashTarget = hash.slice(1);
+    let target = document.getElementById(hashTarget);
+    if (!target) {
+        try {
+            target = document.getElementById(decodeURIComponent(hashTarget));
+        } catch (error) {
+            target = null;
+        }
+    }
+
     if (!target) return;
 
     const section = target.closest('section');
-    if (!section || !section.classList.contains('section-collapsed')) return;
+    if (!section) return;
 
-    setSectionCollapsedState(section, false);
-    refreshDataTablesIn(section);
-    window.requestAnimationFrame(() => {
-        target.scrollIntoView({ block: 'start', behavior: 'auto' });
-    });
+    if (section.classList.contains('section-collapsed')) {
+        setSectionCollapsedState(section, false);
+        refreshDataTablesIn(section);
+    }
+
+    const scrollTarget = target.tagName === 'SECTION'
+        ? target.querySelector('h1, h2, h3, h4, h5, h6') || target
+        : target;
+    const top = Math.round(scrollTarget.getBoundingClientRect().top + window.pageYOffset);
+    window.scrollTo(0, top);
 }
 
 function escapeRegExp(value) {
@@ -512,6 +565,7 @@ function loadMarkdownSections() {
     markdownSections.forEach(section => {
         const markdownPath = section.getAttribute('data-markdown');
         if (!markdownPath) return;
+        const completeInitialLayoutTask = trackInitialLayoutTask();
 
         fetch(markdownPath, { cache: 'no-cache' })
             .then(response => {
@@ -583,7 +637,6 @@ function loadMarkdownSections() {
                 section.replaceChildren(template.content);
                 applyBlockquoteDepthStyling(section);
                 setupCollapsibleSection(section);
-                expandSectionForAnchor();
                 reapplyPageSearchIfActive();
             })
             .catch(error => {
@@ -593,6 +646,9 @@ function loadMarkdownSections() {
                     ? 'This page is opened via file://. Run a local web server so fetch can read markdown files.'
                     : 'Check that the file exists and the path is correct.';
                 setTextNodeContent(section, `Unable to load ${markdownPath}. ${hint}`);
+            })
+            .finally(() => {
+                completeInitialLayoutTask();
             });
     });
 }
@@ -602,14 +658,21 @@ document.addEventListener('DOMContentLoaded', setupCollapsibleSections);
 document.addEventListener('DOMContentLoaded', setupExpandAllTitleTrigger);
 document.addEventListener('DOMContentLoaded', setupToggleAllTrigger);
 document.addEventListener('DOMContentLoaded', setupPageSearch);
-window.addEventListener('hashchange', expandSectionForAnchor);
-document.addEventListener('DOMContentLoaded', expandSectionForAnchor);
+window.addEventListener('hashchange', () => {
+    initialHashScrollDone = true;
+    expandSectionForAnchor();
+});
+document.addEventListener('DOMContentLoaded', () => {
+    initialDomReady = true;
+    maybeFinishInitialHashScroll();
+});
 document.addEventListener('DOMContentLoaded', () => {
     window.requestAnimationFrame(() => {
         const container = document.querySelector('.container.js-loading');
         if (container) {
             container.classList.remove('js-loading');
         }
+        maybeFinishInitialHashScroll();
     });
 });
 document.addEventListener('DOMContentLoaded', updateToggleAllButton);
@@ -641,6 +704,7 @@ class FilterTable {
             columnWidths: {},
             splitDelimiter: ',',
             scrollToTopOnDraw: false,
+            onReady: null,
             ...config
         };
 
@@ -658,7 +722,13 @@ class FilterTable {
             download: true,
             header: true,
             skipEmptyLines: true,
-            complete: (results) => this.onDataLoaded(results)
+            complete: (results) => this.onDataLoaded(results),
+            error: (error) => {
+                console.error(error);
+                if (typeof this.config.onReady === 'function') {
+                    this.config.onReady();
+                }
+            }
         });
     }
 
@@ -757,7 +827,7 @@ class FilterTable {
         // Scroll to top on table redraw + highlight matches
         if (this.config.scrollToTopOnDraw) {
             this.table.on('draw', () => {
-                $('html, body').animate({ scrollTop: 0 }, 10);
+                window.scrollTo(0, 0);
             });
         }
         this.table.on('draw', () => this.highlightMatches());
@@ -847,6 +917,9 @@ class FilterTable {
         setTimeout(() => {
             this.table.columns.adjust().draw(false);
             this.syncHeaderScroll();
+            if (typeof this.config.onReady === 'function') {
+                this.config.onReady();
+            }
         }, 0);
 
         // Hide loading indicator
@@ -1351,6 +1424,7 @@ function initializeTables(tables) {
         }
 
         // Initialize FilterTable
+        const completeInitialLayoutTask = trackInitialLayoutTask();
         new FilterTable({
             csvFile: config.csvFile,
             tableSelector: `#${config.id}Table`,
@@ -1361,7 +1435,9 @@ function initializeTables(tables) {
             exactMatchColumns: [],
             commaSplitColumns: config.commaSplitColumns || [],
             numericSortColumns: config.numericSortColumns || [],
-            columnWidths: config.columnWidths || {}
+            columnWidths: config.columnWidths || {},
+            onReady: completeInitialLayoutTask
         });
     });
+    maybeFinishInitialHashScroll();
 }
