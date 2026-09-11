@@ -99,7 +99,7 @@ function setupCollapsibleSection(section) {
     const toggle = document.createElement('button');
     toggle.type = 'button';
     toggle.className = 'section-toggle';
-    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-expanded', 'true');
     toggle.setAttribute('aria-label', `Toggle ${heading.textContent.trim()}`);
     toggle.innerHTML = '<span class="toggle-icon"></span>';
 
@@ -116,8 +116,8 @@ function setupCollapsibleSection(section) {
         }
     };
 
-    section.classList.add('section-collapsed');
     updatePreview();
+    setSectionCollapsedState(section, false);
 
     const toggleSection = () => {
         const isCollapsed = section.classList.toggle('section-collapsed');
@@ -178,15 +178,15 @@ function expandAllSections() {
     updateToggleAllButton();
 }
 
-function setupCollapseAllTrigger() {
-    const collapseAll = document.getElementById('collapse-all');
-    if (!collapseAll) return;
-    collapseAll.addEventListener('click', () => {
+function setupExpandAllTitleTrigger() {
+    const expandAll = document.getElementById('expand-all');
+    if (!expandAll) return;
+    expandAll.addEventListener('click', () => {
         if (window.location.hash) {
             const newUrl = window.location.pathname + window.location.search;
             window.history.replaceState(null, '', newUrl);
         }
-        collapseAllSections();
+        expandAllSections();
         reapplyPageSearchIfActive();
     });
 }
@@ -576,6 +576,10 @@ function loadMarkdownSections() {
                     link.setAttribute('href', resolveRelativeUrl(baseUrl, href));
                 });
 
+                template.content.querySelectorAll('details').forEach(details => {
+                    details.open = true;
+                });
+
                 section.replaceChildren(template.content);
                 applyBlockquoteDepthStyling(section);
                 setupCollapsibleSection(section);
@@ -595,7 +599,7 @@ function loadMarkdownSections() {
 
 document.addEventListener('DOMContentLoaded', loadMarkdownSections);
 document.addEventListener('DOMContentLoaded', setupCollapsibleSections);
-document.addEventListener('DOMContentLoaded', setupCollapseAllTrigger);
+document.addEventListener('DOMContentLoaded', setupExpandAllTitleTrigger);
 document.addEventListener('DOMContentLoaded', setupToggleAllTrigger);
 document.addEventListener('DOMContentLoaded', setupPageSearch);
 window.addEventListener('hashchange', expandSectionForAnchor);

@@ -26,9 +26,13 @@
     In 2002, the main components of `uClinux` were merged into the mainline Linux kernel (version 2.5.46) as `CONFIG_MMU=n`.
     Thus, its [source code](https://github.com/robutest/uclinux) has significant overlap with the mainline Linux kernel.
     [Berger et al.](https://doi.org/10.1109/TSE.2013.34) report three stages of configuration in `uClinux` (`base`, the kernel configuration, and `dist`/`distribution`/`config`).
-    We only include the `distribution` system due to the overlapping kernel configuration and because we were unable to locate source code for the `base` system.
+    We only include the `uClinux/distribution` system due to the overlapping kernel configuration and because we were unable to locate source code for the `base` system.
   - We exclude concrete Linux distributions (e.g., Ubuntu), which build on actual system software (i.e., the Linux kernel), but which we do not consider system software themselves (as their primary purpose is to appropriately bundle system software with application software).
     We also exclude such distributions to avoid biasing our dataset towards Linux too much.
     We *do* include higher-order tools which *assist in* building customized Linux distributions (e.g., targeting specific embedded systems), which are no distributions themselves.
   - `eCos`: not ad-hoc, but excluded nonetheless as explained [above](#techniques).
   - `FreeBSD`: [She et al.](https://ieeexplore.ieee.org/document/6032485) state that "FreeBSD is also an open-source OS. Unlike Linux and eCos, FreeBSD does not have a feature model, but only a flat list of features. [...] FreeBSD [...] does not have a reference feature model. [...] Since FreeBSD lacks a reference model, we created one manually for a subset of features." We exclude [this model](https://github.com/DanOpcode/linux-variability-analysis-tools.formulas) because it was [manually created](https://code.google.com/archive/p/variability/wikis/FreeBSDOntology.wiki), as FreeBSD does not encode an explicit feature model itself (see above).
+  - `FreeWRT`: Excluded as it is a fork of `OpenWRT`, has significant overlap with it, and has ceased development in 2014. Its spiritual successor `OpenADK` (frobym the same developer) is included.
+  - We exclude high-level, end-user-oriented Linux distributions (e.g., `Ubuntu`, `RHEL`, etc.), as their primary goal is to bundle the Linux kernel (the actual system software) with application software and appropriate configuration workflows, and they distribute one dominant configuration to end users.
+  In contrast, we include low-level, embedded Linux distributions or toolchain generators that explicitly encourage users to generate their own, customized distribution.
+  - `dietlibc`, `glibc`, `musl`, `OpenEmbedded`, `Yocto`, `Mbed OS`, `Nut/OS`, `Jailhouse`: These are systems which we initially suspected may use KConfig, checked them manually, and found that they do not use it.
