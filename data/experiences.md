@@ -395,6 +395,9 @@ This code never went away, KConfig in toybox is still out-of-tree.
 > And Buildroot and OpenWrt and crosstool-ng, ...
 <p class="quote-source"><a href="https://lists.infradead.org/pipermail/barebox/2010-August/001353.html" target="_blank" rel="noopener noreferrer">Peter Korsgaard, Buildroot (2010)</a></p>
 
+> Let me add about Simplicity: it should essentially be self-documenting, because the documentation is always out of date, or often, only covers the newbie questions. I’ve fought long and hard with Kconfig (on OpenWRT) to understand why I can’t turn some option on (why it won’t even display it), and the dependency explanations were poor.
+<p class="quote-source"><a href="https://forum.riot-os.org/t/replacing-the-build-system-with-cmake-or-gn/3319/11" target="_blank" rel="noopener noreferrer">Michael Richardson, RIOT (2021)</a></p>
+
 The following is the closest we could find to someone praising KConfig, although this refers more to its adoption advantages than the actual tooling or configuration process:
 
 > The nice thing about [KConfig and Make] is that both of those technologies are technologies that you'll encounter anyway when you do embedded Linux systems.

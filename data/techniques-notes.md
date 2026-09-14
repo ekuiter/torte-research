@@ -22,3 +22,6 @@
   [NBKC:TSE15](https://ieeexplore.ieee.org/document/7065312),
   [G:ESECFSE17](https://dl.acm.org/doi/10.1145/3106237.3106283),
   [MC:SPLC21](https://dl.acm.org/doi/10.1145/3461001.3471151)
+- We also checked the following technologies, which we disregard here:
+  - [`laze`](https://github.com/kaspar030/laze): A Rust build system [intended to](https://forum.riot-os.org/t/replacing-the-build-system-with-cmake-or-gn/3319) (at some point) replace KConfig in [RIOT](https://www.riot-os.org/), although this has not been achieved yet.
+  - [`west`](https://github.com/zephyrproject-rtos/west): The build system used in [Zephyr](https://github.com/zephyrproject-rtos/zephyr), which does not itself model any configurations.
