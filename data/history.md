@@ -15,6 +15,9 @@ These links were provided by us and are not part of the quotes themselves.
 - **October**: [Vegard Nossum](https://github.com/vegard) (an active KConfig developer in 2025 with [background](https://vegard.github.io/twitter/) in SAT solving) [proposes](https://lkml.org/lkml/2010/5/17/164) the first known [integration of a SAT solver](https://github.com/vegard/linux-2.6-archive/blob/kconfig-sat/scripts/kconfig/satconf.c) into KConfig as part of a [Google Summer of Code](https://web.archive.org/web/20101103123431/http://socghop.appspot.com/gsoc/student_project/show/google/gsoc2010/psu_home/t127230762803) project.
   While this [initial pitch](https://groups.google.com/g/linux.kernel/c/FgujvYD3AG4/m/bKM_FHyfo1QJ) was received well, the idea was [not discussed further](https://groups.google.com/g/linux.kernel/search?q=Vegard%20Nossum%20SAT) until 2015.
 
+#### 2012
+- **April**: Paul E. McKenney [jokes about](https://lkml.org/lkml/2012/3/31/131) the huge number of configuration options available in the kernel.
+
 #### 2015
 - **October** (these discussions span several years, which we summarize here): Kernel developers ([Luis Chamberlain](https://github.com/mcgrof), formerly Rodriguez) and researchers from both software engineering (Thorsten Berger, Valentin Rothberg) and automated reasoning (Armin Biere, Mate Soos, Andrzej Wąsowski) [team up](https://groups.google.com/g/kconfig-sat/c/G6HA_3ecAQI) and [discuss](https://groups.google.com/g/kconfig-sat/) how to [integrate a SAT solver](https://kernelnewbies.org/KernelProjects/kconfig-sat) into KConfig.
   On the kernel developer side, this is motivated partly by [recursive](https://groups.google.com/g/linux.kernel/c/RTSr0z64uD0/m/LH6TymFXtWUJ) [dependency](https://groups.google.com/g/kconfig-sat/c/8H1jBejvQkA/m/0UIUnNPaCgAJ) [issues](https://groups.google.com/g/linux.kernel/c/RTSr0z64uD0/m/NpvN8eow-78J) [with KConfig](https://groups.google.com/g/linux.kernel/c/dA6vvKbft7A/m/1klO3HqxCwAJ).
