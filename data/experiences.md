@@ -315,7 +315,7 @@ The above-mentioned code was never merged.
 > instead maintains its own, the external version will go the way of libsysfs
 > when udev went "a shared library means we include it in our source tree and
 > build our own copy".
-<p class="quote-source"><a href="https://lkml.iu.edu/hypermail/linux/kernel/0707.1/2803.html" target="_blank" rel="noopener noreferrer">Rob Landley, toybox (2007)</a></p>
+<p class="quote-source" id="landley-standalones"><a href="https://lkml.iu.edu/hypermail/linux/kernel/0707.1/2803.html" target="_blank" rel="noopener noreferrer">Rob Landley, toybox (2007)</a></p>
 
 This is exactly what happened with various attempts at standalone KConfig implementations.
 
@@ -397,6 +397,9 @@ This code never went away, KConfig in toybox is still out-of-tree.
 
 > Let me add about Simplicity: it should essentially be self-documenting, because the documentation is always out of date, or often, only covers the newbie questions. I’ve fought long and hard with Kconfig (on OpenWRT) to understand why I can’t turn some option on (why it won’t even display it), and the dependency explanations were poor.
 <p class="quote-source"><a href="https://forum.riot-os.org/t/replacing-the-build-system-with-cmake-or-gn/3319/11" target="_blank" rel="noopener noreferrer">Michael Richardson, RIOT (2021)</a></p>
+
+> I don't expect many people doing much kconfig hacking outside of Linux.
+<p class="quote-source"><a href="https://lkml.org/lkml/2018/11/22/353" target="_blank" rel="noopener noreferrer">Luis Chamberlain (2018)</a></p>
 
 The following is the closest we could find to someone praising KConfig, although this refers more to its adoption advantages than the actual tooling or configuration process:
 
