@@ -23,7 +23,7 @@
   [G:ESECFSE17](https://dl.acm.org/doi/10.1145/3106237.3106283),
   [MC:SPLC21](https://dl.acm.org/doi/10.1145/3461001.3471151)
 - We also checked the following technologies, which we disregard here:
-  - [`laze`](https://github.com/kaspar030/laze): A Rust build system [intended to](https://forum.riot-os.org/t/replacing-the-build-system-with-cmake-or-gn/3319) (at some point) replace KConfig in [RIOT](https://www.riot-os.org/), although this has not been achieved yet.
-  - [`west`](https://github.com/zephyrproject-rtos/west): The build system used in [Zephyr](https://github.com/zephyrproject-rtos/zephyr), which does not itself model any configurations.
-  - [`portage/emerge`](https://wiki.gentoo.org/wiki/Portage): The Linux distribution [Gentoo](https://www.gentoo.org/) has its own configuration tool, the Portage package manager, based on [`USE` flags](https://wiki.gentoo.org/wiki/USE_flag).
+  - [laze](https://github.com/kaspar030/laze): A Rust build system [intended to](https://forum.riot-os.org/t/replacing-the-build-system-with-cmake-or-gn/3319) (at some point) replace KConfig in [RIOT](https://www.riot-os.org/), although this has not been achieved yet.
+  - [west](https://github.com/zephyrproject-rtos/west): The build system used in [Zephyr](https://github.com/zephyrproject-rtos/zephyr), which does not itself model any configurations.
+  - [portage/emerge](https://wiki.gentoo.org/wiki/Portage): The Linux distribution [Gentoo](https://www.gentoo.org/) has its own configuration tool, the Portage package manager, based on [`USE` flags](https://wiki.gentoo.org/wiki/USE_flag).
   While this encodes a feature model, we do not consider this language here further, as it is only used specifically for Gentoo and requires dedicated extraction logic.
