@@ -6,8 +6,8 @@ We also embed links into some quotes to provide additional context.
 These links were provided by us and are not part of the quotes themselves.
 
 #### 2002
-- **October**: [Linux v2.5.45](https://lwn.net/Articles/14197/) introduces [KConfig](#languages), the successor of CML1 for specifying Linux's features and their dependencies.
-  KConfig and its implementation, the [Linux kernel configurator](#implementations) (LKC), was developed by Roman Zippel.
+- **October**: [Linux v2.5.45](https://lwn.net/Articles/14197/) introduces [KConfig](#languages), the successor of [CML1](#techniques) and competitor of [CML2](#techniques) for specifying Linux's features and their dependencies.
+  KConfig and its implementation, the [Linux kernel configurator](#implementations) (LKC), were developed by Roman Zippel.
 
 #### 2010
 - **June**: While discussing the necessity of `defconfig` files, Linus Torvalds and others [consider](https://groups.google.com/g/linux.kernel/c/DfCtfOk4V-4/m/eJMOR9o_yQMJ) whether a SAT integration into the kernel would be reasonable ([read more](#sat-integration-in-kconfig-2010)).
