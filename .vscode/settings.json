@@ -6,5 +6,11 @@
         "markdown",
         "latex",
         "plaintext"
-    ]
+    ],
+    "workbench.colorCustomizations": {
+        "diffEditor.insertedLineBackground": "#00000000",
+        "diffEditor.removedLineBackground": "#00000000",
+        "diffEditor.insertedTextBackground": "#2EA04380",
+        "diffEditor.removedTextBackground": "#F8514980"
+    }
 }

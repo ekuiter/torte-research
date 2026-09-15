@@ -44,6 +44,58 @@ Most of these experiences also relate to KConfig to some degree.
 > even worse.
 <p class="quote-source"><a href="https://lwn.net/ml/all/CAHk-=wigjok_oSyrwiJMxQgTGYg9QtbG5xomMm9qQeO68MwsRw@mail.gmail.com/" target="_blank" rel="noopener noreferrer">Linus Torvalds (2021)</a></p>
 
+> In other words, you seem to be totally unable to grasp my argument. You
+> are arguing on TOTALLY IRRELEVANT TECHNICAL GROUNDS. That's not what the
+> Kconfig language is about. The Kconfig language and rules are about HUMAN
+> interaction.
+>
+> So next time you say something about Kconfig, ask yourself: "What question
+> would a user want to see".
+> [...]
+> So what's your problem? You argue as if you didn't understand the
+> difference between "depends on" and "select".
+>
+> [...]
+>
+> > I think the problem is "who is make *config" for?".
+> <p class="quote-source"><a href="https://yarchive.net/comp/linux/kernel_configuration.html" target="_blank" rel="noopener noreferrer">Randy Dunlap (2007)</a></p>
+> 
+> Absolutely.
+> 
+> > Linus wants it to be for (unadvanced) users, but they tend to just
+> > use distro kernels and distro configs, according to David, and I
+> > agree with that.
+> <p class="quote-source"><a href="https://yarchive.net/comp/linux/kernel_configuration.html" target="_blank" rel="noopener noreferrer">Randy Dunlap (2007)</a></p>
+> 
+> Well, the thing is, according to that logic, we might as well go back to
+> the pre-Kconfig language entirely.
+> 
+> I want people to feel that compiling their own kernel is *simple*.
+>
+> [...]
+>
+> The point being - normal mortals have almost no way of knowing which sw
+> features are good, and which are bad. And yes, some of them are really
+> bad.
+>
+> [...]
+>
+> So yes, you can make "depends on" and "select" mean _exactly_ the same
+> thing. But basically only by always showing everything. Which I don't
+> think you want. If I say I don't want IPv6, I really am not interested in
+> seeing some IPv6-only questions. But on the other hand, maybe there is
+> something that _needs_ IPv6 to work, and then maybe I'd like it enabled.
+>
+> [...]
+>
+> The Kconfig language right now is ternary, which is fine as an arithmetic,
+> but the problem *may* be that we actually want it to be more expressive.
+> 
+> If instead of a ternary "y/m/n" calculus, we would use a "Y/y/m/n/N"
+> quinary logic, where "Y" and "N" are like "force on/off", you might have
+> the following: [...]
+<p class="quote-source"><a href="https://yarchive.net/comp/linux/kernel_configuration.html" target="_blank" rel="noopener noreferrer">Linus Torvalds (2007)</a></p>
+
 #### SAT Integration in KConfig (2010)
 
 > > > [...] I do think that the

@@ -1,0 +1,794 @@
+Index <https://yarchive.net/comp/index.html> Home <https://yarchive.net/
+home.html> About <https://yarchive.net/about.html> Blog <https://
+yarchive.net/blog>
+------------------------------------------------------------------------
+
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Newsgroups: fa.linux.kernel
+Subject: Re: [patch] MTD: fix DOC2000/2001/2001PLUS build error
+Date: Mon, 05 Feb 2007 17:00:02 UTC
+Message-ID: <fa.hcfuPguKGsBItggI6tBISeBoGKE@ifi.uio.no <http://groups.google.com/groups/search?as_umsgid=fa.hcfuPguKGsBItggI6tBISeBoGKE%40ifi.uio.no>>
+
+On Mon, 5 Feb 2007, Ingo Molnar wrote:
+>
+> but this is /only/ practical if all (even disabled) features are visible
+> (and selectable) in the tools. They are not at the moment, so selects
+> are quite useful.
+
+More importantly, some things that *are* visible probably shouldn't be, or
+should perhaps only be in expert mode (aka "EMBEDDED").
+
+A prime example of this is all the firewall settings. I'd personally
+prefer to just select a "default firewall setup" which would be enough
+for all the normal crud, instead of seeing 50 different choices.
+
+And dammit, I'm supposed to be "technical". So if _I_ find it irritating
+to have to select all those NF_MATCH_xxx/NF_TARGET_xxx crud things,
+imagine what most people must feel like?
+
+Me, I'd like to say I want "default firewall built in", and not have to
+see *any* of the crap. And that's exactly why "select" is a good thing.
+
+Not using select, and have people having to say "y" to the basic feature
+and then y/m/n to each sub-feature is really damn annoying.
+
+So thank God for the few selects we have, and we should add a whole lot
+more!
+
+			Linus
+
+------------------------------------------------------------------------
+
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Newsgroups: fa.linux.kernel
+Subject: Re: [patch] MTD: fix DOC2000/2001/2001PLUS build error
+Date: Mon, 05 Feb 2007 21:30:22 UTC
+Message-ID: <fa.TH4YEhkhzVN1w0GjAa2vTRLEiTY@ifi.uio.no <http://groups.google.com/groups/search?as_umsgid=fa.TH4YEhkhzVN1w0GjAa2vTRLEiTY%40ifi.uio.no>>
+
+On Mon, 5 Feb 2007, David Woodhouse wrote:
+
+> No, you're thinking of something else. The use of 'select' just turns
+> the problem backwards -- if _every_ SCSI hostadapter were to 'select
+> SCSI' instead of depending on it, then I'd have to say 'n' to every damn
+> one of them instead of being able to just say 'n' to SCSI as I can at
+> the moment.
+
+Right. Because for MOST scsi drivers, it's obvious that they are SCSI to
+the user.
+
+So we ask "do you want SCSI" in order to not ask a million questions that
+a lot of people know a-priori that they don't want.
+
+But if you cannot see that this is something TOTALLY DIFFERENT from USB
+storage, you're either being obtuse on purpose, or just incapable of
+understanding humans.
+
+We should NEVER have had "USB_STORAGE" depending on SCSI. It's a BUG. It's
+a _stupid_ bug.
+
+We should have done what is sane:
+ - make CONFIG_SCSI (as a "support the SCSI layer" be invisible to users,
+   because it's not a user decision.
+ - have a CONFIG_SCSI_DRIVER question for "do you want to be asked about
+   SCSI drivers" (and which also does "select SCSI" for you)
+ - make USB_STORAGE _also_ do the "select SCSI" thing.
+
+In other words, you seem to be totally unable to grasp my argument. You
+are arguing on TOTALLY IRRELEVANT TECHNICAL GROUNDS. That's not what the
+Kconfig language is about. The Kconfig language and rules are about HUMAN
+interaction.
+
+So next time you say something about Kconfig, ask yourself: "What question
+would a user want to see".
+
+Any other question is pretty much totally irrelevant, and your "don't use
+select" rule comes from your confusion that thinks that it's somehow about
+machines and technical issues. It's not.
+
+		Linus
+
+------------------------------------------------------------------------
+
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Newsgroups: fa.linux.kernel
+Subject: Re: [patch] MTD: fix DOC2000/2001/2001PLUS build error
+Date: Mon, 05 Feb 2007 21:50:43 UTC
+Message-ID: <fa.ZsbkOBBkqwvSCFaE4MSggDdvEcU@ifi.uio.no <http://groups.google.com/groups/search?as_umsgid=fa.ZsbkOBBkqwvSCFaE4MSggDdvEcU%40ifi.uio.no>>
+
+On Mon, 5 Feb 2007, David Woodhouse wrote:
+
+> On Mon, 2007-02-05 at 13:28 -0800, Linus Torvalds wrote:
+> > Right. Because for MOST scsi drivers, it's obvious that they are SCSI to
+> > the user.
+>
+> Really? Including the 'Scanner driver' card which arrived with my
+> scanner?
+
+Can you read? Can you UNDERSTAND?
+
+This is exactly my point.
+
+If it's not obviously a SCSI card, then it shouldn't be "depends on SCSI".
+It should be on its own and "select SCSI".
+
+The whole AND ALMOST ONLY point of "depends on" is really to allow people
+to do a shorthand or know that "ok, he gave us some information that makes
+this choice pointless".
+
+And yes, we've messed that up. But you're apparently arguing that the
+mess-up is something "good".
+
+"select" is _good_. Because it's the thing that avoids us having to ask
+totally inane questions THAT DO NOT MAKE SENSE to a user.
+
+It's totally idiotic that we should ask people for SCSI support. That's
+not a user question, unless we're talking "odd-ball obviously SCSI
+devices", and then the question actually makes sense as a way to allow 99%
+of all users to say "nope" and not have to see another million questions
+that aren't relevant to them.
+
+			Linus
+
+------------------------------------------------------------------------
+
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Newsgroups: fa.linux.kernel
+Subject: Re: [patch] MTD: fix DOC2000/2001/2001PLUS build error
+Date: Mon, 05 Feb 2007 22:22:32 UTC
+Message-ID: <fa.0diwGuK1I2JEjQ7jaxNs+wrdqLI@ifi.uio.no <http://groups.google.com/groups/search?as_umsgid=fa.0diwGuK1I2JEjQ7jaxNs+wrdqLI%40ifi.uio.no>>
+
+On Mon, 5 Feb 2007, David Woodhouse wrote:
+>
+> Ten years ago, people used 'depends on' to fix the tools, so that then
+> you want to enable something like USB_STORAGE, it can automatically turn
+> SCSI on for you.
+>
+> Isn't that what you wanted?
+
+Try it. It's not what it does.
+
+If you have a
+
+	depends on SCSI
+
+and you did not say you wanted SCSI, you'll never even *see* the question.
+
+It will *not* turn on SCSI automatically for you. Quite the reverse. It
+will not even show you the option.
+
+In contrast, it you do a
+
+	select SCSI
+
+you'll see the question, and it will do exactly what you claim "depends
+on" does. Which yes, is what we want.
+
+So what's your problem? You argue as if you didn't understand the
+difference between "depends on" and "select".
+
+As an example of this, look at SATA. It does "select SCSI" if you select
+CONFIG_ATA, _exactly_ because it actually wants to turn on the SCSI layer
+*regardless* of what the user said. Because if the user said "n" to SCSI,
+the user simply didn't know that the SATA code uses the SCSI code.
+
+Which is an example of what I've been saying all along: "select" makes
+sense. USB_STORAGE should have done the same.
+
+Claiming that "select" is evil is just totally strange.
+
+		Linus
+
+------------------------------------------------------------------------
+
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Newsgroups: fa.linux.kernel
+Subject: Re: [patch] MTD: fix DOC2000/2001/2001PLUS build error
+Date: Mon, 05 Feb 2007 23:09:59 UTC
+Message-ID: <fa.CPwK+PaJM4YtCpsO1LT3As2ZdxE@ifi.uio.no <http://groups.google.com/groups/search?as_umsgid=fa.CPwK+PaJM4YtCpsO1LT3As2ZdxE%40ifi.uio.no>>
+
+On Mon, 5 Feb 2007, Randy Dunlap wrote:
+>
+> I think the problem is "who is make *config" for?".
+
+Absolutely.
+
+> Linus wants it to be for (unadvanced) users, but they tend to just
+> use distro kernels and distro configs, according to David, and I
+> agree with that.
+
+Well, the thing is, according to that logic, we might as well go back to
+the pre-Kconfig language entirely.
+
+I want people to feel that compiling their own kernel is *simple*.
+
+I also feel that a lot of people are "advanced" in one area, but not
+necessarily in another. The Netfilter example I gave was one such personal
+gripe of mine. I just feel like I shouldn't need to care! Yeah, I have the
+knowledge, but I *still* want to be baby-fed with just a simple "anybody
+can understand it".
+
+The same is true of the whole SATA/USB/SCSI thing. I know damn well that
+the kernel uses the SCSI layer for USB and SATA, yet I feel that the ATA
+layer does it right, and I just find the USB storage situation to be
+*offensively* bad in this regard. Why the HELL does it have those big
+comments and warnings, when it could just damn well enable SCSI support
+itself?
+
+So even advanced users aren't necessarily advanced outside their own
+area of expertise (I have no clue what I2C crud I'd need for some DVB
+card or even regular video card - or even *if* I need it). And even when
+they are advanced, they don't mind simple questions.
+
+This is not something where it's "good to be hard to use" (if those things
+even exist anywhere else either..)
+
+> > Claiming that "select" is evil is just totally strange.
+>
+> It's a real problem for developers who actually try to modify
+> configs.
+
+Why? You could *trivially* have a tool tell you. Make "xconfig" or
+something just pop up a window saying "sorry, you can't disable SCSI,
+because you've got ATA enabled, and ATA wants SCSI".
+
+What's the big deal, here?
+
+			Linus
+
+------------------------------------------------------------------------
+
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Newsgroups: fa.linux.kernel
+Subject: Re: [patch] MTD: fix DOC2000/2001/2001PLUS build error
+Date: Tue, 06 Feb 2007 23:12:05 UTC
+Message-ID: <fa.cED4F9dQLHCeWv1cOQ0PuGgHOsE@ifi.uio.no <http://groups.google.com/groups/search?as_umsgid=fa.cED4F9dQLHCeWv1cOQ0PuGgHOsE%40ifi.uio.no>>
+
+On Tue, 6 Feb 2007, Randy Dunlap wrote:
+>
+> Yes, that's the solution that I decided on during lunch also:
+> 	select <==> depends on
+
+I think yuou can certainly enable an "expert mode", which just reads
+"select" as "depends on".
+
+You'll probably have to do *more* changes to the tools than my suggestion
+to just make them let you know why they can't turn something off, though.
+Why? Some things don't even have questions at all right now, and their
+only life is as implied options that are turned on by others.
+
+And yes, some silly people who hate "select" have tried to turn them into
+
+	bool SUBSYSTEM
+		default y
+		depends on X || Y || Z || XY || XZ || YZ
+
+or similar, which is a hell of a lot less maintainable than just letting
+X, Y, Z etc do 'select SUBSYSTEM'.
+
+But "select SUBSYSTEM" still does exist, notably in places like SND_PCM
+(where it would just be INSANE to list all the different sound drivers
+that want it as a shitload of "depends on") but also for things like
+NET_CLS and CRYPTO etc.
+
+		Linus
+
+------------------------------------------------------------------------
+
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Newsgroups: fa.linux.kernel
+Subject: Re: [patch] MTD: fix DOC2000/2001/2001PLUS build error
+Date: Tue, 06 Feb 2007 23:16:41 UTC
+Message-ID: <fa.Q2ZehT4Wl8iRrQHSQ6Yf+yxH7UE@ifi.uio.no <http://groups.google.com/groups/search?as_umsgid=fa.Q2ZehT4Wl8iRrQHSQ6Yf+yxH7UE%40ifi.uio.no>>
+
+On Tue, 6 Feb 2007, Linus Torvalds wrote:
+>
+> On Tue, 6 Feb 2007, Randy Dunlap wrote:
+> >
+> > Yes, that's the solution that I decided on during lunch also:
+> > 	select <==> depends on
+>
+> I think yuou can certainly enable an "expert mode", which just reads
+> "select" as "depends on".
+
+Actually, it's probably more useful if you do it for a single symbol only.
+
+If you really want to force something off, mark that *single* symbol as
+having "select <that-symbol>" being translated into "depends on", and it
+will probably work fine in practice.
+
+		Linus
+
+------------------------------------------------------------------------
+
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Newsgroups: fa.linux.kernel
+Subject: Re: [patch] MTD: fix DOC2000/2001/2001PLUS build error
+Date: Tue, 06 Feb 2007 23:50:47 UTC
+Message-ID: <fa./LH1laToapz9d1y39YZEABDjCPQ@ifi.uio.no <http://groups.google.com/groups/search?as_umsgid=fa.%2fLH1laToapz9d1y39YZEABDjCPQ%40ifi.uio.no>>
+
+On Tue, 6 Feb 2007, David Woodhouse wrote:
+>
+> Out of interest, which people would this be? Not me, certainly.
+> I _use_ select, for options which don't have questions. There were two
+> such instances in the context of Ingo's mail of $subject, even.
+>
+> And the thing Randy was saying "yes" to, which you elided but I've
+> restored in the above quotation, was the idea of turning 'select' into
+> 'depends on' for _user-visible_ options. NOT for the ones which don't
+> have a question.
+
+Example: crypto api. SCSI. firewall "expert mode". Any number of things.
+
+Quite often, the questions themselves are *conditional*. For example, look
+at the whole INPUT layer thing. It is a real question, but only for
+EMBEDDED - normally, we just assume we'll use it (but it's a classic
+example of where we could have used a "select" from the keyboard driver
+instead).
+
+For normal people, it's a question that simply shouldn't be asked. You
+don't ask normal users whether they want to hook up keyboards and mice
+(and trust me when I say that: we _used_ to ask. It generated tons of
+totally idiotic noise).
+
+		Linus
+
+------------------------------------------------------------------------
+
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Newsgroups: fa.linux.kernel
+Subject: Re: [patch] MTD: fix DOC2000/2001/2001PLUS build error
+Date: Tue, 06 Feb 2007 23:29:01 UTC
+Message-ID: <fa.CESbYCbSSEBxaZDoEvHA1T4kJ48@ifi.uio.no <http://groups.google.com/groups/search?as_umsgid=fa.CESbYCbSSEBxaZDoEvHA1T4kJ48%40ifi.uio.no>>
+
+On Tue, 6 Feb 2007, David Woodhouse wrote:
+>
+> The other possibility which comes to mind, and which I _have_ seen
+> implemented, is not to hide the disabled option but to _show_ it, and
+> represent its dependencies right there next to it somehow.
+
+That would probably work, especially if you had some way to "warp" to the
+other options (so that if you see "depends on SCSI" you could say "ok, go
+to SCSI then".
+
+However, I have this suspicion that you'd just drown in options that you
+really don't want to see.
+
+> Well one option, as you suggest, is just that if you go into the
+> graphical tool and enable USB_STORAGE, you get SCSI turned on
+> automatically.
+
+Yes. That basically is what "select" means, though. The difference is,
+indeed, largely about visibility.
+
+If everything was always visible, there really wouldn't be much of a
+difference between "depends on" and "select". In both cases, when you
+click on something that depends on or selects something else, the config
+tool would obviously select it.
+
+So yes, you can make "depends on" and "select" mean _exactly_ the same
+thing. But basically only by always showing everything. Which I don't
+think you want. If I say I don't want IPv6, I really am not interested in
+seeing some IPv6-only questions. But on the other hand, maybe there is
+something that _needs_ IPv6 to work, and then maybe I'd like it enabled..
+
+(Example: I don't want to see IPV6 questions if IPV6 is off, BUT I might
+still want to be able to see the question about NFSv8.1, which only works
+on top of IPV6. I might not even *know* I want IPV6, but I know my company
+uses NFSv8.1, so I say "yes").
+
+And I realize that was a contrived example, but there are *real* examples
+of this in the kernel today. I may well know that I want 802.11 WEP
+encryption, for example, but I sure as hell had *no* clue that it requires
+ARC4.
+
+See the problem? I may be a well-educated user who doesn't even *know*
+that I actually want an encryption algorithm that I've never heard of. For
+all I knew, the 802.11 WEP stuff was done inside the wireless cards by
+hardware..
+
+Does that mean that if I don't have CRYPTO_ARC4 enabled (which in turn
+would need CRYPTO_ALGAPI enabled too) I'd not even get the choice of WEP?
+Obviously that is broken.
+
+And yes, if you *always* get the choice of *everything*, then it all boils
+down to the same thing. I just don't think you do..
+
+		Linus
+
+------------------------------------------------------------------------
+
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Newsgroups: fa.linux.kernel
+Subject: Re: [patch] MTD: fix DOC2000/2001/2001PLUS build error
+Date: Wed, 07 Feb 2007 00:22:14 UTC
+Message-ID: <fa.utgdhGxRzu/bbdyzwOOVL/hkg9s@ifi.uio.no <http://groups.google.com/groups/search?as_umsgid=fa.utgdhGxRzu%2fbbdyzwOOVL%2fhkg9s%40ifi.uio.no>>
+
+On Wed, 7 Feb 2007, David Woodhouse wrote:
+>
+> It isn't that far off, and we could improve it if we wanted to. In
+> _general_ it's quite good already.
+
+I agree that it's close to hierarchical. But it's literally the exceptions
+that get you.
+
+Let me mention (again) USB_STORAGE and ATA.
+
+They are not "under" SCSI. Making them do that would be insane.
+
+But yes, you can do hierarchies by adding "pseudo-variables": as
+mentioned several times, we could actually split CONFIG_SCSI into two
+separate ones: CONFIG_SCSI that selects the core infrastructure, and
+CONFIG_SCSI_DRIVER that actually controls the "hierarchical visibility".
+
+Then CONFIG_SCSI_DRIVER (and USB_STORAGE, and SATA) would just do a simple
+'select SCSI'. It would _not_ be hierarchical, and it would very much use
+that same old "select", but it would possibly be a cleanup at least in the
+sense that now CONFIG_SCSI wouldn't be used two different ways (one to
+hide most SCSI drivers, and one to enable the core SCSI infrastructure
+code).
+
+> It would work quite nicely in the graphical tools, although you've
+> thrown me a little by wanting it in the hacker's tool 'oldconfig' too.
+> You obviously care more about turning stuff _on_ with 'make oldconfig'
+> while other people who've spoken up seem to care more, as I do, about
+> turning stuff _off_ that way. If I want my hand held, I'm happy enough
+> to use the graphical tools.
+
+I tend to just edit the .config file, and run "make oldconfig". And I know
+I'm not the only one, because I've talked to others who do the same.
+
+And yes, then it's almost always correct to "turn things on as needed to
+make everything work out right", while turning things off would be
+actively wrong.
+
+		Linus
+
+------------------------------------------------------------------------
+
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Newsgroups: fa.linux.kernel
+Subject: Re: [patch] MTD: fix DOC2000/2001/2001PLUS build error
+Date: Wed, 07 Feb 2007 02:10:04 UTC
+Message-ID: <fa.WDQZsNk7HYSB5Rzb+inCo1xZVJY@ifi.uio.no <http://groups.google.com/groups/search?as_umsgid=fa.WDQZsNk7HYSB5Rzb+inCo1xZVJY%40ifi.uio.no>>
+
+On Wed, 7 Feb 2007, David Woodhouse wrote:
+>
+> I think 'make oldconfig_noselect' is the way forward. We can both have
+> what we want.
+
+Actually, I think there might be an even more interesting scenario.
+
+The Kconfig language right now is ternary, which is fine as an arithmetic,
+but the problem *may* be that we actually want it to be more expressive.
+
+If instead of a ternary "y/m/n" calculus, we would use a "Y/y/m/n/N"
+quinary logic, where "Y" and "N" are like "force on/off", you might have
+the following:
+
+	"y + depends on => n"
+	"Y + depends on => Y, and the depends on to Y too"
+	"n/N + depends on => n"
+
+	"y/Y + selected => y"
+	"n + select => y"
+	"N + select => N, and the select to N"
+
+In other words, "Y" means "force to Y, even if it has a dependency (which
+we'll also have to force", while "N" means "force to N, even if it is
+getting selected, in which case the selection will also be forced to N").
+
+So then you can say things like
+
+ - edit .config, and set *any* value to "Y", and it will force-enable
+   anything that that depends on when you run "make oldconfig", even if it
+   was an "depends on"
+
+ - edit .config, and set *any* value to "N", and it fill force-disable
+   anything that selects that when you you run "make oldconfig"
+
+The problem here is that:
+
+ - you can get inconsistent situations ("but he wanted to both force that
+   on *and* off!")
+
+ - "select" actually is much nicer, in that it unambiguously selects one
+   other symbol. But "depends on" is very hard to force, because you may
+   have something like (totally made up)
+
+	depends on X86 || (ALPHA && PCI)
+
+   which is impossible to force (*which* one do you force?) on.
+
+but something like this would be nice for both the text-based "make
+oldconfig" kind of thing *and* for any graphical configuration things
+("dammit, I want this OFF, when I press the force-off-buffon you turn
+anything off that needs it!")
+
+But the two problems above might make it impractical..
+
+			Linus
+
+------------------------------------------------------------------------
+
+From: Theodore Tso <tytso@mit.edu>
+Newsgroups: fa.linux.kernel
+Subject: Re: [patch] MTD: fix DOC2000/2001/2001PLUS build error
+Date: Tue, 06 Feb 2007 01:10:47 UTC
+Message-ID: <fa.F5V+38935uO5xFUD6oWPqtTdLM8@ifi.uio.no <http://groups.google.com/groups/search?as_umsgid=fa.F5V+38935uO5xFUD6oWPqtTdLM8%40ifi.uio.no>>
+
+On Mon, Feb 05, 2007 at 11:21:34PM +0000, David Woodhouse wrote:
+> But Alan makes a reasonable suggestion -- we could work around this in
+> the tools too.
+
+I wouldn't call it "work around this" in the tools.  It's a useful
+feature we can add in the tools for developers who aren't men enough
+to use "sed/grep" pipelines.  :-)
+
+But I have to agree with Linus here that we should be optimizing the
+tools for people who know how to compile the kernel, but who aren't
+necessarily familiar with all of the hidden dependencies in the
+literally hundreds of config options in the kernel tree.  In reality,
+you want to make it easy to turn on *or* off any arbitrary config
+option, and to understand what you need to do so you can turn an
+arbitrary config option on or off.  If that means tools enhancements,
+so be it.
+						- Ted
+
+------------------------------------------------------------------------
+
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Newsgroups: fa.linux.kernel
+Subject: Re: [patch] MTD: fix DOC2000/2001/2001PLUS build error
+Date: Mon, 05 Feb 2007 22:36:04 UTC
+Message-ID: <fa.1wQBxFT3NRcCiBLJI3Ws0CgTbZc@ifi.uio.no <http://groups.google.com/groups/search?as_umsgid=fa.1wQBxFT3NRcCiBLJI3Ws0CgTbZc%40ifi.uio.no>>
+
+On Mon, 5 Feb 2007, Alan wrote:
+>
+> It works both ways. If I don't need to know that I must select SCSI then
+> it turns on easily. If I want to turn SCSI off then it causes mayhem. Two
+> sides of the same coin.
+
+They are not really symmetric, though.
+
+There's two big issues:
+
+ - tuning things "on" is more likely to cause a working kernel.
+
+   This is pretty fundamental. It's almost always simply more correct to
+   add features than remove them. At worst, it won't be used.
+
+   This argues that you should have to "work less" to turn something on,
+   and in particular, you should need to _know_ less. To turn something
+   off, you not only need to know how to turn it off, you fundamentally
+   need to know something much bigger: you need to know that you
+   really don't need it in the first place.
+
+   The interaction of CONFIG_ATA/CONFIG_SCSI is an example of the latter.
+   You really *do* need to know more to turn off SCSI - because you need
+   to know that the ATA layer depends on it.
+
+   So in the absense of knowledge, turning things on is better.
+
+ - A developer who really wants to turn things off, and knows enough that
+   that is actually safe, can really just do a "grep" for it. If you're
+   _extremely_ knowledgeable, you can do something like
+
+	git grep 'select.*\<SCSI\>' -- '*onfig*'
+
+   and that easily finds you the (currently single) place that turns on
+   SCSI (and yes, you can try it with I2C too, and try to recursively
+   figure out what it is that turns on I2C even though you *tried* to turn
+   it off. I2C - the option that just wouldn't die! ;)
+
+So I agree that they are two facets of the same coin, but I claim that
+there's a huge reason why they are not mirror-images - there are often
+reasons to prefer one over the other.
+
+That said: I really don't think "depends on" should just always be
+"select" either. There's a balance:
+
+ - you use "depends on" when you can ask a simple question like "what kind
+   of machine do you have" or "do you want to support USB" or "do you have
+   SCSI devices".
+
+   But even then, you might end up having some devices that are
+   *technically* USB, but people don't think of them that way (for
+   example, some laptop add-ons are literally USB devices that are "built
+   into" the laptop - you might well decide to show those choices even if
+   somebody said "no USB", and if he then says "yeah, I have one of those
+   things", you just know he wasn't clueful enough, and you enable USB
+   behind his back _anyway_. Exact same thing as with SATA support)
+
+ - you use "select" when the question more naturally went the other way
+   (because the infrastructure isn't obvious)
+
+So they are two similar things, and which one to choose mainly depends on
+how you want to phrase the question - not on technical issues per se.
+
+So neither is "wrong". They both have their downsides.
+
+		Linus
+
+------------------------------------------------------------------------
+
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Newsgroups: fa.linux.kernel
+Subject: Re: [patch] MTD: fix DOC2000/2001/2001PLUS build error
+Date: Tue, 06 Feb 2007 22:52:51 UTC
+Message-ID: <fa.+05hq+xOWQlBPiZX0f4ugA3g6zQ@ifi.uio.no <http://groups.google.com/groups/search?as_umsgid=fa.+05hq+xOWQlBPiZX0f4ugA3g6zQ%40ifi.uio.no>>
+
+On Tue, 6 Feb 2007, Haavard Skinnemoen wrote:
+>
+> I disagree. I did the exact same thing on AVR32 because !EMBEDDED
+> forces on tons of crap that just isn't useful on many embedded
+> platforms.
+
+I do agree. EMBEDDED largely means "non-generic/non-standard" these days.
+It's also true that EMBEDDED does *not* necessarily mean "small", since
+some of the choices that it disables can often be choices that you want on
+*big* machines.
+
+For example, the whole thing where VGA and keyboard/mouse support default
+to on when EMBEDDED isn't selected is quite possibly a good reason to
+enable EMBEDDED on big servers that aren't even meant to be general-
+purpose, but simply optimized for a particular environment.
+
+That is, technically, what "embedded" really means. A lot of the time
+people talk about it as if it was always "small", but it can be a big
+computer that is just used in a very specific turn-key environment where
+some of the default kernel choices may not be sensible.
+
+			Linus
+
+------------------------------------------------------------------------
+
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Newsgroups: fa.linux.kernel
+Subject: Re: kms in defconfig
+Date: Tue, 28 Apr 2009 02:02:53 UTC
+Message-ID: <fa.ZOnYcNZxGsxDhvFFbYM+nKL52+Y@ifi.uio.no <http://groups.google.com/groups/search?as_umsgid=fa.ZOnYcNZxGsxDhvFFbYM+nKL52+Y%40ifi.uio.no>>
+
+On Tue, 28 Apr 2009, Tejun Heo wrote:
+>
+> I think defconfig should enable options such that it shows where
+> upstream kernel is headed, so FWIW +1 for KMS from me.
+
+I'd actually love to get rid of the stupid defconfig's entirely. They've
+lost pretty much all relevance over the years, except for specific cases
+where you might have defconfigs that are for specific platforms.
+
+IOW, the embedded kind of "per-platform defconfig" at lest is a useful
+starting point. But even there I'm not 100% sure that it makes sense to
+pollute the kernel source tree with them - they mess up things like
+
+	git grep PREVENT_FIRMWARE_BUILD
+
+horribly.
+
+IOW, they're likely to be more pain than they are worth. And they really
+aren't useful starting points for normal people (who are probably better
+off starting with their distro kernel config) or likely even for most
+kernel developers (who hopefully have noticed that they can install a
+per-machine defconfig in /etc/kernel-config and forget about it).
+
+I'd love to just delete them all.
+
+			Linus
+
+------------------------------------------------------------------------
+
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Newsgroups: fa.linux.kernel
+Subject: Re: kms in defconfig
+Date: Tue, 28 Apr 2009 17:18:41 UTC
+Message-ID: <fa.Hw033Q1gPBNA0oLxh999IAbwbFw@ifi.uio.no <http://groups.google.com/groups/search?as_umsgid=fa.Hw033Q1gPBNA0oLxh999IAbwbFw%40ifi.uio.no>>
+
+On Tue, 28 Apr 2009, david@lang.hm wrote:
+>
+> as a end-user creating my own configs, I use the defaults as a guide to
+> understand when something moves from "we think it's a good idea" to "things
+> really need this"
+
+I'm not talking about the defaults in the Kconfig files themselves, I'm
+talking about the millions of "*_defconfig" files that have tons of random
+default values.
+
+> there's a _lot_ of stuff that goes in that is useful only is some situations,
+> and the help text frequently doesn't help understanding what's really needed
+> vs what the author of that feature _thinks_ is really needed (containers are a
+> perfect example, they aren't needed in 99% of current systems, but it's
+> actually _hard_ to really disable them completely)
+
+Oh, I agree that the help text is not sufficient, and having new Kconfig
+options have sane default values is good.
+
+> you mention starting from a distro config, but most distro configs have a
+> _huge_ number of things enabled that aren't needed for any particular box.
+
+I think starting from the distro config and then turning off all modules
+("sed s/=m/=n/") is a good way to start off. Then enable just the modules
+that are actually loaded.
+
+Of course, you then need to be aware of the things you may want even if
+they're not connected right now (eg things like FAT support). And
+sometimes it's hard to map "module name" -> "config options that need to
+be enabled".
+
+So yes, it would be good to automate it:
+
+> If a tool was available to detect the hardware and create a config tailored
+> for the box, this use for a default config would go away
+
+Yeah, I've wished for that.
+
+Although I personally don't find that the actual hardware to be the
+biggest issue (since there are usually just a few options for that, and
+they are mostly not confusing). Instead, it's the issues about knowing
+which software components (netfilter, filesystems, auditing, POSIX ACL's)
+that you really want.
+
+It tends to be easy to just enable them all, but if you want a nice
+efficient build, that's very much against the point.
+
+So having some kind of (probably inevitably fairly complex) script that
+you could run to get a config would be good. The problem is that the
+script would need to be distributed with the kernel, yet it would often
+also have some nasty distro issues.
+
+			Linus
+
+------------------------------------------------------------------------
+
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Newsgroups: fa.linux.kernel
+Subject: Re: kms in defconfig
+Date: Tue, 28 Apr 2009 17:55:14 UTC
+Message-ID: <fa.8JypL6rgMZEBEN3abdmXE62R+eo@ifi.uio.no <http://groups.google.com/groups/search?as_umsgid=fa.8JypL6rgMZEBEN3abdmXE62R+eo%40ifi.uio.no>>
+
+On Tue, 28 Apr 2009, david@lang.hm wrote:
+>
+> the other items that you mention (netfilter, etc) are actually the easier ones
+> to deal with (you know what you want), and also the place where it's
+> impossible to detect what's wanted.
+
+Very wrong.
+
+Especially about the "you know what you want".
+
+Quite frankly, those choices can be hard even for kernel developers, never
+mind normal users. Have you looked at the _hundreds_ of options for
+various iptables filtering? Do you know which ones you need?
+
+[ Ok, so now you can say "give me the non-complex set" and it will pick
+  the normal ones. It will still ask you about others. I had to ask for
+  that option, and when I did, even the main netfilter developers had to
+  say "ok, I'll have to check".
+
+  The point being - normal mortals have almost no way of knowing which sw
+  features are good, and which are bad. And yes, some of them are really
+  bad. They not only increase compile time, some of them make for horrible
+  performance. You may want to enable some options that increase debug
+  coverage, but can you tell which of them impact kernel performance by a
+  factor of ten on some loads? ]
+
+And that's where starting with a "suggested config" can help. And some of
+the suggestions really are distro-specific, because sometimes different
+distributions depend on different features.
+
+> > So having some kind of (probably inevitably fairly complex) script that
+> > you could run to get a config would be good. The problem is that the
+> > script would need to be distributed with the kernel, yet it would often
+> > also have some nasty distro issues.
+>
+> I've seen people talk about creating such tools, but the responses that I've
+> seen have tended to discourage them.
+
+I suspect that they'd generally end up handling the easy cases, and seldom
+anything more. At which point they're not all that useful.
+
+		Linus
+
+------------------------------------------------------------------------
+Index <https://yarchive.net/comp/index.html> Home <https://yarchive.net/
+home.html> About <https://yarchive.net/about.html> Blog <https://
+yarchive.net/blog>

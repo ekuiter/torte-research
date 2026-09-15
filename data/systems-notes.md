@@ -2,6 +2,7 @@
 
 - For every system, we report the system name as used by its maintainers.
   We also include the project website, the canonical upstream (Git) repository, and relevant mirrors (which may have better availability, but can be less up-to-date).
+  If applicable, we report a major organizational backer or institutional home of the project.
   The number of releases is usually the number of Git tags.
   We also justify for each system why we consider it to be system software.
   In addition, we document which [implementation](#implementation) of KConfig is used.
