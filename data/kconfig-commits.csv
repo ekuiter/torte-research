@@ -1,5 +1,5 @@
-Date,Commit ID,Classification,L,P,S,E,M,Description,Notes
-Pre-git,V2.5.45,Other,Y,Y,Y,Y,Y,First Konfig implementation,
+Date,Commit ID,Classification,lexel.l,parser.y,symbol.c,expr.c,menu.c,Description,Notes
+Pre-git,V2.5.45,Other,Y,Y,Y,Y,Y,First Kconfig implementation,
 Pre-git,V2.5.47,Semantic change,,Y,,,,modification of how string literals are parsed.(processing unescaped newlines).,
 Pre-git,V2.5.52,Syntactic change & Semantic change,Y,Y,Y,,,There are new rules in lexer which altering how input tokenized. New grammar rules in parser. In symbol.c changes potentially influencing Kconfig Uis.,
 Pre-git,V2.5.65,Syntactic change & Semantic change,Y,Y,Y,,Y,"new keyword menuconfig and token T_MENUCONFIG, new grammar rules to parse menuconfig statements.",

@@ -39,3 +39,8 @@
   In contrast, we include low-level, embedded Linux distributions or toolchain generators that explicitly encourage users to generate their own, customized distribution.
   - [NXP TF-M](https://github.com/NXP/nxp_tf-m): We omit this system because its KConfig files are near identical to [Trusted Firmware-M](https://www.trustedfirmware.org/projects/tf-m/).
   - `dietlibc`, `glibc`, `musl`, `OpenEmbedded`, `Yocto`, `Mbed OS`, `Nut/OS`, `Jailhouse`: These are systems which we initially suspected may use KConfig, checked them manually, and found that they do not use it.
+- [Karakaya25](https://elias-kuiter.de/publications/#Karakaya25) includes a preliminary analysis of when certain projects have adopted KConfig, when they have last synced their LKC implementation to the Linux kernel, and how many commits they applied to Kconfig-related source files (e.g., scripts/kconfig):
+  <div class="kconfig-note-figures kconfig-commit-figures">
+    <img src="data/kconfig-divergence.png" alt="Overview of Kconfig usage across projects">
+  </div>
+  We plan on solidifying and extending this analysis further in the future, which is which why do not integrate it fully in the above table yet.

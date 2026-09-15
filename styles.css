@@ -266,6 +266,25 @@ section h6:hover .section-anchor {
   padding-left: 1.25rem;
 }
 
+.kconfig-note-figures {
+  display: grid;
+  gap: 1rem;
+}
+
+.kconfig-commit-figures {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.kconfig-note-figures img {
+  border: 1px solid var(--border-color);
+  height: auto;
+  max-width: 100%;
+}
+
+[data-theme="dark"] .kconfig-note-figures img {
+  filter: invert(1) hue-rotate(180deg) brightness(0.9) contrast(0.9);
+}
+
 .markdown-content blockquote {
   border-left: 4px solid var(--border-color);
   padding: 0.6rem 0.8rem 0.6rem;
