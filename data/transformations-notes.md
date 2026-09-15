@@ -14,6 +14,5 @@
   - **distributive transformation** on small formulas for SAT, #SAT, AllSAT, and algebraic reasoning (e.g., slicing or differencing),
   - (any variant of) **Tseitin or Plaisted-Greenbaum transformation** on large formulas for SAT and #SAT, and
   - (any variant of) **NNF-based Plaisted-Greenbaum** on large formulas for (partial) AllSAT.
-  
-  Algebraic reasoning on large formulas is not generally compositional and currently an unsolved problem.
+  - Algebraic reasoning on large formulas is not generally compositional and currently an unsolved problem.
   That is, Tseitin and Plaisted-Greenbaum transformation are not homomorphisms and must therefore be applied last (and only once) before a solver call.
