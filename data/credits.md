@@ -1,6 +1,6 @@
 ### Contributors
 
-Here, we list who contributed to this website and its contents (last update: 2026-09-16).
+Here, we list who contributed to this website and its contents (last update: 2026-09-18).
 
 - [Elias Kuiter](https://elias-kuiter.de) (University of Magdeburg):
   - project lead
