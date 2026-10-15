@@ -96,6 +96,9 @@ Most of these experiences also relate to KConfig to some degree.
 > the following: [...]
 <p class="quote-source"><a href="https://yarchive.net/comp/linux/kernel_configuration.html" target="_blank" rel="noopener noreferrer">Linus Torvalds (2007)</a></p>
 
+> Nobody gets this right. Nobody understands KConfig properly.
+<p class="quote-source"><a href="https://www.youtube.com/watch?v=Gxw7lorBEKA&t=958s" target="_blank" rel="noopener noreferrer">Arnd Bergmann (2026)</a></p>
+
 #### SAT Integration in KConfig (2010)
 
 > > > [...] I do think that the
