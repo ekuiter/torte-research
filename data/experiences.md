@@ -239,6 +239,14 @@ This script was seemingly never merged.
 > The SAT solver will only hurt, because it will bring in all those irrelevant people who are interested in SAT solving, not in making things easy for users.
 <p class="quote-source"><a href="https://yhbt.net/lore/ksummit-discuss/CA+55aFyvssxg63UoQ-rOaf1TMacJ6T5jyLkWECosQJ_N=9gaaQ@mail.gmail.com/#t" target="_blank" rel="noopener noreferrer">Linus Torvalds (2017)</a></p>
 
+Linus Torvalds on reality vs. specifications (not related to KConfig, but reminiscent of the SAT integration discussions, and changing KConfig to adhere to typical Boolean feature-model abstractions):
+
+> The kernel API has grown over time, and pretending anything else would
+> make the whole project be just a fever dream. We are *NEVER* going to
+> change the API _to_ some spec. The spec needs to match reality, we're
+> not changing reality to match a spec.
+<p class="quote-source"><a href="https://lore.kernel.org/linux-kbuild/CAHk-=wg-5cWvYgmnE2WH4yys8tB5AwwRQU6kW0r5VoRYBLT7TA@mail.gmail.com/T/#t" target="_blank" rel="noopener noreferrer">Linus Torvalds (2026)</a></p>
+
 #### Complexity of KConfig
 
 > > > I am applying various patches to Kconfig these days.
