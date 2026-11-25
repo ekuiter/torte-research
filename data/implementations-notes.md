@@ -8,4 +8,4 @@
     <img src="data/kconfig-commit-distribution.png" alt="Distribution of commits across core Kconfig parser files over time">
     <img src="data/kconfig-commit-classification.png" alt="Yearly distribution of commit classifications in the Kconfig parser">
   </div>
-  <p>The full dataset is available as a <a href="kconfig-commits.csv">CSV</a> file, and described and discussed in <a href="https://elias-kuiter.de/publications/#Karakaya25">Karakaya25</a>.</p>
+  <p>The full dataset is available as a <a href="kconfig-commits.csv">CSV</a> file, and described and discussed in <a href="https://elias-kuiter.de/publications/#Karakaya25">Karakaya25</a>. As a more recent addition, <a href="https://lore.kernel.org/linux-doc/8bdd7a33-84c4-4cac-bce2-cedf6c6456ba@infradead.org/T/#r4929821c1f49df49492c617ced3ea7162e79ba1e" target="_blank">Braha's proposed upstream changelog</a> groups syntax, semantics, macro-language, and error-handling changes by Linux release.</p>

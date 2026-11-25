@@ -1,14 +1,15 @@
 ### Contributors
 
-Here, we list who contributed to this website and its contents (last update: 2026-10-28).
+Here, we list who contributed to this website and its contents (last update: 2026-11-25).
 
 - [Elias Kuiter](https://elias-kuiter.de) (University of Magdeburg):
   - project lead
-  - data collection and analysis (exceptions listed below)
+  - data collection and analysis
   - revised data table implementation
   - website design and implementation
-- [Ljubica Ðorđević](https://elias-kuiter.de/publications/#Dordevic26) (University of Magdeburg): data collection and analysis (KConfigLib usage and extensions)
-- [Taylan Karakaya](https://elias-kuiter.de/publications/#Karakaya25) (TU Braunschweig): data collection and analysis (evolution of KConfig)
+- [Ljubica Ðorđević](https://elias-kuiter.de/publications/#Dordevic26) (University of Magdeburg): data collection and analysis for KConfigLib usage and extensions
+- [Taylan Karakaya](https://elias-kuiter.de/publications/#Karakaya25) (TU Braunschweig): data collection and analysis for the evolution of KConfig
+- [Julian Braha](https://julianbraha.com/): data collection and analysis for the KConfig changelog and several additional KConfig systems
 - [Lennart Pape](https://www.tu-braunschweig.de/isf/team) (TU Braunschweig): original [data table implementation](https://github.com/TUBS-ISF/tubs-isf.github.io)
 - Claude Code/OpenAI Codex: assistance in website design and implementation
 
